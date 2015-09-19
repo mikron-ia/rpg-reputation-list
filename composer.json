@@ -1,0 +1,24 @@
+{
+  "name": "mikron-ia/rpg-reputation-list",
+  "version": "0-dev",
+  "authors": [
+    {
+      "name": "Mikron",
+      "email": "mikronia@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Mikron\\ReputationList\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=5.5",
+    "ext-mbstring": "*",
+    "phpunit/phpunit": "4.7",
+    "codeclimate/php-test-reporter": "dev-master"
+  },
+  "scripts": {
+    "test": "php vendor/phpunit/phpunit/phpunit --testdox --configuration test/phpunit.xml --coverage-clover build/logs/clover.xml"
+  }
+}

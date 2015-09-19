@@ -1,12 +1,12 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="All tests">
-            <directory>./</directory>
+            <directory>tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory>tests</directory>
+            <directory>.</directory>
         </whitelist>
     </filter>
 </phpunit>

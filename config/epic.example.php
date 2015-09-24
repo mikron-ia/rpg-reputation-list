@@ -1,0 +1,6 @@
+<?php
+
+$epicConfig = [
+    'title' => "",
+    'system' => "",
+];

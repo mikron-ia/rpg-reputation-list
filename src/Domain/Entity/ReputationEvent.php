@@ -28,7 +28,7 @@ class ReputationEvent
 
     /**
      * ReputationEvent constructor.
-     * @param DB $ID
+     * @param int $ID
      * @param ReputationNetwork $reputationNetwork
      * @param int $value
      * @param Event $event
@@ -39,6 +39,38 @@ class ReputationEvent
         $this->reputationNetwork = $reputationNetwork;
         $this->value = $value;
         $this->event = !empty($event)?$event:null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getID()
+    {
+        return $this->ID;
+    }
+
+    /**
+     * @return ReputationNetwork
+     */
+    public function getReputationNetwork()
+    {
+        return $this->reputationNetwork;
+    }
+
+    /**
+     * @return int
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @return Event
+     */
+    public function getEvent()
+    {
+        return $this->event;
     }
 
 }

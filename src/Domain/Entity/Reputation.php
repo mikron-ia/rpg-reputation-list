@@ -27,5 +27,31 @@ class Reputation
      * @var int Reputation value
      */
     private $value;
-    
+
+    /**
+     * Reputation constructor.
+     * @param ReputationNetwork $reputationNetwork
+     * @param ReputationEvent[] $reputationEvents
+     */
+    public function __construct(ReputationNetwork $reputationNetwork, array $reputationEvents)
+    {
+        $this->reputationNetwork = $reputationNetwork;
+        $this->reputationEvents = $reputationEvents;
+        $this->value = $this->calculateValue();
+    }
+
+    /**
+     * @return int Sum of all reputation event values
+     */
+    private function calculateValue()
+    {
+        $sum = 0;
+
+        foreach($this->reputationEvents as $repEvent) {
+            $sum += $repEvent->getValue();
+        }
+
+        return $sum;
+    }
+
 }

@@ -54,4 +54,28 @@ class Reputation
         return $sum;
     }
 
+    /**
+     * @return ReputationNetwork
+     */
+    public function getReputationNetwork()
+    {
+        return $this->reputationNetwork;
+    }
+
+    /**
+     * @return ReputationEvent[]
+     */
+    public function getReputationEvents()
+    {
+        return $this->reputationEvents;
+    }
+
+    /**
+     * @return int
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
 }

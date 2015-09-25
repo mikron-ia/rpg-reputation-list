@@ -30,4 +30,20 @@ class Person
         $this->reputations = $reputations;
     }
 
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return Reputation[]
+     */
+    public function getReputations()
+    {
+        return $this->reputations;
+    }
+
 }

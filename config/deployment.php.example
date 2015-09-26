@@ -7,5 +7,6 @@ $app['config.deploy'] = [
         'password' => '',
         'dbname' => '',
         'options' => []
-    ]
+    ],
+    'debug' => false
 ];

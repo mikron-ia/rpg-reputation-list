@@ -12,7 +12,7 @@ class Person
     /**
      * @var int DB ID
      */
-    private $ID;
+    private $dbId;
 
     /**
      * @var string Identifying string
@@ -26,12 +26,13 @@ class Person
 
     /**
      * Person constructor.
+     * @param int $dbId
      * @param string $name
      * @param Reputation[] $reputations
      */
-    public function __construct($ID, $name, array $reputations)
+    public function __construct($dbId, $name, array $reputations)
     {
-        $this->ID = $ID;
+        $this->dbId = $dbId;
         $this->name = $name;
         $this->reputations = $reputations;
     }
@@ -39,9 +40,9 @@ class Person
     /**
      * @return int
      */
-    public function getID()
+    public function getDbId()
     {
-        return $this->ID;
+        return $this->dbId;
     }
 
     /**

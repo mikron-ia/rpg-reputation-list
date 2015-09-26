@@ -2,11 +2,13 @@
 
 /* Display of networks, with descriptions */
 $app->get('/networks/', function () use ($app) {
-    $networks = $app['networks'];
-
     $result = [
-        "networks" => []
+        "title" => "Reputation networks",
+        "description" => "This is a list of all reputation networks that are handled by this system",
+        "content" => []
     ];
+
+    $networks = $app['networks'];
 
     foreach ($networks as $network) {
         $result['networks'][] = $network->getArrayForJSON();

@@ -1,6 +1,16 @@
 <?php
 
 $app->get('/', function (Silex\Application $app) {
-    return "<h1>Reputation List</h1>" .
-    "<p>This is basic front page. Nothing of use can be found here at the moment. Please return once we fixed this.</p>";
+    $result = [
+        "title" => "Front page",
+        "description" => "This is basic front page. Please choose a functionality you wish to access from 'content' area",
+        "content" => [
+            [
+                "url" => "networks",
+                "description" => "Lists all networks available"
+            ]
+        ]
+    ];
+
+    return json_encode($result);
 });

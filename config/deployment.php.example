@@ -1,0 +1,11 @@
+<?php
+
+$app['config.deploy'] = [
+    'mysql' => [
+        'url' => '',
+        'username' => '',
+        'password' => '',
+        'dbname' => '',
+        'options' => []
+    ]
+];

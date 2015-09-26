@@ -10,12 +10,17 @@ namespace Mikron\ReputationList\Domain\Entity;
 class Person
 {
     /**
-     * @var string
+     * @var int DB ID
+     */
+    private $ID;
+
+    /**
+     * @var string Identifying string
      */
     private $name;
 
     /**
-     * @var Reputation[]
+     * @var Reputation[] Reputations of the person
      */
     private $reputations;
 
@@ -24,10 +29,19 @@ class Person
      * @param string $name
      * @param Reputation[] $reputations
      */
-    public function __construct($name, array $reputations)
+    public function __construct($ID, $name, array $reputations)
     {
+        $this->ID = $ID;
         $this->name = $name;
         $this->reputations = $reputations;
+    }
+
+    /**
+     * @return int
+     */
+    public function getID()
+    {
+        return $this->ID;
     }
 
     /**

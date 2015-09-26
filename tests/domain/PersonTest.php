@@ -9,7 +9,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function nameIsDisplayedCorrectly()
     {
-        $person = new Person("Test Name", []);
+        $person = new Person(null, "Test Name", []);
         $this->assertEquals("Test Name", $person->getName());
     }
 }

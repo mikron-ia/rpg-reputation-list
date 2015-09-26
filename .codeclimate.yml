@@ -40,3 +40,6 @@ ratings:
 exclude_paths:
   - vendor/**/*
   - tests/**/*
+  - .git/**/*
+  - composer.*
+

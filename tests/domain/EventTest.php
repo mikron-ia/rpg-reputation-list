@@ -7,18 +7,27 @@ class EventTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function nameIsDisplayedCorrectly()
+    public function idIsCorrect()
     {
-        $event = new Event(null, "Test Event", "Test Description");
+        $event = new Event(1, "Test Event", "Test Description");
+        $this->assertEquals(1, $event->getDBId());
+    }
+
+    /**
+     * @test
+     */
+    public function nameIsCorrect()
+    {
+        $event = new Event(1, "Test Event", "Test Description");
         $this->assertEquals("Test Event", $event->getName());
     }
 
     /**
      * @test
      */
-    public function descriptionIsDisplayedCorrectly()
+    public function descriptionIsCorrect()
     {
-        $event = new Event(null, "Test Event", "Test Description");
+        $event = new Event(1, "Test Event", "Test Description");
         $this->assertEquals("Test Description", $event->getDescription());
     }
 }

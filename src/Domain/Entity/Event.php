@@ -7,7 +7,7 @@ class Event
     /**
      * @var int DB ID
      */
-    private $dBId;
+    private $dbId;
 
     /**
      * @var string
@@ -27,7 +27,7 @@ class Event
      */
     public function __construct($dBId, $name, $description)
     {
-        $this->dBId = $dBId;
+        $this->dbId = $dBId;
         $this->name = $name;
         $this->description = $description;
     }
@@ -37,7 +37,7 @@ class Event
      */
     public function getDBId()
     {
-        return $this->dBId;
+        return $this->dbId;
     }
 
     /**

@@ -52,5 +52,18 @@ class ReputationNetwork
         return $this->name;
     }
 
+    public function getArrayForJSON()
+    {
+        return [
+            "name" => $this->name,
+            "code" => $this->code,
+            "description" => $this->description
+        ];
+    }
+
+    public function getJSON()
+    {
+        return json_encode($this->getArrayForJSON());
+    }
 
 }

@@ -13,8 +13,8 @@ if (file_exists($configPath . 'epic.php')) {
 }
 
 /* Level 1: RPG system data; selected in epic */
-if (isset($epicConfig['system'])) {
-    $path = $configPath . 'data/' . $epicConfig['system'] . '.php';
+if (isset($app['config.epic']['system'])) {
+    $path = $configPath . 'data/' . $app['config.epic']['system'] . '.php';
     if (file_exists($path)) {
         require_once $path;
     } else {

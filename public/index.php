@@ -7,6 +7,7 @@ $app = new Silex\Application;
 $apiPath = '/../api/';
 
 require_once $apiPath.'config.php';
+require_once $apiPath.'dic.php';
 require_once $apiPath.'routes.php';
 
 $app->run();

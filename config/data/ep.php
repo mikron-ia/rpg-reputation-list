@@ -6,7 +6,7 @@
  * Data used in accord with http://creativecommons.org/licenses/by-nc-sa/3.0/us/
  */
 
-$reputations = [
+$app['config.system.reputations'] = [
     "@" => [
         "name" => "@-list",
         "description" => "Autonomists: anarchists, Barsoomians, Extropians, Titanian, scum",

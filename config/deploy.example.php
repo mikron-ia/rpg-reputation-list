@@ -1,5 +1,5 @@
 <?php
 
-$dbConfig = [
+$app['config.deploy'] = [
 
 ];

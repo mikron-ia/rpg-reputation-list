@@ -1,6 +1,6 @@
 <?php
 
-$epicConfig = [
+$app['config.epic'] = [
     'title' => "",
     'system' => "",
 ];

@@ -15,8 +15,10 @@ class ReputationNetwork
     {
         $reputationNetworkList = [];
 
-        foreach ($array as $key => $record) {
-            $reputationNetworkList[$key] = $this->createFromSingleArray($key, $record);
+        if (!empty($array)) {
+            foreach ($array as $key => $record) {
+                $reputationNetworkList[$key] = $this->createFromSingleArray($key, $record);
+            }
         }
 
         return $reputationNetworkList;

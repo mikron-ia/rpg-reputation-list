@@ -1,6 +1,6 @@
 <?php
 
-$configMain = [
+$app['config.main'] = [
     "version" => "0-dev",
     "interface" => [
         "title" => "Reputation Board",

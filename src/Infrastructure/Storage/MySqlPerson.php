@@ -27,6 +27,9 @@ final class MySqlPerson implements PersonStorage
 
     public function retrieveAll()
     {
-        return $this->storage->simpleSelect('person', []);
+        $array = $this->storage->simpleSelect('person', []);
+
+
+        return $array;
     }
 }

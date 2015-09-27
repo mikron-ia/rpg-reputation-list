@@ -61,4 +61,14 @@ class Person
         return $this->reputations;
     }
 
+    /**
+     * @return array
+     */
+    public function getSimpleIdentification()
+    {
+        return [
+            "name" => $this->getName()
+        ];
+    }
+
 }

@@ -2,6 +2,13 @@
 
 namespace Mikron\ReputationList\Domain\Entity;
 
+/**
+ * Class Event - describes event connected to reputation change; it should give some context & reason for the change
+ * This class is intended to have a DB representation
+ * Event is optional mechanic and MAY be included
+ *
+ * @package Mikron\ReputationList\Domain\Entity
+ */
 class Event
 {
     /**

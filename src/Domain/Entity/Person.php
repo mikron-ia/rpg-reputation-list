@@ -4,8 +4,11 @@ namespace Mikron\ReputationList\Domain\Entity;
 
 /**
  * Class Person - describes a person that can have a reputation
+ * This class is intended to have a DB representation
  *
  * @package Mikron\ReputationList\Domain\Entity
+ * @todo Add some description component
+ * @todo Consider adding UUID for communication with other services
  */
 class Person
 {

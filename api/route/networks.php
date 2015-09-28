@@ -14,5 +14,5 @@ $app->get('/networks/', function () use ($app) {
         $result['networks'][] = $network->getArrayForJSON();
     }
 
-    return json_encode($result);
+    return $app->json($result);
 });

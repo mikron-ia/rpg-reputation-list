@@ -12,5 +12,5 @@ $app->get('/', function (Silex\Application $app) {
         ]
     ];
 
-    return json_encode($result);
+    return $app->json($result);
 });

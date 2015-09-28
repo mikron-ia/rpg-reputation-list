@@ -21,5 +21,5 @@ $app->get('/people/', function () use ($app) {
         $result['content'][] = $person->getSimpleIdentification();
     }
 
-    return json_encode($result);
+    return $app->json($result);
 });

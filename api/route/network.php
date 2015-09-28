@@ -8,5 +8,5 @@ $app->get('/network/{id}', function($id) use ($app) {
         "content" => []
     ];
 
-    return json_encode($result);
+    return $app->json($result);
 });

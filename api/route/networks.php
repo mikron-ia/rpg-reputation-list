@@ -11,7 +11,7 @@ $app->get('/networks/', function () use ($app) {
     $networks = $app['networks'];
 
     foreach ($networks as $network) {
-        $result['networks'][] = $network->getArrayForJSON();
+        $result['networks'][] = $network->getCompleteData();
     }
 
     return $app->json($result);

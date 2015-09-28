@@ -18,7 +18,7 @@ $app->get('/people/', function () use ($app) {
     $people = $factory->retrieveAllFromDb($connection);
 
     foreach ($people as $person) {
-        $result['content'][] = $person->getSimpleIdentification();
+        $result['content'][] = $person->getSimpleData();
     }
 
     return $app->json($result);

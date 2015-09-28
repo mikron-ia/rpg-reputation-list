@@ -2,6 +2,8 @@
 
 namespace Mikron\ReputationList\Domain\Entity;
 
+use Mikron\ReputationList\Domain\Blueprint\Displayable;
+
 /**
  * Class Event - describes event connected to reputation change; it should give some context & reason for the change
  * This class is intended to have a DB representation
@@ -9,7 +11,7 @@ namespace Mikron\ReputationList\Domain\Entity;
  *
  * @package Mikron\ReputationList\Domain\Entity
  */
-class Event
+class Event implements Displayable
 {
     /**
      * @var int DB ID
@@ -63,4 +65,24 @@ class Event
         return $this->description;
     }
 
+    /**
+     * @return array Simple representation of the object content, fit for basic display
+     */
+    public function getSimpleData()
+    {
+        return [
+            "name" => $this->getName()
+        ];
+    }
+
+    /**
+     * @return array Complete representation of public parts of object content, fit for full card display
+     */
+    public function getCompleteData()
+    {
+        return [
+            "name" => $this->name,
+            "description" => $this->description
+        ];
+    }
 }

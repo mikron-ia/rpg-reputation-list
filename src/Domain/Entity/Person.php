@@ -2,6 +2,8 @@
 
 namespace Mikron\ReputationList\Domain\Entity;
 
+use Mikron\ReputationList\Domain\Blueprint\Displayable;
+
 /**
  * Class Person - describes a person that can have a reputation
  * This class is intended to have a DB representation
@@ -10,7 +12,7 @@ namespace Mikron\ReputationList\Domain\Entity;
  * @todo Add some description component
  * @todo Consider adding UUID for communication with other services
  */
-class Person
+class Person implements Displayable
 {
     /**
      * @var int DB ID
@@ -65,13 +67,22 @@ class Person
     }
 
     /**
-     * @return array
+     * @return array Simple representation of the object content, fit for basic display
      */
-    public function getSimpleIdentification()
+    public function getSimpleData()
     {
         return [
             "name" => $this->getName()
         ];
     }
 
+    /**
+     * @return array Complete representation of public parts of object content, fit for full card display
+     */
+    public function getCompleteData()
+    {
+        return [
+            "name" => $this->getName()
+        ];
+    }
 }

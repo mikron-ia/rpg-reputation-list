@@ -2,6 +2,8 @@
 
 namespace Mikron\ReputationList\Domain\ValueObject;
 
+use Mikron\ReputationList\Domain\Blueprint\Displayable;
+
 /**
  * Class ReputationNetwork
  *
@@ -10,7 +12,7 @@ namespace Mikron\ReputationList\Domain\ValueObject;
  *
  * @package Mikron\ReputationList\Domain\ValueObject
  */
-class ReputationNetwork
+class ReputationNetwork implements Displayable
 {
     private $name;
     private $code;
@@ -52,7 +54,21 @@ class ReputationNetwork
         return $this->name;
     }
 
-    public function getArrayForJSON()
+    /**
+     * @return array Simple representation of the object content, fit for basic display
+     */
+    public function getSimpleData()
+    {
+        return [
+            "name" => $this->name,
+            "code" => $this->code
+        ];
+    }
+
+    /**
+     * @return array Complete representation of public parts of object content, fit for full card display
+     */
+    public function getCompleteData()
     {
         return [
             "name" => $this->name,
@@ -60,10 +76,4 @@ class ReputationNetwork
             "description" => $this->description
         ];
     }
-
-    public function getJSON()
-    {
-        return json_encode($this->getArrayForJSON());
-    }
-
 }

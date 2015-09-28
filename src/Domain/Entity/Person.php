@@ -81,8 +81,15 @@ class Person implements Displayable
      */
     public function getCompleteData()
     {
-        return [
-            "name" => $this->getName()
+        $data = [
+            "name" => $this->getName(),
+            "reputations" => [],
         ];
+
+        foreach($this->reputations as $reputation) {
+            $data['reputations'][] = $reputation->getCompleteData();
+        }
+
+        return $data;
     }
 }

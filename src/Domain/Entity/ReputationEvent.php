@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Domain\Entity;
 
+use Mikron\ReputationList\Domain\Blueprint\Displayable;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 
 /**
@@ -10,7 +11,7 @@ use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
  *
  * @package Mikron\ReputationList\Domain\Entity
  */
-class ReputationEvent
+class ReputationEvent implements Displayable
 {
     /**
      * @var int DB ID
@@ -79,4 +80,27 @@ class ReputationEvent
         return $this->event;
     }
 
+    /**
+     * @return array Simple representation of the object content, fit for basic display
+     */
+    public function getSimpleData()
+    {
+        return [
+            "name" => $this->reputationNetwork->getName(),
+            "value" => $this->getValue()
+        ];
+    }
+
+    /**
+     * @return array Complete representation of public parts of object content, fit for full card display
+     */
+    public function getCompleteData()
+    {
+        return [
+            "name" => $this->reputationNetwork->getName(),
+            "code" => $this->reputationNetwork->getCode(),
+            "value" => $this->getValue(),
+            "event" => isset($this->event)?$this->event->getCompleteData():null,
+        ];
+    }
 }

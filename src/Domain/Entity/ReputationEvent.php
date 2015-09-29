@@ -16,7 +16,7 @@ class ReputationEvent implements Displayable
     /**
      * @var int DB ID
      */
-    private $ID;
+    private $dbId;
 
     /**
      * @var ReputationNetwork The network the event is connected to
@@ -35,14 +35,14 @@ class ReputationEvent implements Displayable
 
     /**
      * ReputationEvent constructor.
-     * @param int $ID
+     * @param int $dbId
      * @param ReputationNetwork $reputationNetwork
      * @param int $value
      * @param Event $event
      */
-    public function __construct($ID, ReputationNetwork $reputationNetwork, $value, Event $event)
+    public function __construct($dbId, ReputationNetwork $reputationNetwork, $value, Event $event)
     {
-        $this->ID = $ID;
+        $this->dbId = $dbId;
         $this->reputationNetwork = $reputationNetwork;
         $this->value = $value;
         $this->event = !empty($event) ? $event : null;
@@ -51,9 +51,9 @@ class ReputationEvent implements Displayable
     /**
      * @return int
      */
-    public function getID()
+    public function getDbId()
     {
-        return $this->ID;
+        return $this->dbId;
     }
 
     /**

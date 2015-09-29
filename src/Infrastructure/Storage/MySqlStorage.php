@@ -8,9 +8,9 @@ final class MySqlStorage
 {
     private $connection;
 
-    public function __construct($url, $username, $password, $db, array $options = [])
+    public function __construct($url, $username, $password, $dbname, array $options = [])
     {
-        $dsn = "mysql:host=$url;dbname=$db";
+        $dsn = "mysql:host=$url;dbname=$dbname";
 
         try {
             $this->connection = new \PDO($dsn, $username, $password, $options);

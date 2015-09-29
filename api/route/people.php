@@ -10,8 +10,13 @@ $app->get('/people/', function () use ($app) {
 
     $dbConfig = $app['config.deploy']['mysql'];
 
-    $connection = new \Mikron\ReputationList\Infrastructure\Storage\MySqlStorage($dbConfig['url'],
-        $dbConfig['username'], $dbConfig['password'], $dbConfig['dbname'], $dbConfig['options']);
+    $connection = new \Mikron\ReputationList\Infrastructure\Storage\MySqlStorage(
+        $dbConfig['url'],
+        $dbConfig['username'],
+        $dbConfig['password'],
+        $dbConfig['dbname'],
+        $dbConfig['options']
+    );
 
     $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 

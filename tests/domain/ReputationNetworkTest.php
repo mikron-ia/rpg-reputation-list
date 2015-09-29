@@ -57,6 +57,42 @@ class ReputationNetworkTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("[no description]", $reputationNetwork->getDescription());
     }
 
+    /**
+     * @test
+     * @dataProvider incompleteReputationNetworkProvider
+     * @depends      isNameCorrect
+     * @depends      isCodeCorrect
+     * @param $dataPayload
+     */
+    public function simpleDataIsCorrect($dataPayload)
+    {
+        $reputationNetwork = $this->prepareReputationNetwork($dataPayload);
+
+        $this->assertEquals([
+            "name" => $reputationNetwork->getName(),
+            "code" => $reputationNetwork->getCode()
+        ], $reputationNetwork->getSimpleData());
+    }
+
+    /**
+     * @test
+     * @dataProvider incompleteReputationNetworkProvider
+     * @depends      isNameCorrect
+     * @depends      isCodeCorrect
+     * @depends      isDescriptionCorrect
+     * @param $dataPayload
+     */
+    public function completeDataIsCorrect($dataPayload)
+    {
+        $reputationNetwork = $this->prepareReputationNetwork($dataPayload);
+
+        $this->assertEquals([
+            "name" => $reputationNetwork->getName(),
+            "code" => $reputationNetwork->getCode(),
+            "description" => $reputationNetwork->getDescription()
+        ], $reputationNetwork->getCompleteData());
+    }
+
     public function correctReputationNetworkProvider()
     {
         return [

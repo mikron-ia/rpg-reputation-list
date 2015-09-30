@@ -22,14 +22,15 @@ final class MySqlPerson implements PersonStorage
 
     public function retrieve($dbId)
     {
-        // TODO: Implement retrieve() method.
+        $result = $this->storage->simpleSelect('person', ['person_id' => $dbId]);
+
+        return $result;
     }
 
     public function retrieveAll()
     {
-        $array = $this->storage->simpleSelect('person', []);
+        $result = $this->storage->simpleSelect('person', []);
 
-
-        return $array;
+        return $result;
     }
 }

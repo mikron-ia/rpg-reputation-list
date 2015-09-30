@@ -49,4 +49,19 @@ class Person
 
         return $list;
     }
+
+    public function retrievePersonFromDb($connection, $dbId)
+    {
+        $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\MySqlPerson($connection);
+
+        $result = $personStorage->retrieve($dbId);
+
+        if (!empty($result)) {
+            $person = $this->createFromSingleArray($result['dbId'], $result['name'], []);
+        } else {
+            $person = null;
+        }
+
+        return $person;
+    }
 }

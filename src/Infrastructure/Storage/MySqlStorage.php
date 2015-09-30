@@ -31,13 +31,13 @@ final class MySqlStorage
             foreach ($whereArray as $field => $value) {
                 $rows[] = "$field = '$value'";
             }
-            $where = ' WHERE '.implode(' AND ',$rows);
+            $where = ' WHERE ' . implode(' AND ', $rows);
         } else {
             $where = "";
         }
 
-        $result = $this->connection->query("SELECT `person_id` AS `dbId`, `name`, `description` FROM `$table`".$where);
+        $result = $this->connection->query("SELECT `person_id` AS `dbId`, `name`, `description` FROM `$table`" . $where);
 
-        return $result->fetchAll(\PDO::FETCH_ASSOC);
+        return $result->fetch((\PDO::FETCH_ASSOC));
     }
 }

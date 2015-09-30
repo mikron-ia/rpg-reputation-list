@@ -86,7 +86,7 @@ class Person implements Displayable
             "reputations" => [],
         ];
 
-        foreach($this->reputations as $reputation) {
+        foreach ($this->reputations as $reputation) {
             $data['reputations'][] = $reputation->getCompleteData();
         }
 

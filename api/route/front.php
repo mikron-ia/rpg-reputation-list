@@ -14,7 +14,7 @@ $app->get('/', function (Silex\Application $app) {
                 "description" => "Lists all people whose profile the system has"
             ],
             [
-                "url" => "people",
+                "url" => "person/{person_id}",
                 "description" => "Lists data regarding specific person",
                 "note" => "Does not provide complete data yet"
             ]

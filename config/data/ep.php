@@ -42,11 +42,26 @@ $app['config.system.reputations'] = [
     "i" => [
         "name" => "The Eye",
         "description" => "Firewall",
-        "restricted" => true,
+        "restricted" => "Firewall members only",
     ],
     "u" => [
         "name" => "UltiNet",
         "description" => "Ultimates",
-        "restricted" => true,
-    ]
+        "restricted" => "Ultimates only",
+    ],
+    "cc" => [
+        "name" => "ConsortiumCortex",
+        "description" => "Planetary Consortium Hypercorps and corporate-based habitats",
+        "membership" => ["c"]
+    ],
+    "cm" => [
+        "name" => "MorningstarMap",
+        "description" => "Morningstar Constellation Hypercorps and corporate-based habitats",
+        "membership" => ["c"]
+    ],
+    "cl" => [
+        "name" => "LunarLagrangianNet",
+        "description" => "Lunar-Lagrange habitats and organisations",
+        "membership" => ["c"]
+    ],
 ];

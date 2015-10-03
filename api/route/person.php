@@ -2,12 +2,6 @@
 
 /* Reputation data of a particular person */
 $app->get('/person/{id}', function ($id) use ($app) {
-    $result = [
-        "title" => "Personal profile",
-        "description" => "This is a reputation characteristic of a chosen person",
-        "content" => []
-    ];
-
     $dbConfig = $app['config.deploy']['mysql'];
 
     $connection = new \Mikron\ReputationList\Infrastructure\Storage\MySqlStorage(
@@ -22,7 +16,11 @@ $app->get('/person/{id}', function ($id) use ($app) {
 
     $person = $factory->retrievePersonFromDb($connection, $id);
 
-    $result['content'] = $person->getCompleteData();
+    $output = new \Mikron\ReputationList\Domain\ValueObject\Output(
+        "Personal profile",
+        "This is a reputation characteristic of a chosen person",
+        $person->getCompleteData()
+    );
 
-    return $app->json($result);
+    return $app->json($output->getArrayForJson());
 });

@@ -2,12 +2,6 @@
 
 /* List of people available for display, along with their IDs */
 $app->get('/people/', function () use ($app) {
-    $result = [
-        "title" => "List",
-        "description" => "This is a list of people available for peruse",
-        "content" => []
-    ];
-
     $dbConfig = $app['config.deploy']['mysql'];
 
     $connection = new \Mikron\ReputationList\Infrastructure\Storage\MySqlStorage(
@@ -20,11 +14,18 @@ $app->get('/people/', function () use ($app) {
 
     $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 
-    $people = $factory->retrieveAllFromDb($connection);
+    $peopleObjects = $factory->retrieveAllFromDb($connection);
+    $peopleList = [];
 
-    foreach ($people as $person) {
-        $result['content'][] = $person->getSimpleData();
+    foreach ($peopleObjects as $person) {
+        $peopleList[] = $person->getSimpleData();
     }
 
-    return $app->json($result);
+    $output = new \Mikron\ReputationList\Domain\ValueObject\Output(
+        "List",
+        "This is a list of people available for peruse",
+        $peopleList
+    );
+
+    return $app->json($output->getArrayForJson());
 });

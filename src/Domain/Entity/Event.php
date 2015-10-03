@@ -10,6 +10,7 @@ use Mikron\ReputationList\Domain\Blueprint\Displayable;
  * Event is optional mechanic and MAY be included
  *
  * @package Mikron\ReputationList\Domain\Entity
+ * @todo Consider reworking DB ID into a VO
  */
 class Event implements Displayable
 {

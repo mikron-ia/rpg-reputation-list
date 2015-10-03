@@ -2,17 +2,18 @@
 
 /* Display of networks, with descriptions */
 $app->get('/networks/', function () use ($app) {
-    $result = [
-        "title" => "Reputation networks",
-        "description" => "This is a list of all reputation networks that are handled by this system",
-        "content" => []
-    ];
-
     $networks = $app['networks'];
+    $arrays = [];
 
     foreach ($networks as $network) {
-        $result['networks'][] = $network->getCompleteData();
+        $arrays[] = $network->getCompleteData();
     }
 
-    return $app->json($result);
+    $output = new \Mikron\ReputationList\Domain\ValueObject\Output(
+        "Reputation networks",
+        "This is a list of all reputation networks that are handled by this system",
+        $arrays
+    );
+
+    return $app->json($output->getArrayForJson());
 });

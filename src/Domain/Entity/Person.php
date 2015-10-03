@@ -11,6 +11,7 @@ use Mikron\ReputationList\Domain\Blueprint\Displayable;
  * @package Mikron\ReputationList\Domain\Entity
  * @todo Add some description component
  * @todo Consider adding UUID for communication with other services
+ * @todo Consider reworking DB ID into a VO
  */
 class Person implements Displayable
 {

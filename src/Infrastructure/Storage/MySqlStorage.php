@@ -38,6 +38,6 @@ final class MySqlStorage
 
         $result = $this->connection->query("SELECT `person_id` AS `dbId`, `name`, `description` FROM `$table`" . $where);
 
-        return $result->fetch((\PDO::FETCH_ASSOC));
+        return $result->fetchAll((\PDO::FETCH_ASSOC));
     }
 }

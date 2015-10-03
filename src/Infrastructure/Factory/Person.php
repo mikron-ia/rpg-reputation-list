@@ -54,10 +54,11 @@ class Person
     {
         $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\MySqlPerson($connection);
 
-        $result = $personStorage->retrieve($dbId);
+        $personWrapped = $personStorage->retrieve($dbId);
 
-        if (!empty($result)) {
-            $person = $this->createFromSingleArray($result['dbId'], $result['name'], []);
+        if (!empty($personWrapped)) {
+            $personUnwrapped = array_pop($personWrapped);
+            $person = $this->createFromSingleArray($personUnwrapped['dbId'], $personUnwrapped['name'], []);
         } else {
             $person = null;
         }

@@ -9,7 +9,7 @@ $app->get('/networks/', function () use ($app) {
         $arrays[] = $network->getCompleteData();
     }
 
-    $output = new \Mikron\ReputationList\Domain\ValueObject\Output(
+    $output = new \Mikron\ReputationList\Domain\Service\Output(
         "Reputation networks",
         "This is a list of all reputation networks that are handled by this system",
         $arrays

@@ -16,7 +16,7 @@ $app->get('/person/{id}', function ($id) use ($app) {
 
     $person = $factory->retrievePersonFromDb($connection, $id);
 
-    $output = new \Mikron\ReputationList\Domain\ValueObject\Output(
+    $output = new \Mikron\ReputationList\Domain\Service\Output(
         "Personal profile",
         "This is a reputation characteristic of a chosen person",
         $person->getCompleteData()

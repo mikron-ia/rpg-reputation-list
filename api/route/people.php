@@ -21,7 +21,7 @@ $app->get('/people/', function () use ($app) {
         $peopleList[] = $person->getSimpleData();
     }
 
-    $output = new \Mikron\ReputationList\Domain\ValueObject\Output(
+    $output = new \Mikron\ReputationList\Domain\Service\Output(
         "List",
         "This is a list of people available for peruse",
         $peopleList

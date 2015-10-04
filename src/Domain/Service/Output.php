@@ -1,6 +1,6 @@
 <?php
 
-namespace Mikron\ReputationList\Domain\ValueObject;
+namespace Mikron\ReputationList\Domain\Service;
 
 /**
  * Class Output - packs and presents output

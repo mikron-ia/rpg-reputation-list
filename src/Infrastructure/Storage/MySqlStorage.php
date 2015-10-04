@@ -8,9 +8,9 @@ final class MySqlStorage
 {
     private $connection;
 
-    public function __construct($url, $username, $password, $dbname, array $options = [])
+    public function __construct($url, $username, $password, $dbName, array $options = [])
     {
-        $dsn = "mysql:host=$url;dbname=$dbname";
+        $dsn = "mysql:host=$url;dbname=$dbName";
 
         try {
             $this->connection = new \PDO($dsn, $username, $password, $options);
@@ -29,15 +29,23 @@ final class MySqlStorage
         if (!empty($whereArray)) {
             $rows = [];
             foreach ($whereArray as $field => $value) {
-                $rows[] = "$field = '$value'";
+                $rows[] = "$field = :$field";
             }
             $where = ' WHERE ' . implode(' AND ', $rows);
         } else {
             $where = "";
         }
 
-        $result = $this->connection->query("SELECT `person_id` AS `dbId`, `name`, `description` FROM `$table`" . $where);
+        $statement = $this->connection->prepare("SELECT `person_id` AS `dbId`, `name`, `description` FROM `$table`" . $where);
 
-        return $result->fetchAll((\PDO::FETCH_ASSOC));
+        if (!empty($whereArray)) {
+            foreach ($whereArray as $field => $value) {
+                $statement->bindValue($field, $value);
+            }
+        }
+
+        $statement->execute();
+
+        return $statement->fetchAll((\PDO::FETCH_ASSOC));
     }
 }

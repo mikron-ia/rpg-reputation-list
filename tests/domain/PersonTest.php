@@ -9,7 +9,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function idIsCorrect()
     {
-        $person = new Person(1, "Test Name", []);
+        $person = new Person(1, "Test Name", "Test Description", []);
         $this->assertEquals(1, $person->getDBId());
     }
 
@@ -18,7 +18,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function nameIsCorrect()
     {
-        $person = new Person(1, "Test Name", []);
+        $person = new Person(1, "Test Name", "Test Description", []);
         $this->assertEquals("Test Name", $person->getName());
     }
 
@@ -27,7 +27,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function simpleDataIsCorrect()
     {
-        $person = new Person(1, "Test Name", []);
+        $person = new Person(1, "Test Name", "Test Description", []);
         $this->assertEquals(["name" => "Test Name"], $person->getSimpleData());
     }
 

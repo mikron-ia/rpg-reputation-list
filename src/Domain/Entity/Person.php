@@ -11,9 +11,8 @@ use Mikron\ReputationList\Domain\Blueprint\Displayable;
  * @package Mikron\ReputationList\Domain\Entity
  * @todo Add some description component
  * @todo Consider adding UUID for communication with other services
- * @todo Consider reworking DB ID into a VO
  */
-class Person implements Displayable
+final class Person implements Displayable
 {
     /**
      * @var int DB ID
@@ -26,6 +25,11 @@ class Person implements Displayable
     private $name;
 
     /**
+     * @var string Personal characteristic
+     */
+    private $description;
+
+    /**
      * @var Reputation[] Reputations of the person
      */
     private $reputations;
@@ -34,12 +38,14 @@ class Person implements Displayable
      * Person constructor.
      * @param int $dbId
      * @param string $name
+     * @param string $description
      * @param Reputation[] $reputations
      */
-    public function __construct($dbId, $name, array $reputations)
+    public function __construct($dbId, $name, $description, array $reputations)
     {
         $this->dbId = $dbId;
         $this->name = $name;
+        $this->description = $description;
         $this->reputations = $reputations;
     }
 
@@ -57,6 +63,14 @@ class Person implements Displayable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -84,6 +98,7 @@ class Person implements Displayable
     {
         $data = [
             "name" => $this->getName(),
+            "description" => $this->getDescription(),
             "reputations" => [],
         ];
 

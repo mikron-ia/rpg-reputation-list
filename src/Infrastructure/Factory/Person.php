@@ -6,9 +6,9 @@ use Mikron\ReputationList\Domain\Entity;
 
 class Person
 {
-    public function createFromSingleArray($dbId, $name, $reputations)
+    public function createFromSingleArray($dbId, $name, $description, $reputations)
     {
-        return new Entity\Person($dbId, $name, $reputations);
+        return new Entity\Person($dbId, $name, $description, $reputations);
     }
 
     /**
@@ -22,7 +22,7 @@ class Person
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['dbId'], $record['name'], []);
+                $list[] = $this->createFromSingleArray($record['dbId'], $record['name'], "[no description]", []);
             }
         }
 
@@ -43,7 +43,7 @@ class Person
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['dbId'], $record['name'], []);
+                $list[] = $this->createFromSingleArray($record['dbId'], $record['name'], "[no description]", []);
             }
         }
 
@@ -58,7 +58,7 @@ class Person
 
         if (!empty($personWrapped)) {
             $personUnwrapped = array_pop($personWrapped);
-            $person = $this->createFromSingleArray($personUnwrapped['dbId'], $personUnwrapped['name'], []);
+            $person = $this->createFromSingleArray($personUnwrapped['dbId'], $personUnwrapped['name'], "[no description]", []);
         } else {
             $person = null;
         }

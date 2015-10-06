@@ -2,9 +2,14 @@
 
 namespace Mikron\ReputationList\Infrastructure\Storage;
 
+use Mikron\ReputationList\Domain\Blueprint\Storage;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-final class MySqlStorage
+/**
+ * Class MySqlStorage
+ * @package Mikron\ReputationList\Infrastructure\Storage
+ */
+final class MySqlStorage implements Storage
 {
     private $connection;
 

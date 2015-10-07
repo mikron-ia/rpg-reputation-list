@@ -41,7 +41,7 @@ final class MySqlStorage implements Storage
     {
         $basicSql = "SELECT `$primaryKeyName` AS `dbId`, `name`, `description` FROM `$table`";
 
-        if (!empty($primaryKey)) {
+        if (!empty($primaryKeyValues)) {
             $where = " WHERE $primaryKeyName IN (?)";
             $statement = $this->connection->executeQuery($basicSql . $where,
                 [$primaryKeyValues],

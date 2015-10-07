@@ -2,6 +2,8 @@
 
 namespace Mikron\ReputationList\Infrastructure\Storage;
 
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DriverManager;
 use Mikron\ReputationList\Domain\Blueprint\Storage;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -13,12 +15,16 @@ final class MySqlStorage implements Storage
 {
     private $connection;
 
-    public function __construct($url, $username, $password, $dbName, array $options = [])
+    /**
+     * @param $dbConfig
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function __construct($dbConfig)
     {
-        $dsn = "mysql:host=$url;dbname=$dbName";
-
         try {
-            $this->connection = new \PDO($dsn, $username, $password, $options);
+            $config = new Configuration();
+
+            $this->connection = DriverManager::getConnection($dbConfig, $config);
         } catch (\PDOException $e) {
             throw new Exception('Could not connect to MySQL database: ' . $e->getMessage());
         }
@@ -26,31 +32,34 @@ final class MySqlStorage implements Storage
 
     /**
      * @param $table
-     * @param $whereArray
+     * @param $primaryKeyName
+     * @param $primaryKeyValues
      * @return array
+     * @throws \Doctrine\DBAL\DBALException
      */
-    public function simpleSelect($table, $whereArray)
+    public function selectByPrimaryKey($table, $primaryKeyName, $primaryKeyValues)
     {
-        if (!empty($whereArray)) {
-            $rows = [];
-            foreach ($whereArray as $field => $value) {
-                $rows[] = "$field = :$field";
-            }
-            $where = ' WHERE ' . implode(' AND ', $rows);
+        $basicSql = "SELECT `$primaryKeyName` AS `dbId`, `name`, `description` FROM `$table`";
+
+        if (!empty($primaryKey)) {
+            $where = " WHERE $primaryKeyName IN (?)";
+            $statement = $this->connection->executeQuery($basicSql . $where,
+                [$primaryKeyValues],
+                [\Doctrine\DBAL\Connection::PARAM_INT_ARRAY]);
         } else {
-            $where = "";
+            $statement = $this->connection->executeQuery($basicSql);
         }
-
-        $statement = $this->connection->prepare("SELECT `person_id` AS `dbId`, `name`, `description` FROM `$table`" . $where);
-
-        if (!empty($whereArray)) {
-            foreach ($whereArray as $field => $value) {
-                $statement->bindValue($field, $value);
-            }
-        }
-
-        $statement->execute();
 
         return $statement->fetchAll((\PDO::FETCH_ASSOC));
+    }
+
+    /**
+     * @param $table
+     * @param $primaryKeyName
+     * @return array
+     */
+    public function selectAll($table, $primaryKeyName)
+    {
+        return $this->selectByPrimaryKey($table, $primaryKeyName, []);
     }
 }

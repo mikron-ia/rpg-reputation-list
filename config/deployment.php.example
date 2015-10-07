@@ -1,12 +1,13 @@
 <?php
 
 $app['config.deploy'] = [
+    'dbEngine' => '',
     'mysql' => [
-        'url' => '',
-        'username' => '',
-        'password' => '',
         'dbname' => '',
-        'options' => []
+        'user' => '',
+        'password' => '',
+        'host' => '',
+        'driver' => 'mysqli'
     ],
     'debug' => false
 ];

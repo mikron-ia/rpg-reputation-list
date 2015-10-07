@@ -2,15 +2,9 @@
 
 /* List of people available for display, along with their IDs */
 $app->get('/people/', function () use ($app) {
-    $dbConfig = $app['config.deploy']['mysql'];
-
-    $connection = new \Mikron\ReputationList\Infrastructure\Storage\MySqlStorage(
-        $dbConfig['url'],
-        $dbConfig['username'],
-        $dbConfig['password'],
-        $dbConfig['dbname'],
-        $dbConfig['options']
-    );
+    $dbEngine = $app['config.deploy']['dbEngine'];
+    $dbClass = '\Mikron\ReputationList\Infrastructure\Storage\\' . $app['config.main']['databaseReference'][$dbEngine] . 'Storage';
+    $connection = new $dbClass($app['config.deploy'][$dbEngine]);
 
     $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 

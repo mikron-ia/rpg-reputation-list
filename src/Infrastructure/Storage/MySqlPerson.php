@@ -7,7 +7,7 @@ use Mikron\ReputationList\Domain\Storage\PersonStorage;
 final class MySqlPerson implements PersonStorage
 {
     /**
-     * @var MySqlStorage
+     * @var Storage
      */
     private $storage;
 
@@ -22,14 +22,14 @@ final class MySqlPerson implements PersonStorage
 
     public function retrieve($dbId)
     {
-        $result = $this->storage->simpleSelect('person', ['person_id' => $dbId]);
+        $result = $this->storage->selectByPrimaryKey('person', 'person_id', [$dbId]);
 
         return $result;
     }
 
     public function retrieveAll()
     {
-        $result = $this->storage->simpleSelect('person', []);
+        $result = $this->storage->selectAll('person', 'person_id');
 
         return $result;
     }

@@ -12,7 +12,7 @@ class ReputationEvent
     {
         $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\MySqlPerson($connection);
 
-        $personWrapped = $personStorage->retrieve($dbId);
+        $personWrapped = $personStorage->retrieve($personId);
 
         if (!empty($personWrapped)) {
             $personUnwrapped = array_pop($personWrapped);

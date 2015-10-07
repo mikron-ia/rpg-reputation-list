@@ -8,5 +8,7 @@ namespace Mikron\ReputationList\Domain\Blueprint;
  */
 interface Storage
 {
-    public function simpleSelect($table, $whereArray);
+    public function selectAll($table, $primaryKeyName);
+
+    public function selectByPrimaryKey($table, $primaryKeyName, $primaryKeyValues);
 }

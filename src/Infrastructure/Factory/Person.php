@@ -58,7 +58,7 @@ class Person
 
         if (!empty($personWrapped)) {
             $personUnwrapped = array_pop($personWrapped);
-            $person = $this->createFromSingleArray($personUnwrapped['dbId'], $personUnwrapped['name'], "[no description]", []);
+            $person = $this->createFromSingleArray($personUnwrapped['dbId'], $personUnwrapped['name'], $personUnwrapped['description'], []);
         } else {
             $person = null;
         }

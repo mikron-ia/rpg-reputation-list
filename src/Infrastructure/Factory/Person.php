@@ -2,7 +2,9 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
+use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Mikron\ReputationList\Domain\Entity;
+use Mikron\ReputationList\Domain\Exception\PersonNotFoundException;
 
 class Person
 {
@@ -60,7 +62,7 @@ class Person
             $personUnwrapped = array_pop($personWrapped);
             $person = $this->createFromSingleArray($personUnwrapped['dbId'], $personUnwrapped['name'], $personUnwrapped['description'], []);
         } else {
-            $person = null;
+            throw new PersonNotFoundException("Person with ID of $dbId has not been found in our database");
         }
 
         return $person;

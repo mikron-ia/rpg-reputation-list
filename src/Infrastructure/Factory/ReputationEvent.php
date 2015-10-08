@@ -36,8 +36,9 @@ class ReputationEvent
 
         if (!empty($repEventsWrapped)) {
             foreach ($repEventsWrapped as $repEventUnwrapped) {
-                $repEvents[] = $this->createFromSingleArray($reputationNetworksList, $repEventUnwrapped['dbId'],
-                    $repEventUnwrapped['rep_network_code'], $repEventUnwrapped['change'], null);
+                $repEvents[] = $this->createFromSingleArray($reputationNetworksList,
+                    $repEventUnwrapped['reputation_event_id'], $repEventUnwrapped['rep_network_code'],
+                    $repEventUnwrapped['change'], null);
             }
         }
 

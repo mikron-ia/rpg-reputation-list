@@ -28,7 +28,7 @@ final class MySqlStorageEngine implements StorageEngine
      */
     public function selectByKey($table, $primaryKeyName, $keyName, $keyValues)
     {
-        $basicSql = "SELECT `$primaryKeyName` AS `dbId`, `name`, `description` FROM `$table`";
+        $basicSql = "SELECT * FROM `$table`";
 
         if (!empty($keyValues)) {
             $where = " WHERE $keyName IN (?)";

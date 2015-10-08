@@ -41,7 +41,7 @@ class ReputationEvent implements Displayable
      * @param int $value
      * @param Event $event
      */
-    public function __construct($dbId, ReputationNetwork $reputationNetwork, $value, Event $event)
+    public function __construct($dbId, ReputationNetwork $reputationNetwork, $value, $event)
     {
         $this->dbId = $dbId;
         $this->reputationNetwork = $reputationNetwork;

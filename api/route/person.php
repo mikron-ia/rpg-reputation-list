@@ -8,7 +8,7 @@ $app->get('/person/{id}', function ($id) use ($app) {
 
     $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 
-    $person = $factory->retrievePersonFromDb($connection, $id);
+    $person = $factory->retrievePersonFromDb($connection, $app['networks'], $id);
 
     $output = new \Mikron\ReputationList\Domain\Service\Output(
         "Personal profile",

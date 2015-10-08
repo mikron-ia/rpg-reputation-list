@@ -2,6 +2,8 @@
 
 namespace Mikron\ReputationList\Infrastructure\Storage;
 
+use Mikron\ReputationList\Domain\Storage\StorageForObject;
+
 /**
  * Class StorageForReputationEvent
  * @package Mikron\ReputationList\Infrastructure\Storage

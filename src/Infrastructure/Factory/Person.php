@@ -53,7 +53,7 @@ class Person
         return $list;
     }
 
-    public function retrievePersonFromDb($connection, $dbId)
+    public function retrievePersonFromDb($connection, $reputationNetworksList, $dbId)
     {
         $personStorage = new StorageForPerson($connection);
 
@@ -61,7 +61,14 @@ class Person
 
         if (!empty($personWrapped)) {
             $personUnwrapped = array_pop($personWrapped);
-            $person = $this->createFromSingleArray($personUnwrapped['dbId'], $personUnwrapped['name'], $personUnwrapped['description'], []);
+
+            $reputationEventsFactory = new ReputationEvent();
+            $reputationFactory = new Reputation();
+
+            $personReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $dbId);
+            $personReputations = $reputationFactory->createFromReputationEvents($personReputationEvents);
+
+            $person = $this->createFromSingleArray($personUnwrapped['person_id'], $personUnwrapped['name'], $personUnwrapped['description'], $personReputations);
         } else {
             throw new PersonNotFoundException("Person with given ID has not been found in our database");
         }

@@ -35,4 +35,11 @@ class StorageForReputationEvent implements StorageForObject
 
         return $result;
     }
+
+    public function retrieveByPerson($personId)
+    {
+        $result = $this->storage->selectByKey('reputation_event', 'reputation_event_id', 'person_id', [$personId]);
+
+        return $result;
+    }
 }

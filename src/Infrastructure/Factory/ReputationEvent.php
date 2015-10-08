@@ -2,25 +2,45 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
+use Mikron\ReputationList\Domain\Entity\ReputationEvent as ReputationEventEntity;
+use Mikron\ReputationList\Infrastructure\Storage\StorageForReputationEvent;
+
 /**
  * Class ReputationEvent
  * @package Mikron\ReputationList\Infrastructure\Factory
  */
 class ReputationEvent
 {
-    public function retrieveReputationEventsForPersonFromDb($connection, $personId)
-    {
-        $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\StorageForPerson($connection);
-
-        $personWrapped = $personStorage->retrieve($personId);
-
-        if (!empty($personWrapped)) {
-            $personUnwrapped = array_pop($personWrapped);
-            $person = $this->createFromSingleArray($personUnwrapped['dbId'], $personUnwrapped['name'], []);
+    public function createFromSingleArray(
+        $reputationNetworksList,
+        $dbId,
+        $reputationNetworkCode,
+        $change,
+        $event
+    ) {
+        if (isset($reputationNetworksList[$reputationNetworkCode])) {
+            $reputationNetwork = $reputationNetworksList[$reputationNetworkCode];
         } else {
-            $person = null;
+            $reputationNetwork = null;
         }
 
-        return $person;
+        return new ReputationEventEntity($dbId, $reputationNetwork, $change, $event);
+    }
+
+    public function retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $personId)
+    {
+        $repEventsStorage = new StorageForReputationEvent($connection);
+        $repEventsWrapped = $repEventsStorage->retrieveByPerson($personId);
+
+        $repEvents = [];
+
+        if (!empty($repEventsWrapped)) {
+            foreach ($repEventsWrapped as $repEventUnwrapped) {
+                $repEvents[] = $this->createFromSingleArray($reputationNetworksList, $repEventUnwrapped['dbId'],
+                    $repEventUnwrapped['rep_network_code'], $repEventUnwrapped['change'], null);
+            }
+        }
+
+        return $repEvents;
     }
 }

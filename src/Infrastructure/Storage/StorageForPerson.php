@@ -2,9 +2,9 @@
 
 namespace Mikron\ReputationList\Infrastructure\Storage;
 
-use Mikron\ReputationList\Domain\Storage\PersonStorage;
+use Mikron\ReputationList\Domain\Storage\StorageForObject;
 
-final class MySqlPerson implements PersonStorage
+final class StorageForPerson implements StorageForObject
 {
     /**
      * @var Storage

@@ -4,14 +4,14 @@ namespace Mikron\ReputationList\Infrastructure\Storage;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
-use Mikron\ReputationList\Domain\Blueprint\Storage;
+use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class MySqlStorage
  * @package Mikron\ReputationList\Infrastructure\Storage
  */
-final class MySqlStorage implements Storage
+final class MySqlStorageEngine implements StorageEngine
 {
     private $connection;
 

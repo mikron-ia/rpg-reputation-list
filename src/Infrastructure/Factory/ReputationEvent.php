@@ -10,7 +10,7 @@ class ReputationEvent
 {
     public function retrieveReputationEventsForPersonFromDb($connection, $personId)
     {
-        $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\MySqlPerson($connection);
+        $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\StorageForPerson($connection);
 
         $personWrapped = $personStorage->retrieve($personId);
 

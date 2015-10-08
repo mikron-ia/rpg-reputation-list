@@ -2,7 +2,7 @@
 
 namespace Mikron\ReputationList\Domain\Storage;
 
-interface PersonStorage
+interface StorageForObject
 {
     public function retrieve($dbId);
     public function retrieveAll();

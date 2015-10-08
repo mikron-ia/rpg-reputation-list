@@ -39,7 +39,7 @@ class Person
      */
     public function retrieveAllFromDb($connection)
     {
-        $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\MySqlPerson($connection);
+        $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\StorageForPerson($connection);
 
         $array = $personStorage->retrieveAll();
 
@@ -54,7 +54,7 @@ class Person
 
     public function retrievePersonFromDb($connection, $dbId)
     {
-        $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\MySqlPerson($connection);
+        $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\StorageForPerson($connection);
 
         $personWrapped = $personStorage->retrieve($dbId);
 

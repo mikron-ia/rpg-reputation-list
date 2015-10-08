@@ -3,7 +3,7 @@
 /* Reputation data of a particular person */
 $app->get('/person/{id}', function ($id) use ($app) {
     $dbEngine = $app['config.deploy']['dbEngine'];
-    $dbClass = '\Mikron\ReputationList\Infrastructure\Storage\\' . $app['config.main']['databaseReference'][$dbEngine] . 'Storage';
+    $dbClass = '\Mikron\ReputationList\Infrastructure\Storage\\' . $app['config.main']['databaseReference'][$dbEngine] . 'StorageEngine';
     $connection = new $dbClass($app['config.deploy'][$dbEngine]);
 
     $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();

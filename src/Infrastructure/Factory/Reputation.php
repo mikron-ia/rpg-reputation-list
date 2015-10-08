@@ -9,21 +9,42 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 class Reputation
 {
     /**
+     * @param ReputationNetwork $reputationNetwork
      * @param \Mikron\ReputationList\Domain\Entity\ReputationEvent[] $reputationEvents
-     * @return \Mikron\ReputationList\Domain\Entity\Reputation;
+     * @return \Mikron\ReputationList\Domain\Entity\Reputation
      */
-    public function createFromReputationEvents($reputationEvents)
+    public function createFromParameters($reputationNetwork, $reputationEvents)
     {
-        $reputations = [];
+        return new \Mikron\ReputationList\Domain\Entity\Reputation($reputationNetwork, $reputationEvents);
+    }
 
-        foreach ($reputationEvents as $reputationEvent) {
+    /**
+     * @param $reputationEventsWild
+     * @return \Mikron\ReputationList\Domain\Entity\Reputation ;
+     */
+    public function createFromReputationEvents($reputationEventsWild)
+    {
+        $reputationEventsOrdered = [];
+
+        foreach ($reputationEventsWild as $reputationEvent) {
             $reputationEventRepCode = $reputationEvent->getReputationNetwork()->getCode();
 
-            if (!isset($reputations[$reputationEventRepCode])) {
-                $reputations[$reputationEventRepCode] = [];
+            if (!isset($reputationEventsOrdered[$reputationEventRepCode])) {
+                $reputationEventsOrdered[$reputationEventRepCode] = [];
             }
 
-            $reputations[$reputationEventRepCode][] = $reputationEvent;
+            $reputationEventsOrdered[$reputationEventRepCode][] = $reputationEvent;
+        }
+
+        $reputations = [];
+
+        $reputationFactory = new Reputation();
+
+        foreach ($reputationEventsOrdered as $reputationEventsCategory) {
+            $reputationNetwork = $reputationEventsCategory[0]->getReputationNetwork();
+
+            $reputation = $reputationFactory->createFromParameters($reputationNetwork, $reputationEventsCategory);
+            $reputations[$reputation->getReputationNetwork()->getCode()] = $reputation;
         }
 
         return $reputations;

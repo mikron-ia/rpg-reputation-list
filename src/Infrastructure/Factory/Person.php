@@ -25,7 +25,7 @@ class Person
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['dbId'], $record['name'], "[no description]", []);
+                $list[] = $this->createFromSingleArray($record['person_id'], $record['name'], "[no description]", []);
             }
         }
 
@@ -46,7 +46,7 @@ class Person
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['dbId'], $record['name'], "[no description]", []);
+                $list[] = $this->createFromSingleArray($record['person_id'], $record['name'], "[no description]", []);
             }
         }
 

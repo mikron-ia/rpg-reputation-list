@@ -3,6 +3,7 @@
 namespace Mikron\ReputationList\Infrastructure\Storage;
 
 use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -45,7 +46,7 @@ final class MySqlStorageEngine implements StorageEngine
             $where = " WHERE $primaryKeyName IN (?)";
             $statement = $this->connection->executeQuery($basicSql . $where,
                 [$primaryKeyValues],
-                [\Doctrine\DBAL\Connection::PARAM_INT_ARRAY]);
+                [Connection::PARAM_INT_ARRAY]);
         } else {
             $statement = $this->connection->executeQuery($basicSql);
         }

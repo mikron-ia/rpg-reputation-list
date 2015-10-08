@@ -5,6 +5,7 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\PersonNotFoundException;
+use Mikron\ReputationList\Infrastructure\Storage\StorageForPerson;
 
 class Person
 {
@@ -39,7 +40,7 @@ class Person
      */
     public function retrieveAllFromDb($connection)
     {
-        $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\StorageForPerson($connection);
+        $personStorage = new StorageForPerson($connection);
 
         $array = $personStorage->retrieveAll();
 
@@ -54,7 +55,7 @@ class Person
 
     public function retrievePersonFromDb($connection, $dbId)
     {
-        $personStorage = new \Mikron\ReputationList\Infrastructure\Storage\StorageForPerson($connection);
+        $personStorage = new StorageForPerson($connection);
 
         $personWrapped = $personStorage->retrieve($dbId);
 
@@ -62,7 +63,7 @@ class Person
             $personUnwrapped = array_pop($personWrapped);
             $person = $this->createFromSingleArray($personUnwrapped['dbId'], $personUnwrapped['name'], $personUnwrapped['description'], []);
         } else {
-            throw new PersonNotFoundException("Person with ID of $dbId has not been found in our database");
+            throw new PersonNotFoundException("Person with given ID has not been found in our database");
         }
 
         return $person;

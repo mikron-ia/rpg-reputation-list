@@ -24,13 +24,13 @@ class PersonTest extends PHPUnit_Framework_TestCase
         $person = new Person(1, "Test Name", "Test Description", []);
         $this->assertEquals("Test Name", $person->getName());
     }
-    
+
     /**
      * @test
      * @dataProvider reputationDataProvider
      * @param $reputations
      */
-    public function areReputationsCorrectType($reputations)
+    public function reputationsAreCorrectType($reputations)
     {
         $person = new Person(1, "Test Name", "Test Description", $reputations);
         $this->assertContainsOnlyInstancesOf("Mikron\\ReputationList\\Domain\\Entity\\Reputation",
@@ -40,10 +40,20 @@ class PersonTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function descriptionIsCorrect()
+    {
+        $person = new Person(1, "Test Name", "Test Description", []);
+        $this->assertEquals("Test Description", $person->getDescription());
+    }
+
+    /**
+     * @test
+     * @depends nameIsCorrect
+     */
     public function simpleDataIsCorrect()
     {
         $person = new Person(1, "Test Name", "Test Description", []);
-        $this->assertEquals(["name" => "Test Name"], $person->getSimpleData());
+        $this->assertEquals(["name" => $person->getName()], $person->getSimpleData());
     }
 
     public function reputationDataProvider()

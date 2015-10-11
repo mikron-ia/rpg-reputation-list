@@ -18,6 +18,3 @@ exclude_paths:
   - vendor/**/*
   - .git/**/*
   - composer.*
-  - *.md
-  - *.yml
-  - .*

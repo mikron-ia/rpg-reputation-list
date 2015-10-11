@@ -82,6 +82,18 @@ final class Person implements Displayable
     }
 
     /**
+     * @return Reputation[]
+     */
+    public function getReputationCompleteData()
+    {
+        $reps = [];
+        foreach ($this->reputations as $reputation) {
+            $reps['reputations'][] = $reputation->getCompleteData();
+        }
+        return $reps;
+    }
+
+    /**
      * @return array Simple representation of the object content, fit for basic display
      */
     public function getSimpleData()
@@ -99,12 +111,8 @@ final class Person implements Displayable
         $data = [
             "name" => $this->getName(),
             "description" => $this->getDescription(),
-            "reputations" => [],
+            "reputations" => $this->getReputationCompleteData()
         ];
-
-        foreach ($this->reputations as $reputation) {
-            $data['reputations'][] = $reputation->getCompleteData();
-        }
 
         return $data;
     }

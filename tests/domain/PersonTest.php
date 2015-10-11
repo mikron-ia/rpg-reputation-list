@@ -56,6 +56,27 @@ class PersonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(["name" => $person->getName()], $person->getSimpleData());
     }
 
+    /**
+     * @test
+     * @depends      nameIsCorrect
+     * @depends      descriptionIsCorrect
+     * @depends      reputationsAreCorrectType
+     * @dataProvider reputationDataProvider
+     * @param $reputations
+     */
+    public function completeDataIsCorrect($reputations)
+    {
+        $person = new Person(1, "Test Name", "Test Description", $reputations);
+
+        $expected = [
+            "name" => $person->getName(),
+            "description" => $person->getDescription(),
+            "reputations" => $person->getReputationCompleteData()
+        ];
+
+        $this->assertEquals($expected, $person->getCompleteData());
+    }
+
     public function reputationDataProvider()
     {
         $repNetCivil = new ReputationNetwork("c", ["name" => "CivicNet", "description" => "Corporations"]);

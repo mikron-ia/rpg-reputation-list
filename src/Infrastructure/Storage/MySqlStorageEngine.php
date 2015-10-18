@@ -34,7 +34,8 @@ final class MySqlStorageEngine implements StorageEngine
             $where = " WHERE $keyName IN (?)";
             $statement = $this->connection->executeQuery($basicSql . $where,
                 [$keyValues],
-                [\Doctrine\DBAL\Connection::PARAM_INT_ARRAY]);
+                [\Doctrine\DBAL\Connection::PARAM_INT_ARRAY]
+            );
         } else {
             $statement = $this->connection->executeQuery($basicSql);
         }
@@ -50,7 +51,6 @@ final class MySqlStorageEngine implements StorageEngine
     {
         try {
             $config = new Configuration();
-
             $this->connection = DriverManager::getConnection($dbConfig, $config);
         } catch (\PDOException $e) {
             throw new Exception('Could not connect to MySQL database: ' . $e->getMessage());

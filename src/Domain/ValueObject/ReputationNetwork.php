@@ -5,9 +5,7 @@ namespace Mikron\ReputationList\Domain\ValueObject;
 use Mikron\ReputationList\Domain\Blueprint\Displayable;
 
 /**
- * Class ReputationNetwork
- *
- * This value object describes a reputation network - a system where reputation is recorded, used, exchanged and modified
+ * Class ReputationNetwork - describes a reputation network - a system where reputation is recorded
  * Data for ReputationNetwork are supposed to be loaded from config files and are not subject to change
  *
  * @package Mikron\ReputationList\Domain\ValueObject

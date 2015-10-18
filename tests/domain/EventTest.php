@@ -48,5 +48,4 @@ class EventTest extends PHPUnit_Framework_TestCase
         $event = new Event(1, "Test Event", "Test Description");
         $this->assertEquals(["name" => "Test Event", "description" => "Test Description"], $event->getCompleteData());
     }
-
 }

@@ -17,7 +17,8 @@ class ReputationEvent
         $reputationNetworkCode,
         $change,
         $event
-    ) {
+    )
+    {
         if (isset($reputationNetworksList[$reputationNetworkCode])) {
             $reputationNetwork = $reputationNetworksList[$reputationNetworkCode];
         } else {
@@ -36,9 +37,13 @@ class ReputationEvent
 
         if (!empty($repEventsWrapped)) {
             foreach ($repEventsWrapped as $repEventUnwrapped) {
-                $repEvents[] = $this->createFromSingleArray($reputationNetworksList,
-                    $repEventUnwrapped['reputation_event_id'], $repEventUnwrapped['rep_network_code'],
-                    $repEventUnwrapped['change'], null);
+                $repEvents[] = $this->createFromSingleArray(
+                    $reputationNetworksList,
+                    $repEventUnwrapped['reputation_event_id'],
+                    $repEventUnwrapped['rep_network_code'],
+                    $repEventUnwrapped['change'],
+                    null
+                );
             }
         }
 

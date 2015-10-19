@@ -82,12 +82,28 @@ class ReputationEvent implements Displayable
     }
 
     /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->reputationNetwork->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->reputationNetwork->getCode();
+    }
+
+    /**
      * @return array Simple representation of the object content, fit for basic display
      */
     public function getSimpleData()
     {
         return [
-            "name" => $this->reputationNetwork->getName(),
+            "name" => $this->getName(),
             "value" => $this->getValue()
         ];
     }

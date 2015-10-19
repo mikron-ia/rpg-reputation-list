@@ -80,12 +80,36 @@ class Reputation implements Displayable
     }
 
     /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->reputationNetwork->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->reputationNetwork->getCode();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->reputationNetwork->getDescription();
+    }
+
+    /**
      * @return array Simple representation of the object content, fit for basic display
      */
     public function getSimpleData()
     {
         return [
-            "name" => $this->reputationNetwork->getName()
+            "name" => $this->getName()
         ];
     }
 
@@ -95,8 +119,8 @@ class Reputation implements Displayable
     public function getCompleteData()
     {
         return [
-            "name" => $this->reputationNetwork->getName(),
-            "code" => $this->reputationNetwork->getCode(),
+            "name" => $this->getName(),
+            "code" => $this->getCode(),
             "value" => $this->getValue()
         ];
     }

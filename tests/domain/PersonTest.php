@@ -27,6 +27,15 @@ class PersonTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function keyIsCorrect()
+    {
+        $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
+        $this->assertEquals("Test Key", $person->getKey());
+    }
+
+    /**
+     * @test
      * @dataProvider reputationDataProvider
      * @param $reputations
      */
@@ -53,7 +62,13 @@ class PersonTest extends PHPUnit_Framework_TestCase
     public function simpleDataIsCorrect()
     {
         $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
-        $this->assertEquals(["name" => $person->getName()], $person->getSimpleData());
+
+        $expected = [
+            "name" => $person->getName(),
+            "key" => $person->getKey(),
+        ];
+
+        $this->assertEquals($expected, $person->getSimpleData());
     }
 
     /**
@@ -70,6 +85,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
 
         $expected = [
             "name" => $person->getName(),
+            "key" => $person->getKey(),
             "description" => $person->getDescription(),
             "reputations" => $person->getReputationCompleteData()
         ];
@@ -108,5 +124,4 @@ class PersonTest extends PHPUnit_Framework_TestCase
             ]
         ];
     }
-
 }

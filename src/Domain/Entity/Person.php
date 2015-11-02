@@ -100,12 +100,21 @@ final class Person implements Displayable
     }
 
     /**
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
+
+    /**
      * @return array Simple representation of the object content, fit for basic display
      */
     public function getSimpleData()
     {
         return [
-            "name" => $this->getName()
+            "name" => $this->getName(),
+            "key" => $this->getKey(),
         ];
     }
 
@@ -116,6 +125,7 @@ final class Person implements Displayable
     {
         $data = [
             "name" => $this->getName(),
+            "key" => $this->getKey(),
             "description" => $this->getDescription(),
             "reputations" => $this->getReputationCompleteData()
         ];

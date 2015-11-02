@@ -7,6 +7,7 @@ CREATE TABLE `event` (
 
 CREATE TABLE `person` (
   `person_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(80) NOT NULL,
   `name` varchar(80) NOT NULL,
   `description` text,
   PRIMARY KEY (`person_id`)

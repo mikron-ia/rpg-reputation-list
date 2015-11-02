@@ -10,7 +10,6 @@ use Mikron\ReputationList\Domain\Blueprint\Displayable;
  *
  * @package Mikron\ReputationList\Domain\Entity
  * @todo Add some description component
- * @todo Consider adding UUID for communication with other services
  */
 final class Person implements Displayable
 {
@@ -23,6 +22,11 @@ final class Person implements Displayable
      * @var string Identifying string
      */
     private $name;
+
+    /**
+     * @var string Identifying string
+     */
+    private $key;
 
     /**
      * @var string Personal characteristic
@@ -38,13 +42,15 @@ final class Person implements Displayable
      * Person constructor.
      * @param int $dbId
      * @param string $name
+     * @param $key
      * @param string $description
      * @param Reputation[] $reputations
      */
-    public function __construct($dbId, $name, $description, array $reputations)
+    public function __construct($dbId, $name, $key, $description, array $reputations)
     {
         $this->dbId = $dbId;
         $this->name = $name;
+        $this->key = $key;
         $this->description = $description;
         $this->reputations = $reputations;
     }

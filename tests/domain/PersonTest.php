@@ -12,7 +12,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function idIsCorrect()
     {
-        $person = new Person(1, "Test Name", "Test Description", []);
+        $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
         $this->assertEquals(1, $person->getDBId());
     }
 
@@ -21,7 +21,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function nameIsCorrect()
     {
-        $person = new Person(1, "Test Name", "Test Description", []);
+        $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
         $this->assertEquals("Test Name", $person->getName());
     }
 
@@ -32,7 +32,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function reputationsAreCorrectType($reputations)
     {
-        $person = new Person(1, "Test Name", "Test Description", $reputations);
+        $person = new Person(1, "Test Name", "Test Key", "Test Description", $reputations);
         $this->assertContainsOnlyInstancesOf("Mikron\\ReputationList\\Domain\\Entity\\Reputation",
             $person->getReputations());
     }
@@ -42,7 +42,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function descriptionIsCorrect()
     {
-        $person = new Person(1, "Test Name", "Test Description", []);
+        $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
         $this->assertEquals("Test Description", $person->getDescription());
     }
 
@@ -52,7 +52,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function simpleDataIsCorrect()
     {
-        $person = new Person(1, "Test Name", "Test Description", []);
+        $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
         $this->assertEquals(["name" => $person->getName()], $person->getSimpleData());
     }
 
@@ -66,7 +66,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function completeDataIsCorrect($reputations)
     {
-        $person = new Person(1, "Test Name", "Test Description", $reputations);
+        $person = new Person(1, "Test Name", "Test Key", "Test Description", $reputations);
 
         $expected = [
             "name" => $person->getName(),

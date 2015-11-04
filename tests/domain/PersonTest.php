@@ -7,13 +7,21 @@ use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 
 class PersonTest extends PHPUnit_Framework_TestCase
 {
+    private $identification;
+
+    protected function setUp()
+    {
+        $idFactory = new \Mikron\ReputationList\Infrastructure\Factory\StorageIdentification();
+        $this->identification = $idFactory->createFromData(1, "Test Key");
+    }
+
     /**
      * @test
      */
-    public function idIsCorrect()
+    public function identificationIsCorrect()
     {
-        $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
-        $this->assertEquals(1, $person->getDBId());
+        $person = new Person($this->identification, "Test Name", "Test Description", []);
+        $this->assertEquals($this->identification, $person->getIdentification());
     }
 
     /**
@@ -21,17 +29,8 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function nameIsCorrect()
     {
-        $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
+        $person = new Person($this->identification, "Test Name", "Test Description", []);
         $this->assertEquals("Test Name", $person->getName());
-    }
-
-    /**
-     * @test
-     */
-    public function keyIsCorrect()
-    {
-        $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
-        $this->assertEquals("Test Key", $person->getKey());
     }
 
     /**
@@ -41,7 +40,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function reputationsAreCorrectType($reputations)
     {
-        $person = new Person(1, "Test Name", "Test Key", "Test Description", $reputations);
+        $person = new Person($this->identification, "Test Name", "Test Description", $reputations);
         $this->assertContainsOnlyInstancesOf("Mikron\\ReputationList\\Domain\\Entity\\Reputation",
             $person->getReputations());
     }
@@ -51,7 +50,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function descriptionIsCorrect()
     {
-        $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
+        $person = new Person($this->identification, "Test Name", "Test Description", []);
         $this->assertEquals("Test Description", $person->getDescription());
     }
 
@@ -61,7 +60,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function simpleDataIsCorrect()
     {
-        $person = new Person(1, "Test Name", "Test Key", "Test Description", []);
+        $person = new Person($this->identification, "Test Name", "Test Description", []);
 
         $expected = [
             "name" => $person->getName(),
@@ -81,7 +80,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function completeDataIsCorrect($reputations)
     {
-        $person = new Person(1, "Test Name", "Test Key", "Test Description", $reputations);
+        $person = new Person($this->identification, "Test Name", "Test Description", $reputations);
 
         $expected = [
             "name" => $person->getName(),

@@ -3,6 +3,7 @@
 namespace Mikron\ReputationList\Domain\Entity;
 
 use Mikron\ReputationList\Domain\Blueprint\Displayable;
+use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
 
 /**
  * Class Person - describes a person that can have a reputation
@@ -14,19 +15,14 @@ use Mikron\ReputationList\Domain\Blueprint\Displayable;
 final class Person implements Displayable
 {
     /**
-     * @var int DB ID
+     * @var StorageIdentification
      */
-    private $dbId;
+    private $identification;
 
     /**
      * @var string Identifying string
      */
     private $name;
-
-    /**
-     * @var string Identifying string
-     */
-    private $key;
 
     /**
      * @var string Personal characteristic
@@ -39,28 +35,27 @@ final class Person implements Displayable
     private $reputations;
 
     /**
-     * Person constructor.
-     * @param int $dbId
+     * Person constructor
+     *
+     * @param $identification
      * @param string $name
-     * @param $key
-     * @param string $description
+     * @param $description
      * @param Reputation[] $reputations
      */
-    public function __construct($dbId, $name, $key, $description, array $reputations)
+    public function __construct($identification, $name, $description, array $reputations)
     {
-        $this->dbId = $dbId;
+        $this->identification = $identification;
         $this->name = $name;
-        $this->key = $key;
         $this->description = $description;
         $this->reputations = $reputations;
     }
 
     /**
-     * @return int
+     * @return StorageIdentification
      */
-    public function getDbId()
+    public function getIdentification()
     {
-        return $this->dbId;
+        return $this->identification;
     }
 
     /**
@@ -104,7 +99,7 @@ final class Person implements Displayable
      */
     public function getKey()
     {
-        return $this->key;
+        return $this->identification->getUuid();
     }
 
     /**
@@ -114,7 +109,7 @@ final class Person implements Displayable
     {
         return [
             "name" => $this->getName(),
-            "key" => $this->getKey(),
+            "key" => $this->identification->getUuid(),
         ];
     }
 

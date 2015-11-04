@@ -3,6 +3,7 @@
 namespace Mikron\ReputationList\Domain\Entity;
 
 use Mikron\ReputationList\Domain\Blueprint\Displayable;
+use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
 
 /**
  * Class Event - describes event connected to reputation change; it should give some context & reason for the change
@@ -10,14 +11,13 @@ use Mikron\ReputationList\Domain\Blueprint\Displayable;
  * Event is optional mechanic and MAY be included
  *
  * @package Mikron\ReputationList\Domain\Entity
- * @todo Consider reworking DB ID into a VO
  */
 class Event implements Displayable
 {
     /**
-     * @var int DB ID
+     * @var StorageIdentification
      */
-    private $dbId;
+    private $identification;
 
     /**
      * @var string
@@ -30,24 +30,33 @@ class Event implements Displayable
     private $description;
 
     /**
-     * Event constructor.
-     * @param int $dBId
+     * Event constructor
+     *
+     * @param $identification
      * @param string $name
      * @param string $description
      */
-    public function __construct($dBId, $name, $description)
+    public function __construct($identification, $name, $description)
     {
-        $this->dbId = $dBId;
+        $this->identification = $identification;
         $this->name = $name;
         $this->description = $description;
     }
 
     /**
+     * @return StorageIdentification
+     */
+    public function getIdentification()
+    {
+        return $this->identification;
+    }
+
+    /**
      * @return int
      */
-    public function getDBId()
+    public function getDbId()
     {
-        return $this->dbId;
+        return $this->identification->getDbId();
     }
 
     /**

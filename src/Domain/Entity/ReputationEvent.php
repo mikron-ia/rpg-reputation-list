@@ -4,6 +4,7 @@ namespace Mikron\ReputationList\Domain\Entity;
 
 use Mikron\ReputationList\Domain\Blueprint\Displayable;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
+use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
 
 /**
  * Class ReputationEvent - describes a specific change of reputation for a Person, resulting from Event, calculating into Reputation
@@ -15,9 +16,9 @@ use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 class ReputationEvent implements Displayable
 {
     /**
-     * @var int DB ID
+     * @var StorageIdentification
      */
-    private $dbId;
+    private $identification;
 
     /**
      * @var ReputationNetwork The network the event is connected to
@@ -36,17 +37,25 @@ class ReputationEvent implements Displayable
 
     /**
      * ReputationEvent constructor.
-     * @param int $dbId
+     * @param StorageIdentification|null $identification
      * @param ReputationNetwork $reputationNetwork
      * @param int $value
      * @param Event $event
      */
-    public function __construct($dbId, ReputationNetwork $reputationNetwork, $value, $event)
+    public function __construct($identification, ReputationNetwork $reputationNetwork, $value, $event)
     {
-        $this->dbId = $dbId;
+        $this->identification = $identification;
         $this->reputationNetwork = $reputationNetwork;
         $this->value = $value;
         $this->event = !empty($event) ? $event : null;
+    }
+
+    /**
+     * @return StorageIdentification
+     */
+    public function getIdentification()
+    {
+        return $this->identification;
     }
 
     /**
@@ -54,7 +63,7 @@ class ReputationEvent implements Displayable
      */
     public function getDbId()
     {
-        return $this->dbId;
+        return $this->identification->getDbId();
     }
 
     /**

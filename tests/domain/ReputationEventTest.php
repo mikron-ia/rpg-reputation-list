@@ -2,62 +2,77 @@
 
 use Mikron\ReputationList\Domain\Entity\ReputationEvent;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
+use Mikron\ReputationList\Infrastructure\Factory\StorageIdentification;
 
 class ReputationEventTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
      * @dataProvider reputationEventWithNoEventData
-     * @param $dbId
+     * @param $identification
      * @param $reputationNetwork
      * @param $value
      * @param $event
      */
-    public function isDbIdCorrect($dbId, $reputationNetwork, $value, $event)
+    public function isDbIdCorrect($identification, $reputationNetwork, $value, $event)
     {
-        $repEvent = new ReputationEvent($dbId, $reputationNetwork, $value, $event);
-        $this->assertEquals($dbId, $repEvent->getDbId());
+        $repEvent = new ReputationEvent($identification, $reputationNetwork, $value, $event);
+        $this->assertEquals($identification->getDbId(), $repEvent->getDbId());
     }
 
     /**
      * @test
      * @dataProvider reputationEventWithNoEventData
-     * @param $dbId
+     * @param $identification
      * @param $reputationNetwork
      * @param $value
      * @param $event
      */
-    public function isNetworkCorrect($dbId, $reputationNetwork, $value, $event)
+    public function isIdentificationCorrect($identification, $reputationNetwork, $value, $event)
     {
-        $repEvent = new ReputationEvent($dbId, $reputationNetwork, $value, $event);
+        $repEvent = new ReputationEvent($identification, $reputationNetwork, $value, $event);
+        $this->assertEquals($identification, $repEvent->getIdentification());
+    }
+
+    /**
+     * @test
+     * @dataProvider reputationEventWithNoEventData
+     * @param $identification
+     * @param $reputationNetwork
+     * @param $value
+     * @param $event
+     */
+    public function isNetworkCorrect($identification, $reputationNetwork, $value, $event)
+    {
+        $repEvent = new ReputationEvent($identification, $reputationNetwork, $value, $event);
         $this->assertEquals($reputationNetwork, $repEvent->getReputationNetwork());
     }
 
     /**
      * @test
      * @dataProvider reputationEventWithNoEventData
-     * @param $dbId
+     * @param $identification
      * @param $reputationNetwork
      * @param $value
      * @param $event
      */
-    public function isValueCorrect($dbId, $reputationNetwork, $value, $event)
+    public function isValueCorrect($identification, $reputationNetwork, $value, $event)
     {
-        $repEvent = new ReputationEvent($dbId, $reputationNetwork, $value, $event);
+        $repEvent = new ReputationEvent($identification, $reputationNetwork, $value, $event);
         $this->assertEquals($value, $repEvent->getValue());
     }
 
     /**
      * @test
      * @dataProvider reputationEventWithNoEventData
-     * @param $dbId
+     * @param $identification
      * @param $reputationNetwork
      * @param $value
      * @param $event
      */
-    public function simpleDataIsCorrect($dbId, $reputationNetwork, $value, $event)
+    public function simpleDataIsCorrect($identification, $reputationNetwork, $value, $event)
     {
-        $repEvent = new ReputationEvent($dbId, $reputationNetwork, $value, $event);
+        $repEvent = new ReputationEvent($identification, $reputationNetwork, $value, $event);
 
         $expectation = [
             "name" => $repEvent->getName(),
@@ -70,14 +85,14 @@ class ReputationEventTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider reputationEventWithNoEventData
-     * @param $dbId
+     * @param $identification
      * @param $reputationNetwork
      * @param $value
      * @param $event
      */
-    public function completeDataIsCorrect($dbId, $reputationNetwork, $value, $event)
+    public function completeDataIsCorrect($identification, $reputationNetwork, $value, $event)
     {
-        $repEvent = new ReputationEvent($dbId, $reputationNetwork, $value, $event);
+        $repEvent = new ReputationEvent($identification, $reputationNetwork, $value, $event);
 
         $expectation = [
             "name" => $repEvent->getName(),
@@ -93,8 +108,11 @@ class ReputationEventTest extends PHPUnit_Framework_TestCase
     {
         $reputationNetwork = new ReputationNetwork("c", ["name" => "CivicNet", "description" => "Corporations"]);
 
+        $idFactory = new StorageIdentification();
+        $identification = $idFactory->createFromData(1, null);
+
         return [
-            [1, $reputationNetwork, 5, null],
+            [$identification, $reputationNetwork, 5, null],
         ];
     }
 

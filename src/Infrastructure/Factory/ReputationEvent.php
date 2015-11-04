@@ -3,6 +3,7 @@
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
 use Mikron\ReputationList\Domain\Entity\ReputationEvent as ReputationEventEntity;
+use Mikron\ReputationList\Infrastructure\Factory\StorageIdentification as StorageIdentificationFactory;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForReputationEvent;
 
 /**
@@ -25,7 +26,10 @@ class ReputationEvent
             $reputationNetwork = null;
         }
 
-        return new ReputationEventEntity($dbId, $reputationNetwork, $change, $event);
+        $idFactory = new StorageIdentificationFactory();
+        $identification = $idFactory->createFromData($dbId, null);
+
+        return new ReputationEventEntity($identification, $reputationNetwork, $change, $event);
     }
 
     public function retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $personId)

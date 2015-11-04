@@ -11,7 +11,6 @@ use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
  * This class is intended to have a DB representation
  *
  * @package Mikron\ReputationList\Domain\Entity
- * @todo Consider reworking DB ID into a VO
  */
 class ReputationEvent implements Displayable
 {

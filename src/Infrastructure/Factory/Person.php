@@ -14,7 +14,12 @@ class Person
         $idFactory = new StorageIdentification();
         $identification = $idFactory->createFromData($dbId, $key);
 
-        return new Entity\Person($identification, $name, $description, $reputations);
+        return new Entity\Person(
+            $identification,
+            $name,
+            $description,
+            $reputations
+        );
     }
 
     /**
@@ -49,7 +54,13 @@ class Person
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['person_id'], $record['key'], $record['name'], $record['description'], []);
+                $list[] = $this->createFromSingleArray(
+                    $record['person_id'],
+                    $record['key'],
+                    $record['name'],
+                    $record['description'],
+                    []
+                );
             }
         }
 
@@ -71,7 +82,13 @@ class Person
             $personReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $dbId);
             $personReputations = $reputationFactory->createFromReputationEvents($personReputationEvents);
 
-            $person = $this->createFromSingleArray($personUnwrapped['person_id'], $personUnwrapped['key'], $personUnwrapped['name'], $personUnwrapped['description'], $personReputations);
+            $person = $this->createFromSingleArray(
+                $personUnwrapped['person_id'],
+                $personUnwrapped['key'],
+                $personUnwrapped['name'],
+                $personUnwrapped['description'],
+                $personReputations
+            );
         } else {
             throw new PersonNotFoundException("Person with given ID has not been found in our database");
         }

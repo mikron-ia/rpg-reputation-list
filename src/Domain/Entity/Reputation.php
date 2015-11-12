@@ -48,7 +48,7 @@ class Reputation implements Displayable
     {
         $sum = 0;
 
-        foreach($this->reputationEvents as $repEvent) {
+        foreach ($this->reputationEvents as $repEvent) {
             $sum += $repEvent->getValue();
         }
 

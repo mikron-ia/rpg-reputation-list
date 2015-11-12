@@ -115,5 +115,4 @@ class ReputationEventTest extends PHPUnit_Framework_TestCase
             [$identification, $reputationNetwork, 5, null],
         ];
     }
-
 }

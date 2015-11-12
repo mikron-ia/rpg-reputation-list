@@ -125,7 +125,7 @@ class ReputationEvent implements Displayable
             "name" => $this->reputationNetwork->getName(),
             "code" => $this->reputationNetwork->getCode(),
             "value" => $this->getValue(),
-            "event" => isset($this->event)?$this->event->getCompleteData():null,
+            "event" => isset($this->event) ? $this->event->getCompleteData() : null,
         ];
     }
 }

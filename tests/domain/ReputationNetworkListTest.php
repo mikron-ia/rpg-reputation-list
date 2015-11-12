@@ -63,9 +63,12 @@ class ReputationNetworkListTest extends PHPUnit_Framework_TestCase
         ReputationNetworkList $originalList,
         ReputationNetworkList $listToCompareTo,
         ReputationNetworkList $intersection
-    ) {
-        $this->assertEquals($originalList->detectDuplicates($listToCompareTo),
-            $intersection->getReputationNetworkList());
+    )
+    {
+        $this->assertEquals(
+            $originalList->detectDuplicates($listToCompareTo),
+            $intersection->getReputationNetworkList()
+        );
     }
 
     /**

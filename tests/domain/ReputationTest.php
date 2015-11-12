@@ -36,8 +36,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
-     * @dataProvider correctReputationNetworkProvider
+     * @test* @dataProvider correctReputationNetworkProvider
      * @param $repNet
      * @param $repEvents
      */
@@ -92,5 +91,4 @@ class ReputationTest extends PHPUnit_Framework_TestCase
             ],
         ];
     }
-
 }

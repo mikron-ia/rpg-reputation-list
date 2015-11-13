@@ -67,19 +67,21 @@ class Person
         return $list;
     }
 
-    public function retrievePersonFromDb($connection, $reputationNetworksList, $dbId)
+    public function retrievePersonFromDbById($connection, $reputationNetworksList, $dbId)
     {
         $personStorage = new StorageForPerson($connection);
 
-        $personWrapped = $personStorage->retrieve($dbId);
+        $personWrapped = $personStorage->retrieveById($dbId);
 
         if (!empty($personWrapped)) {
             $personUnwrapped = array_pop($personWrapped);
 
+            $personDbId = $personUnwrapped['person_id'];
+
             $reputationEventsFactory = new ReputationEvent();
             $reputationFactory = new Reputation();
 
-            $personReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $dbId);
+            $personReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $personDbId);
             $personReputations = $reputationFactory->createFromReputationEvents($personReputationEvents);
 
             $person = $this->createFromSingleArray(
@@ -95,4 +97,37 @@ class Person
 
         return $person;
     }
+
+    public function retrievePersonFromDbByKey($connection, $reputationNetworksList, $key)
+    {
+        $personStorage = new StorageForPerson($connection);
+
+        $personWrapped = $personStorage->retrieveByKey($key);
+
+        if (!empty($personWrapped)) {
+            $personUnwrapped = array_pop($personWrapped);
+
+            $personDbId = $personUnwrapped['person_id'];
+
+            $reputationEventsFactory = new ReputationEvent();
+            $reputationFactory = new Reputation();
+
+            $personReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $personDbId);
+            $personReputations = $reputationFactory->createFromReputationEvents($personReputationEvents);
+
+            $person = $this->createFromSingleArray(
+                $personUnwrapped['person_id'],
+                $personUnwrapped['key'],
+                $personUnwrapped['name'],
+                $personUnwrapped['description'],
+                $personReputations
+            );
+        } else {
+            throw new PersonNotFoundException("Person with given ID has not been found in our database");
+        }
+
+        return $person;
+    }
+
+
 }

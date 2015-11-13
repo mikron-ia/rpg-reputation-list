@@ -11,5 +11,7 @@ $app->error(function (Exception $exception) use ($app) {
         $result['content'][] = $exception->getMessage();
     }
 
+    var_dump($result); die;
+
     return $app->json($result);
 });

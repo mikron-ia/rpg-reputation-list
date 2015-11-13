@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Infrastructure\Storage;
 
+use Mikron\ReputationList\Domain\Exception\KeyNotSupportedException;
 use Mikron\ReputationList\Domain\Storage\StorageForObject;
 
 /**
@@ -24,7 +25,7 @@ class StorageForReputationEvent implements StorageForObject
         $this->storage = $storage;
     }
 
-    public function retrieve($dbId)
+    public function retrieveById($dbId)
     {
         $result = $this->storage->selectByPrimaryKey('reputation_event', 'reputation_event_id', [$dbId]);
 
@@ -43,5 +44,10 @@ class StorageForReputationEvent implements StorageForObject
         $result = $this->storage->selectByKey('reputation_event', 'reputation_event_id', 'person_id', [$personId]);
 
         return $result;
+    }
+
+    public function retrieveByKey($key)
+    {
+        throw new KeyNotSupportedException("ReputationEvent does not support key use. Please use database ID");
     }
 }

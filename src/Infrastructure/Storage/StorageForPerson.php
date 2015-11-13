@@ -2,12 +2,13 @@
 
 namespace Mikron\ReputationList\Infrastructure\Storage;
 
+use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Storage\StorageForObject;
 
 final class StorageForPerson implements StorageForObject
 {
     /**
-     * @var Storage
+     * @var StorageEngine
      */
     private $storage;
 
@@ -20,7 +21,7 @@ final class StorageForPerson implements StorageForObject
         $this->storage = $storage;
     }
 
-    public function retrieve($dbId)
+    public function retrieveById($dbId)
     {
         $result = $this->storage->selectByPrimaryKey('person', 'person_id', [$dbId]);
 
@@ -30,6 +31,13 @@ final class StorageForPerson implements StorageForObject
     public function retrieveAll()
     {
         $result = $this->storage->selectAll('person', 'person_id');
+
+        return $result;
+    }
+
+    public function retrieveByKey($key)
+    {
+        $result = $this->storage->selectByKey('person', 'person_id', 'key', [$key]);
 
         return $result;
     }

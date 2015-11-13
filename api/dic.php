@@ -14,3 +14,5 @@ $app['networks'] = $app->share(function ($app) {
 
     return $list;
 });
+
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());

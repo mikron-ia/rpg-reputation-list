@@ -18,7 +18,7 @@ $app->get('/person/id/{id}/', function ($id) use ($app) {
     );
 
     return $app->json($output->getArrayForJson());
-});
+})->bind('personById');;
 
 /* Reputation data of a particular person via the key */
 $app->get('/person/key/{key}/', function ($key) use ($app) {
@@ -38,4 +38,9 @@ $app->get('/person/key/{key}/', function ($key) use ($app) {
     );
 
     return $app->json($output->getArrayForJson());
+})->bind('personByKey');
+
+/* Redirect for direct route to person */
+$app->get('person/{key}/', function ($key) use ($app) {
+    return $app->redirect($app["url_generator"]->generate("personByKey", ['key' => $key]), 307);
 });

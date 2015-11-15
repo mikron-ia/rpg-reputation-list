@@ -14,10 +14,20 @@ $app->get('/', function (Silex\Application $app) {
                 "description" => "Lists all people whose profile the system has"
             ],
             [
-                "url" => "person/{person_id}/",
-                "description" => "Lists data regarding specific person",
+                "url" => "person/id/{person_id}/",
+                "description" => "Lists data regarding specific person found via db id",
                 "note" => "Does not provide complete data yet"
-            ]
+            ],
+            [
+                "url" => "person/key/{key}/",
+                "description" => "Lists data regarding specific person found via personal key",
+                "note" => "Does not provide complete data yet"
+            ],
+            [
+                "url" => "person/{key}/",
+                "description" => "Lists data regarding specific person found via personal key",
+                "note" => "Does not provide complete data yet"
+            ],
         ]
     );
 

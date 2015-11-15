@@ -8,6 +8,6 @@ namespace Mikron\ReputationList\Domain\Exception;
  *
  * @package Mikron\ReputationList\Domain\Exception
  */
-class NotImplementedException extends \Exception
+class NotImplementedException extends ExceptionWithSafeMessage
 {
 }

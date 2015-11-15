@@ -9,9 +9,11 @@ $app->error(function (Exception $exception) use ($app) {
 
     if ($app['config.deploy']['debug']) {
         $result['content'][] = $exception->getMessage();
+    } else {
+        if($exception instanceof \Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage) {
+            $result['content'][] = $exception->getSafeMessage();
+        }
     }
-
-    var_dump($result); die;
-
+    
     return $app->json($result);
 });

@@ -2,28 +2,61 @@
 
 use Mikron\ReputationList\Infrastructure\Factory\Event;
 
-class EventFactoryTest extends  PHPUnit_Framework_TestCase
+class EventFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * @var Event
+     */
+    protected $eventFactory;
+
+    protected function setUp()
+    {
+        $this->eventFactory = new Event();
+    }
+
+    /**
      * @test
-     * @dataProvider correctDataProvider
+     * @dataProvider provideCorrectRow
      * @param $dbId
      * @param $name
      * @param $description
      */
     public function arrayFactoryReturnsEvent($dbId, $name, $description)
     {
-        $eventFactory = new Event();
-
-        $event = $eventFactory->createFromSingleArray($dbId, $name, $description);
-
+        $event = $this->eventFactory->createFromSingleArray($dbId, $name, $description);
         $this->assertInstanceOf("Mikron\\ReputationList\\Domain\\Entity\\Event", $event);
     }
 
-    public function correctDataProvider()
+    /**
+     * @test
+     * @dataProvider provideCorrectArray
+     * @param $array
+     */
+    public function massiveFactoryReturnsEvents($array)
+    {
+        $events = $this->eventFactory->createFromCompleteArray($array);
+        $this->assertContainsOnlyInstancesOf("Mikron\\ReputationList\\Domain\\Entity\\Event", $events);
+    }
+
+    public function provideCorrectRow()
     {
         return [
-            [1, "Test Event", "Test Description"],
+            ["event_id" => 1, "name" => "Test Event", "description" => "Test Description"],
+        ];
+    }
+
+    public function provideCorrectArray()
+    {
+        return [
+            [
+                [
+                    ["event_id" => 1, "name" => "Test Event", "description" => "Test Description"],
+                    ["event_id" => 2, "name" => "Test Event", "description" => "Test Description"],
+                    ["event_id" => 3, "name" => "Test Event", "description" => "Test Description"],
+                    ["event_id" => 4, "name" => "Test Event", "description" => "Test Description"],
+                    ["event_id" => 5, "name" => "Test Event", "description" => "Test Description"],
+                ]
+            ]
         ];
     }
 }

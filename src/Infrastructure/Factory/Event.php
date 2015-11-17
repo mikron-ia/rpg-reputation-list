@@ -34,7 +34,7 @@ class Event
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['person_id'], $record['name'], $record['description']);
+                $list[] = $this->createFromSingleArray($record['event_id'], $record['name'], $record['description']);
             }
         }
 

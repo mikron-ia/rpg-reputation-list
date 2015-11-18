@@ -12,10 +12,25 @@ use Mikron\ReputationList\Domain\Blueprint\Displayable;
  */
 class ReputationNetwork implements Displayable
 {
+    /**
+     * @var string Name of the network
+     */
     private $name;
+
+    /**
+     * @var string Code that identifies the network
+     */
     private $code;
+
+    /**
+     * @var string Description of the network
+     */
     private $description;
 
+    /**
+     * @param string $key
+     * @param array $record
+     */
     public function __construct($key, $record)
     {
         $this->name = $record['name'];

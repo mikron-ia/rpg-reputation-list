@@ -10,7 +10,6 @@ use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
  * This class is intended to have a DB representation
  *
  * @package Mikron\ReputationList\Domain\Entity
- * @todo Add some description component
  */
 final class Person implements Displayable
 {

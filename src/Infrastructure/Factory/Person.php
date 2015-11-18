@@ -2,7 +2,6 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
-use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\PersonNotFoundException;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForPerson;
@@ -128,6 +127,4 @@ class Person
 
         return $person;
     }
-
-
 }

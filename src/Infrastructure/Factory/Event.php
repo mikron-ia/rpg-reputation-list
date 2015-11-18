@@ -3,6 +3,7 @@
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
 use Mikron\ReputationList\Domain\Entity;
+use Mikron\ReputationList\Domain\Exception\EventNotFoundException;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForEvent;
 
 /**

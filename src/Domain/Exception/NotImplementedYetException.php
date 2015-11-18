@@ -9,6 +9,6 @@ namespace Mikron\ReputationList\Domain\Exception;
  *
  * @package Mikron\ReputationList\Domain\Exception
  */
-class NotImplementedYetException extends NotImplementedException
+final class NotImplementedYetException extends NotImplementedException
 {
 }

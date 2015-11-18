@@ -4,7 +4,7 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 
 use Mikron\ReputationList\Domain\ValueObject;
 
-class ReputationNetwork
+final class ReputationNetwork
 {
     public function createFromSingleArray($key, $data)
     {

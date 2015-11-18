@@ -10,7 +10,7 @@ use Mikron\ReputationList\Infrastructure\Storage\StorageForReputationEvent;
  * Class ReputationEvent
  * @package Mikron\ReputationList\Infrastructure\Factory
  */
-class ReputationEvent
+final class ReputationEvent
 {
     public function createFromSingleArray(
         $reputationNetworksList,

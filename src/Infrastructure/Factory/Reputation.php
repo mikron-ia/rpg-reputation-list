@@ -6,7 +6,7 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
  * Class Reputation
  * @package Mikron\ReputationList\Infrastructure\Factory
  */
-class Reputation
+final class Reputation
 {
     /**
      * @param ReputationNetwork $reputationNetwork

@@ -2,7 +2,7 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
-class StorageIdentification
+final class StorageIdentification
 {
     public function createFromArray($array)
     {

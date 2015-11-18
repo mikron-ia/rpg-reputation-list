@@ -3,11 +3,11 @@
 namespace Mikron\ReputationList\Domain\ValueObject;
 
 /**
- * Class StorageIdentification - wrapper for object's identifying strings
+ * Class StorageIdentification - wrapper for object identification
  *
  * @package Mikron\ReputationList\Domain\ValueObject
  */
-class StorageIdentification
+final class StorageIdentification
 {
     /**
      * @var int Database identifier

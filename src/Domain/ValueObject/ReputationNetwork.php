@@ -10,7 +10,7 @@ use Mikron\ReputationList\Domain\Blueprint\Displayable;
  *
  * @package Mikron\ReputationList\Domain\ValueObject
  */
-class ReputationNetwork implements Displayable
+final class ReputationNetwork implements Displayable
 {
     /**
      * @var string Name of the network

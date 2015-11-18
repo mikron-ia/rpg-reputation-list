@@ -6,7 +6,11 @@ use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\PersonNotFoundException;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForPerson;
 
-class Person
+/**
+ * Class Person
+ * @package Mikron\ReputationList\Infrastructure\Factory
+ */
+final class Person
 {
     public function createFromSingleArray($dbId, $key, $name, $description, $reputations)
     {

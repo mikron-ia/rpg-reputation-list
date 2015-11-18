@@ -9,7 +9,7 @@ use Mikron\ReputationList\Domain\Storage\StorageForObject;
  * Class StorageForReputationEvent
  * @package Mikron\ReputationList\Infrastructure\Storage
  */
-class StorageForReputationEvent implements StorageForObject
+final class StorageForReputationEvent implements StorageForObject
 {
     /**
      * @var Storage

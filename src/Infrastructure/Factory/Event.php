@@ -5,7 +5,11 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForEvent;
 
-class Event
+/**
+ * Class Event
+ * @package Mikron\ReputationList\Infrastructure\Factory
+ */
+final class Event
 {
     /**
      * @param int $dbId

@@ -8,7 +8,7 @@ namespace Mikron\ReputationList\Domain\ValueObject;
  *
  * @package Mikron\ReputationList\Domain\ValueObject
  */
-class ReputationNetworkList
+final class ReputationNetworkList
 {
     /**
      * @var ReputationNetwork[]

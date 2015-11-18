@@ -7,7 +7,7 @@ namespace Mikron\ReputationList\Domain\Service;
  *
  * @package Mikron\ReputationList\Domain\ValueObject
  */
-class Output
+final class Output
 {
     private $pack;
 

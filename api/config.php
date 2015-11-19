@@ -5,26 +5,27 @@ use Mikron\ReputationList\Domain\Exception\MissingComponentException;
 $configPath = __DIR__ . '/../config/';
 
 /* Level 0: main config */
-$app['config.main'] = require($configPath . 'main.php');
+$configMain = require($configPath . 'main.php');
 
 /* Level 2: Specific story / epic; loaded first, as it determines choice of Level 1 config option */
 if (file_exists($configPath . 'epic.php')) {
-    $app['config.epic'] = require($configPath . 'epic.php');
+    $configEpic = require($configPath . 'epic.php');
 }
 
 /* Level 1: RPG system data; selected in epic */
-if (isset($app['config.epic']['system'])) {
-    $path = $configPath . 'data/' . $app['config.epic']['system'] . '.php';
+if (isset($configEpic['system'])) {
+    $path = $configPath . 'data/' . $configEpic['system'] . '.php';
     if (file_exists($path)) {
-        $app['config.system'] = require($path);
+        $configSystem = require($path);
     } else {
-        throw new MissingComponentException('Data file for system coded "' . $app['config.epic']['system']
+        throw new MissingComponentException('Data file for system coded "' . $configEpic['system']
             . '" not found"');
     }
 }
 
 /* Level 3: DB connectivity and other per-deployment issues */
 if (file_exists($configPath . 'deployment.php')) {
-    $app['config.deploy'] = require($configPath . 'deployment.php');
+    $configDeploy = require($configPath . 'deployment.php');
 }
 
+$app['config'] = array_replace_recursive($configMain, $configSystem, $configEpic, $configDeploy);

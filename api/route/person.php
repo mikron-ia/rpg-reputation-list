@@ -2,10 +2,10 @@
 
 /* Reputation data of a particular person via DB ID */
 $app->get('/person/id/{id}/', function ($id) use ($app) {
-    $dbEngine = $app['config.deploy']['dbEngine'];
+    $dbEngine = $app['config']['dbEngine'];
     $dbClass = '\Mikron\ReputationList\Infrastructure\Storage\\'
-        . $app['config.main']['databaseReference'][$dbEngine] . 'StorageEngine';
-    $connection = new $dbClass($app['config.deploy'][$dbEngine]);
+        . $app['config']['databaseReference'][$dbEngine] . 'StorageEngine';
+    $connection = new $dbClass($app['config'][$dbEngine]);
 
     $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 
@@ -22,10 +22,10 @@ $app->get('/person/id/{id}/', function ($id) use ($app) {
 
 /* Reputation data of a particular person via the key */
 $app->get('/person/key/{key}/', function ($key) use ($app) {
-    $dbEngine = $app['config.deploy']['dbEngine'];
+    $dbEngine = $app['config']['dbEngine'];
     $dbClass = '\Mikron\ReputationList\Infrastructure\Storage\\'
-        . $app['config.main']['databaseReference'][$dbEngine] . 'StorageEngine';
-    $connection = new $dbClass($app['config.deploy'][$dbEngine]);
+        . $app['config']['databaseReference'][$dbEngine] . 'StorageEngine';
+    $connection = new $dbClass($app['config'][$dbEngine]);
 
     $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 

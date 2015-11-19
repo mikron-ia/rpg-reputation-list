@@ -1,9 +1,9 @@
 <?php
 
 $app['networks'] = $app->share(function ($app) {
-    if (isset($app['config.system']['reputations'])) {
+    if (isset($app['config']['reputations'])) {
         $factory = new \Mikron\ReputationList\Infrastructure\Factory\ReputationNetwork();
-        $list = $factory->createFromCompleteArray($app['config.system']['reputations']);
+        $list = $factory->createFromCompleteArray($app['config']['reputations']);
     } else {
         $list = [];
     }

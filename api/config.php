@@ -16,7 +16,7 @@ if (file_exists($configPath . 'epic.php')) {
 if (isset($app['config.epic']['system'])) {
     $path = $configPath . 'data/' . $app['config.epic']['system'] . '.php';
     if (file_exists($path)) {
-        require_once $path;
+        $app['config.system'] = require($path);
     } else {
         throw new MissingComponentException('Data file for system coded "' . $app['config.epic']['system']
             . '" not found"');

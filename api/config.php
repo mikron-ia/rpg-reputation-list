@@ -5,7 +5,7 @@ use Mikron\ReputationList\Domain\Exception\MissingComponentException;
 $configPath = __DIR__ . '/../config/';
 
 /* Level 0: main config */
-require_once $configPath . 'main.php';
+$app['config.main'] = require($configPath . 'main.php');
 
 /* Level 2: Specific story / epic; loaded first, as it determines choice of Level 1 config option */
 if (file_exists($configPath . 'epic.php')) {
@@ -27,3 +27,4 @@ if (isset($app['config.epic']['system'])) {
 if (file_exists($configPath . 'deployment.php')) {
     require_once $configPath . 'deployment.php';
 }
+

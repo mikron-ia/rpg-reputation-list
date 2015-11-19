@@ -9,7 +9,7 @@ $app['config.main'] = require($configPath . 'main.php');
 
 /* Level 2: Specific story / epic; loaded first, as it determines choice of Level 1 config option */
 if (file_exists($configPath . 'epic.php')) {
-    require_once $configPath . 'epic.php';
+    $app['config.epic'] = require($configPath . 'epic.php');
 }
 
 /* Level 1: RPG system data; selected in epic */
@@ -25,6 +25,6 @@ if (isset($app['config.epic']['system'])) {
 
 /* Level 3: DB connectivity and other per-deployment issues */
 if (file_exists($configPath . 'deployment.php')) {
-    require_once $configPath . 'deployment.php';
+    $app['config.deploy'] = require($configPath . 'deployment.php');
 }
 

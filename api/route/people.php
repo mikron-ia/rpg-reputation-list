@@ -2,10 +2,10 @@
 
 /* List of people available for display, along with their IDs */
 $app->get('/people/', function () use ($app) {
-    $dbEngine = $app['config.deploy']['dbEngine'];
+    $dbEngine = $app['config']['dbEngine'];
     $dbClass = '\Mikron\ReputationList\Infrastructure\Storage\\'
-        . $app['config.main']['databaseReference'][$dbEngine] . 'StorageEngine';
-    $connection = new $dbClass($app['config.deploy'][$dbEngine]);
+        . $app['config']['databaseReference'][$dbEngine] . 'StorageEngine';
+    $connection = new $dbClass($app['config'][$dbEngine]);
 
     $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 

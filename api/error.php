@@ -7,7 +7,7 @@ $app->error(function (Exception $exception) use ($app) {
         "content" => []
     ];
 
-    if ($app['config.deploy']['debug']) {
+    if ($app['config']['debug']) {
         $result['content'][] = $exception->getMessage();
     } else {
         if($exception instanceof \Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage) {

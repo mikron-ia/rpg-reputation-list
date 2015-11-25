@@ -36,7 +36,13 @@ final class Person
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['person_id'], $record['key'], $record['name'], $record['description'], []);
+                $list[] = $this->createFromSingleArray(
+                    $record['person_id'],
+                    $record['key'],
+                    $record['name'],
+                    $record['description'],
+                    []
+                );
             }
         }
 
@@ -52,22 +58,7 @@ final class Person
     public function retrieveAllFromDb($connection)
     {
         $personStorage = new StorageForPerson($connection);
-
-        $array = $personStorage->retrieveAll();
-
-        if (!empty($array)) {
-            foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray(
-                    $record['person_id'],
-                    $record['key'],
-                    $record['name'],
-                    $record['description'],
-                    []
-                );
-            }
-        }
-
-        return $list;
+        return $this->createFromCompleteArray($personStorage->retrieveAll());
     }
 
     public function retrievePersonFromDbById($connection, $reputationNetworksList, $dbId)
@@ -84,7 +75,11 @@ final class Person
             $reputationEventsFactory = new ReputationEvent();
             $reputationFactory = new Reputation();
 
-            $personReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $personDbId);
+            $personReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb(
+                $connection,
+                $reputationNetworksList,
+                $personDbId
+            );
             $personReputations = $reputationFactory->createFromReputationEvents($personReputationEvents);
 
             $person = $this->createFromSingleArray(

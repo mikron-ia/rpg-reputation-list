@@ -18,8 +18,7 @@ if (isset($configEpic['system'])) {
     if (file_exists($path)) {
         $configSystem = require($path);
     } else {
-        throw new MissingComponentException('Data file for system coded "' . $configEpic['system']
-            . '" not found"');
+        throw new MissingComponentException('Data file for system coded "' . $configEpic['system'] . '" not found"');
     }
 }
 

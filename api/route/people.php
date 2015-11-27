@@ -7,6 +7,10 @@ $app->get('/people/', function () use ($app) {
         . $app['config']['databaseReference'][$dbEngine] . 'StorageEngine';
     $connection = new $dbClass($app['config'][$dbEngine]);
 
+    $connectionFactory = new \Mikron\ReputationList\Infrastructure\Storage\ConnectorFactory($app['config']);
+
+    $connection = $connectionFactory->getConnection();
+
     $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 
     $peopleObjects = $factory->retrieveAllFromDb($connection);

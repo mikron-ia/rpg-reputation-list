@@ -16,6 +16,11 @@ class ExceptionWithSafeMessage extends \Exception
     {
         $this->safeMessage = $safeMessage;
 
+        /* Fallback in case only one message is provided */
+        if(empty($message)) {
+            $message = $safeMessage;
+        }
+
         parent::__construct($message, $code, $previous);
     }
 

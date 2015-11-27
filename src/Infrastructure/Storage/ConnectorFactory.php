@@ -24,16 +24,26 @@ class ConnectorFactory
     public function __construct($config)
     {
         if (!isset($config['dbEngine'])) {
-            throw new MissingComponentException("Missing database engine");
+            throw new MissingComponentException("Missing database engine setting");
         }
         $dbEngine = $config['dbEngine'];
 
         $dbReference = $config['databaseReference'];
 
+        if(!isset($dbReference[$dbEngine])) {
+            throw new MissingComponentException(
+                "Missing database reference",
+                "Missing database reference for ".$dbEngine
+            );
+        }
+
         $dbClass = '\Mikron\ReputationList\Infrastructure\Storage\\' . $dbReference[$dbEngine] . 'StorageEngine';
 
         if (!class_exists($dbClass)) {
-            throw new MissingComponentException("Missing class");
+            throw new MissingComponentException(
+                "Missing or incorrect database class",
+                "Missing database class for ".$dbEngine.". Tried to load ".$dbClass."."
+            );
         }
 
         $this->connection = new $dbClass($config[$dbEngine]);
@@ -46,5 +56,4 @@ class ConnectorFactory
     {
         return $this->connection;
     }
-
 }

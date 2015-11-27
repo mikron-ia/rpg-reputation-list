@@ -2,11 +2,6 @@
 
 /* List of people available for display, along with their IDs */
 $app->get('/people/', function () use ($app) {
-    $dbEngine = $app['config']['dbEngine'];
-    $dbClass = '\Mikron\ReputationList\Infrastructure\Storage\\'
-        . $app['config']['databaseReference'][$dbEngine] . 'StorageEngine';
-    $connection = new $dbClass($app['config'][$dbEngine]);
-
     $connectionFactory = new \Mikron\ReputationList\Infrastructure\Storage\ConnectorFactory($app['config']);
 
     $connection = $connectionFactory->getConnection();

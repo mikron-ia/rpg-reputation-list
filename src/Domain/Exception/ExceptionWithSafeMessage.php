@@ -12,7 +12,7 @@ class ExceptionWithSafeMessage extends \Exception
 {
     protected $safeMessage;
 
-    public function __construct($safeMessage = "", $message = "", $code = 0, Exception $previous = null)
+    public function __construct($safeMessage = "", $message = "", $code = 0, \Exception $previous = null)
     {
         $this->safeMessage = $safeMessage;
 

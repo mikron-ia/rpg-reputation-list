@@ -3,6 +3,7 @@
 namespace Mikron\ReputationList\Infrastructure\Storage;
 
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
+use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
 use Mikron\ReputationList\Domain\Exception\MissingComponentException;
 
 /**
@@ -19,6 +20,7 @@ class ConnectorFactory
     /**
      * ConnectorFactory constructor.
      * @param $config
+     * @throws ExceptionWithSafeMessage
      * @throws MissingComponentException
      */
     public function __construct($config)
@@ -30,10 +32,10 @@ class ConnectorFactory
 
         $dbReference = $config['databaseReference'];
 
-        if(!isset($dbReference[$dbEngine])) {
+        if (!isset($dbReference[$dbEngine])) {
             throw new MissingComponentException(
                 "Missing database reference",
-                "Missing database reference for ".$dbEngine
+                "Missing database reference for " . $dbEngine
             );
         }
 
@@ -42,11 +44,20 @@ class ConnectorFactory
         if (!class_exists($dbClass)) {
             throw new MissingComponentException(
                 "Missing or incorrect database class",
-                "Missing database class for ".$dbEngine.". Tried to load ".$dbClass."."
+                "Missing database class for " . $dbEngine . ". Tried to load " . $dbClass . "."
             );
         }
 
-        $this->connection = new $dbClass($config[$dbEngine]);
+        try {
+            $this->connection = new $dbClass($config[$dbEngine]);
+        } catch (\Exception $e) {
+            throw new ExceptionWithSafeMessage(
+                "Database connection error",
+                "Database connection error: " . $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 
     /**

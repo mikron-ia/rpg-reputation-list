@@ -1,5 +1,6 @@
 <?php
 
+/* Display the front page */
 $app->get('/', function (Silex\Application $app) {
     $output = new \Mikron\ReputationList\Domain\Service\Output(
         "Front page",

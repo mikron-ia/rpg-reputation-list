@@ -37,6 +37,8 @@ final class StorageForEvent implements StorageForObject
 
     public function retrieveByKey($key)
     {
-        throw new KeyNotSupportedException("Event does not support key use. Please use database ID");
+        $result = $this->storage->selectByKey('event', 'event_id', 'key', [$key]);
+
+        return $result;
     }
 }

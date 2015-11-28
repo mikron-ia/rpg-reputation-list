@@ -36,7 +36,12 @@ final class Event
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['event_id'], $record['key'], $record['name'], $record['description']);
+                $list[] = $this->createFromSingleArray(
+                    $record['event_id'],
+                    $record['key'],
+                    $record['name'],
+                    $record['description']
+                );
             }
         }
 
@@ -57,7 +62,12 @@ final class Event
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['event_id'], $record['key'], $record['name'], $record['description']);
+                $list[] = $this->createFromSingleArray(
+                    $record['event_id'],
+                    $record['key'],
+                    $record['name'],
+                    $record['description']
+                );
             }
         }
 
@@ -73,12 +83,17 @@ final class Event
     public function retrieveEventFromDbById($connection, $dbId)
     {
         $eventStorage = new StorageForEvent($connection);
-        
+
         $eventWrapped = $eventStorage->retrieveById($dbId);
 
         if (!empty($eventWrapped)) {
             $eventUnwrapped = array_pop($eventWrapped);
-            $event = $this->createFromSingleArray($eventUnwrapped['event_id'], $eventUnwrapped['key'], $eventUnwrapped['name'], $eventUnwrapped['description']);
+            $event = $this->createFromSingleArray(
+                $eventUnwrapped['event_id'],
+                $eventUnwrapped['key'],
+                $eventUnwrapped['name'],
+                $eventUnwrapped['description']
+            );
         } else {
             throw new EventNotFoundException("Event with given ID has not been found in our database");
         }
@@ -88,7 +103,7 @@ final class Event
 
     /**
      * @param StorageEngine $connection
-     * @param int $dbId
+     * @param $key
      * @return Entity\Event
      * @throws EventNotFoundException
      */
@@ -100,7 +115,12 @@ final class Event
 
         if (!empty($eventWrapped)) {
             $eventUnwrapped = array_pop($eventWrapped);
-            $event = $this->createFromSingleArray($eventUnwrapped['event_id'], $eventUnwrapped['key'], $eventUnwrapped['name'], $eventUnwrapped['description']);
+            $event = $this->createFromSingleArray(
+                $eventUnwrapped['event_id'],
+                $eventUnwrapped['key'],
+                $eventUnwrapped['name'],
+                $eventUnwrapped['description']
+            );
         } else {
             throw new EventNotFoundException("Event with given ID has not been found in our database");
         }

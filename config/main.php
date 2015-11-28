@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "version" => "0-dev",
+    "version" => "0.3.0",
     "interface" => [
         "title" => "Reputation Board",
         "welcome" => "Welcome to Reputation Board",

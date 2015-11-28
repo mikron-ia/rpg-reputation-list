@@ -47,6 +47,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
         $expectation = [
             "name" => $reputation->getName(),
             "code" => $reputation->getCode(),
+            "description" => $reputation->getDescription(),
             "value" => $reputation->getValue()
         ];
 

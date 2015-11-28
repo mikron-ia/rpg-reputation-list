@@ -121,6 +121,7 @@ class Reputation implements Displayable
         return [
             "name" => $this->getName(),
             "code" => $this->getCode(),
+            "description" => $this->getDescription(),
             "value" => $this->getValue()
         ];
     }

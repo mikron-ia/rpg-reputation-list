@@ -39,6 +39,29 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertContainsOnlyInstancesOf("Mikron\\ReputationList\\Domain\\Entity\\Event", $events);
     }
 
+    /**
+     * @test
+     * @dataProvider provideWrappedCorrectRow
+     * @param $eventWrapped
+     * @throws \Mikron\ReputationList\Domain\Exception\EventNotFoundException
+     */
+    public function unwrappingWorks($eventWrapped)
+    {
+        $eventUnwrapped = $this->eventFactory->unwrapEvent($eventWrapped, "test");
+        $this->assertInstanceOf("Mikron\\ReputationList\\Domain\\Entity\\Event",$eventUnwrapped);
+    }
+
+    /**
+     * @test
+     * @dataProvider provideWrappedCorrectRow
+     * @throws \Mikron\ReputationList\Domain\Exception\EventNotFoundException
+     */
+    public function unwrappingFailsOnEmpty()
+    {
+        $this->setExpectedException("Mikron\\ReputationList\\Domain\\Exception\\EventNotFoundException");
+        $eventUnwrapped = $this->eventFactory->unwrapEvent(null, "test");
+    }
+
     public function provideCorrectRow()
     {
         return [
@@ -48,6 +71,13 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
                 "name" => "Test Event",
                 "description" => "Test Description"
             ],
+        ];
+    }
+
+    public function provideWrappedCorrectRow()
+    {
+        return [
+            [$this->provideCorrectRow()]
         ];
     }
 

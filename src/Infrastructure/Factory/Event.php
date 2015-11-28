@@ -110,7 +110,7 @@ final class Event
      * @return Entity\Event
      * @throws EventNotFoundException
      */
-    private function unwrapEvent($eventWrapped, $identification)
+    public function unwrapEvent($eventWrapped, $identification)
     {
         if (!empty($eventWrapped)) {
             $eventUnwrapped = array_pop($eventWrapped);

@@ -3,12 +3,10 @@
 /* List of people available for display, along with their IDs */
 $app->get('/people/', function () use ($app) {
     $connectionFactory = new \Mikron\ReputationList\Infrastructure\Storage\ConnectorFactory($app['config']);
+    $peopleFactory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 
     $connection = $connectionFactory->getConnection();
-
-    $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
-
-    $peopleObjects = $factory->retrieveAllFromDb($connection);
+    $peopleObjects = $peopleFactory->retrieveAllFromDb($connection);
     $peopleList = [];
 
     foreach ($peopleObjects as $person) {

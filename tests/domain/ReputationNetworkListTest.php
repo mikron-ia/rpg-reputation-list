@@ -73,6 +73,32 @@ class ReputationNetworkListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function isUniquenessDetectedCorrectly()
+    {
+        $configList = $this->loadCompleteConfigList();
+
+        $basicList = new ReputationNetworkList(["@", "c"], $configList);
+        $otherList = new ReputationNetworkList(["g", "x"], $configList);
+
+        $this->assertTrue($basicList->areUnique($otherList));
+    }
+
+    /**
+     * @test
+     */
+    public function isNonUniquenessDetectedCorrectly()
+    {
+        $configList = $this->loadCompleteConfigList();
+
+        $basicList = new ReputationNetworkList(["@", "c"], $configList);
+        $otherList = new ReputationNetworkList(["@", "c"], $configList);
+
+        $this->assertNotTrue($basicList->areUnique($otherList));
+    }
+
+    /**
+     * @test
      * @dataProvider simpleListDataProvider
      * @param $codeList string[]
      */

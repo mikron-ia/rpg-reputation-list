@@ -1,5 +1,6 @@
 <?php
 
+use Mikron\ReputationList\Domain\Entity\Event;
 use Mikron\ReputationList\Domain\Entity\ReputationEvent;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 use Mikron\ReputationList\Infrastructure\Factory\StorageIdentification;
@@ -70,6 +71,20 @@ class ReputationEventTest extends PHPUnit_Framework_TestCase
      * @param $value
      * @param $event
      */
+    public function isEventCorrect($identification, $reputationNetwork, $value, $event)
+    {
+        $repEvent = new ReputationEvent($identification, $reputationNetwork, $value, $event);
+        $this->assertEquals($event, $repEvent->getEvent());
+    }
+
+    /**
+     * @test
+     * @dataProvider reputationEventWithNoEventData
+     * @param $identification
+     * @param $reputationNetwork
+     * @param $value
+     * @param $event
+     */
     public function simpleDataIsCorrect($identification, $reputationNetwork, $value, $event)
     {
         $repEvent = new ReputationEvent($identification, $reputationNetwork, $value, $event);
@@ -98,7 +113,7 @@ class ReputationEventTest extends PHPUnit_Framework_TestCase
             "name" => $repEvent->getName(),
             "code" => $repEvent->getCode(),
             "value" => $repEvent->getValue(),
-            "event" => null
+            "event" => $repEvent->getEvent()->getCompleteData()
         ];
 
         $this->assertEquals($expectation, $repEvent->getCompleteData());
@@ -112,7 +127,7 @@ class ReputationEventTest extends PHPUnit_Framework_TestCase
         $identification = $idFactory->createFromData(1, null);
 
         return [
-            [$identification, $reputationNetwork, 5, null],
+            [$identification, $reputationNetwork, 5, new Event(null, "Event testowy", null)],
         ];
     }
 }

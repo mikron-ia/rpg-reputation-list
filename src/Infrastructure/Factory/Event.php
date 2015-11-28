@@ -18,10 +18,10 @@ final class Event
      * @param $description
      * @return Entity\Event
      */
-    public function createFromSingleArray($dbId, $name, $description)
+    public function createFromSingleArray($dbId, $key, $name, $description)
     {
         $idFactory = new StorageIdentification();
-        $identification = $idFactory->createFromData($dbId, null);
+        $identification = $idFactory->createFromData($dbId, $key);
 
         return new Entity\Event($identification, $name, $description);
     }
@@ -36,7 +36,7 @@ final class Event
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['event_id'], $record['name'], $record['description']);
+                $list[] = $this->createFromSingleArray($record['event_id'], $record['key'], $record['name'], $record['description']);
             }
         }
 
@@ -57,7 +57,7 @@ final class Event
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray($record['event_id'], $record['name'], $record['description']);
+                $list[] = $this->createFromSingleArray($record['event_id'], $record['key'], $record['name'], $record['description']);
             }
         }
 
@@ -78,7 +78,29 @@ final class Event
 
         if (!empty($eventWrapped)) {
             $eventUnwrapped = array_pop($eventWrapped);
-            $event = $this->createFromSingleArray($eventUnwrapped['event_id'], $eventUnwrapped['name'], $eventUnwrapped['description']);
+            $event = $this->createFromSingleArray($eventUnwrapped['event_id'], $eventUnwrapped['key'], $eventUnwrapped['name'], $eventUnwrapped['description']);
+        } else {
+            throw new EventNotFoundException("Event with given ID has not been found in our database");
+        }
+
+        return $event;
+    }
+
+    /**
+     * @param StorageEngine $connection
+     * @param int $dbId
+     * @return Entity\Event
+     * @throws EventNotFoundException
+     */
+    public function retrieveEventFromDbByKey($connection, $key)
+    {
+        $eventStorage = new StorageForEvent($connection);
+
+        $eventWrapped = $eventStorage->retrieveById($key);
+
+        if (!empty($eventWrapped)) {
+            $eventUnwrapped = array_pop($eventWrapped);
+            $event = $this->createFromSingleArray($eventUnwrapped['event_id'], $eventUnwrapped['key'], $eventUnwrapped['name'], $eventUnwrapped['description']);
         } else {
             throw new EventNotFoundException("Event with given ID has not been found in our database");
         }

@@ -1,8 +1,9 @@
 CREATE TABLE `event` (
   `event_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `key` varchar(80) NOT NULL,
   `name` VARCHAR(80) NOT NULL,
   `description` TEXT,
-  PRIMARY KEY (`person_id`)
+  PRIMARY KEY (`event_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `person` (

@@ -83,20 +83,8 @@ final class Event
     public function retrieveEventFromDbById($connection, $dbId)
     {
         $eventStorage = new StorageForEvent($connection);
-
         $eventWrapped = $eventStorage->retrieveById($dbId);
-
-        if (!empty($eventWrapped)) {
-            $eventUnwrapped = array_pop($eventWrapped);
-            $event = $this->createFromSingleArray(
-                $eventUnwrapped['event_id'],
-                $eventUnwrapped['key'],
-                $eventUnwrapped['name'],
-                $eventUnwrapped['description']
-            );
-        } else {
-            throw new EventNotFoundException("Event with given ID has not been found in our database");
-        }
+        $event = $this->unwrapEvent($eventWrapped, $dbId);
 
         return $event;
     }
@@ -110,9 +98,20 @@ final class Event
     public function retrieveEventFromDbByKey($connection, $key)
     {
         $eventStorage = new StorageForEvent($connection);
+        $eventWrapped = $eventStorage->retrieveByKey($key);
+        $event = $this->unwrapEvent($eventWrapped, $key);
 
-        $eventWrapped = $eventStorage->retrieveById($key);
+        return $event;
+    }
 
+    /**
+     * @param $eventWrapped
+     * @param $identification
+     * @return Entity\Event
+     * @throws EventNotFoundException
+     */
+    private function unwrapEvent($eventWrapped, $identification)
+    {
         if (!empty($eventWrapped)) {
             $eventUnwrapped = array_pop($eventWrapped);
             $event = $this->createFromSingleArray(
@@ -122,7 +121,10 @@ final class Event
                 $eventUnwrapped['description']
             );
         } else {
-            throw new EventNotFoundException("Event with given ID has not been found in our database");
+            throw new EventNotFoundException(
+                "Event with given identification has not been found in our database",
+                "Event with given identification (" . $identification . ") has not been found in our database"
+            );
         }
 
         return $event;

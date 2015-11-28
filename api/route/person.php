@@ -2,14 +2,11 @@
 
 /* Reputation data of a particular person via DB ID */
 $app->get('/person/id/{id}/', function ($id) use ($app) {
-    $dbEngine = $app['config']['dbEngine'];
-    $dbClass = '\Mikron\ReputationList\Infrastructure\Storage\\'
-        . $app['config']['databaseReference'][$dbEngine] . 'StorageEngine';
-    $connection = new $dbClass($app['config'][$dbEngine]);
+    $connectionFactory = new \Mikron\ReputationList\Infrastructure\Storage\ConnectorFactory($app['config']);
+    $personFactory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 
-    $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
-
-    $person = $factory->retrievePersonFromDbById($connection, $app['networks'], $id);
+    $connection = $connectionFactory->getConnection();
+    $person = $personFactory->retrievePersonFromDbById($connection, $app['networks'], $id);
 
     $output = new \Mikron\ReputationList\Domain\Service\Output(
         "Personal profile",
@@ -22,14 +19,11 @@ $app->get('/person/id/{id}/', function ($id) use ($app) {
 
 /* Reputation data of a particular person via the key */
 $app->get('/person/key/{key}/', function ($key) use ($app) {
-    $dbEngine = $app['config']['dbEngine'];
-    $dbClass = '\Mikron\ReputationList\Infrastructure\Storage\\'
-        . $app['config']['databaseReference'][$dbEngine] . 'StorageEngine';
-    $connection = new $dbClass($app['config'][$dbEngine]);
+    $connectionFactory = new \Mikron\ReputationList\Infrastructure\Storage\ConnectorFactory($app['config']);
+    $personFactory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
 
-    $factory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
-
-    $person = $factory->retrievePersonFromDbByKey($connection, $app['networks'], $key);
+    $connection = $connectionFactory->getConnection();
+    $person = $personFactory->retrievePersonFromDbByKey($connection, $app['networks'], $key);
 
     $output = new \Mikron\ReputationList\Domain\Service\Output(
         "Personal profile",

@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
+use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\PersonNotFoundException;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForPerson;
@@ -52,7 +53,7 @@ final class Person
     /**
      * Retrieves Person objects from database
      *
-     * @param $connection
+     * @param StorageEngine $connection
      * @return array
      */
     public function retrieveAllFromDb($connection)
@@ -61,12 +62,38 @@ final class Person
         return $this->createFromCompleteArray($personStorage->retrieveAll());
     }
 
+    /**
+     * @param StorageEngine $connection
+     * @param $reputationNetworksList
+     * @param $dbId
+     * @return Entity\Person
+     * @throws PersonNotFoundException
+     */
     public function retrievePersonFromDbById($connection, $reputationNetworksList, $dbId)
     {
         $personStorage = new StorageForPerson($connection);
-
         $personWrapped = $personStorage->retrieveById($dbId);
 
+        return $this->unwrapPerson($personWrapped, $connection, $reputationNetworksList);
+    }
+
+    /**
+     * @param StorageEngine $connection
+     * @param $reputationNetworksList
+     * @param $key
+     * @return Entity\Person
+     * @throws PersonNotFoundException
+     */
+    public function retrievePersonFromDbByKey($connection, $reputationNetworksList, $key)
+    {
+        $personStorage = new StorageForPerson($connection);
+        $personWrapped = $personStorage->retrieveByKey($key);
+
+        return $this->unwrapPerson($personWrapped, $connection, $reputationNetworksList);
+    }
+
+    public function unwrapPerson($personWrapped, $connection, $reputationNetworksList)
+    {
         if (!empty($personWrapped)) {
             $personUnwrapped = array_pop($personWrapped);
 
@@ -89,41 +116,10 @@ final class Person
                 $personUnwrapped['description'],
                 $personReputations
             );
+
+            return $person;
         } else {
             throw new PersonNotFoundException("Person with given ID has not been found in our database");
         }
-
-        return $person;
-    }
-
-    public function retrievePersonFromDbByKey($connection, $reputationNetworksList, $key)
-    {
-        $personStorage = new StorageForPerson($connection);
-
-        $personWrapped = $personStorage->retrieveByKey($key);
-
-        if (!empty($personWrapped)) {
-            $personUnwrapped = array_pop($personWrapped);
-
-            $personDbId = $personUnwrapped['person_id'];
-
-            $reputationEventsFactory = new ReputationEvent();
-            $reputationFactory = new Reputation();
-
-            $personReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $personDbId);
-            $personReputations = $reputationFactory->createFromReputationEvents($personReputationEvents);
-
-            $person = $this->createFromSingleArray(
-                $personUnwrapped['person_id'],
-                $personUnwrapped['key'],
-                $personUnwrapped['name'],
-                $personUnwrapped['description'],
-                $personReputations
-            );
-        } else {
-            throw new PersonNotFoundException("Person with given ID has not been found in our database");
-        }
-
-        return $person;
     }
 }

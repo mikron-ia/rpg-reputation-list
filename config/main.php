@@ -9,5 +9,8 @@ return [
     "databaseReference" => [
         'mysql' => "MySql",
         'mongodb' => "MongoDb",
-    ]
+    ],
+    'authentication' => [
+        'outgoingKey' => null,
+    ],
 ];

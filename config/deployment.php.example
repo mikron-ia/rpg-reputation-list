@@ -9,5 +9,8 @@ return [
         'host' => '',
         'driver' => 'mysqli'
     ],
-    'debug' => false
+    'debug' => false,
+    'authentication' => [
+        'outgoingKey' => null,
+    ],
 ];

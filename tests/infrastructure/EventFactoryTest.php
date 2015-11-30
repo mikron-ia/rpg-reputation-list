@@ -41,19 +41,18 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider provideWrappedCorrectRow
+     * @dataProvider provideCorrectRow
      * @param $eventWrapped
      * @throws \Mikron\ReputationList\Domain\Exception\EventNotFoundException
      */
     public function unwrappingWorks($eventWrapped)
     {
-        $eventUnwrapped = $this->eventFactory->unwrapEvent($eventWrapped, "test");
+        $eventUnwrapped = $this->eventFactory->unwrapEvent([$eventWrapped], "test");
         $this->assertInstanceOf("Mikron\\ReputationList\\Domain\\Entity\\Event",$eventUnwrapped);
     }
 
     /**
      * @test
-     * @dataProvider provideWrappedCorrectRow
      * @throws \Mikron\ReputationList\Domain\Exception\EventNotFoundException
      */
     public function unwrappingFailsOnEmpty()
@@ -75,9 +74,12 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
 
         $expectedEventWrapped = $this->eventFactory->createFromCompleteArray([$expectedIdResult]);
         $expectedEvent = array_pop($expectedEventWrapped);
-        
+
         /* Note: due to mocking the DB, key does not matter */
-        $actualEvent = $this->eventFactory->retrieveEventFromDbById($dbStub, 0);
+        $actualEvent = $this->eventFactory->retrieveEventFromDbById(
+            $dbStub,
+            0
+        );
 
         $this->assertEquals($expectedEvent, $actualEvent);
     }
@@ -97,7 +99,10 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
         $expectedEvent = array_pop($expectedEventWrapped);
 
         /* Note: due to mocking the DB, key does not matter */
-        $actualEvent = $this->eventFactory->retrieveEventFromDbByKey($dbStub, "0000000000000000000000000000000000000000");
+        $actualEvent = $this->eventFactory->retrieveEventFromDbByKey(
+            $dbStub,
+            "0000000000000000000000000000000000000000"
+        );
 
         $this->assertEquals($expectedEvent, $actualEvent);
     }
@@ -111,13 +116,6 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
                 "name" => "Test Event",
                 "description" => "Test Description"
             ],
-        ];
-    }
-
-    public function provideWrappedCorrectRow()
-    {
-        return [
-            [$this->provideCorrectRow()]
         ];
     }
 
@@ -168,12 +166,12 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
             [
                 $correctArray,
                 $correctArray[1],
-                $correctArray[3]
+                $correctArray[2]
             ],
             [
                 $correctArray,
-                $correctArray[2],
-                $correctArray[3]
+                $correctArray[3],
+                $correctArray[4]
             ],
         ];
     }

@@ -66,18 +66,18 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider provideCorrectArrayAndExpectedSearchResults
      * @param $array
-     * @param $id
      * @param $expectedIdResult
-     * @param $key
      * @param $expectedKeyResult
      */
-    public function eventFromDbIsFoundById($array, $id, $expectedIdResult, $key, $expectedKeyResult)
+    public function eventFromDbIsFoundById($array, $expectedIdResult, $expectedKeyResult)
     {
-        $dbStub = $this->prepareDbStub($array, $id, $expectedIdResult, $key, $expectedKeyResult);
+        $dbStub = $this->prepareDbStub($array, $expectedIdResult, $expectedKeyResult);
 
         $expectedEventWrapped = $this->eventFactory->createFromCompleteArray([$expectedIdResult]);
         $expectedEvent = array_pop($expectedEventWrapped);
-        $actualEvent = $this->eventFactory->retrieveEventFromDbById($dbStub, $id);
+        
+        /* Note: due to mocking the DB, key does not matter */
+        $actualEvent = $this->eventFactory->retrieveEventFromDbById($dbStub, 0);
 
         $this->assertEquals($expectedEvent, $actualEvent);
     }
@@ -86,18 +86,18 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider provideCorrectArrayAndExpectedSearchResults
      * @param $array
-     * @param $id
      * @param $expectedIdResult
-     * @param $key
      * @param $expectedKeyResult
      */
-    public function eventFromDbIsFoundByKey($array, $id, $expectedIdResult, $key, $expectedKeyResult)
+    public function eventFromDbIsFoundByKey($array, $expectedIdResult, $expectedKeyResult)
     {
-        $dbStub = $this->prepareDbStub($array, $id, $expectedIdResult, $key, $expectedKeyResult);
+        $dbStub = $this->prepareDbStub($array, $expectedIdResult, $expectedKeyResult);
 
         $expectedEventWrapped = $this->eventFactory->createFromCompleteArray([$expectedKeyResult]);
         $expectedEvent = array_pop($expectedEventWrapped);
-        $actualEvent = $this->eventFactory->retrieveEventFromDbByKey($dbStub, $key);
+
+        /* Note: due to mocking the DB, key does not matter */
+        $actualEvent = $this->eventFactory->retrieveEventFromDbByKey($dbStub, "0000000000000000000000000000000000000000");
 
         $this->assertEquals($expectedEvent, $actualEvent);
     }
@@ -163,59 +163,22 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
 
     public function provideCorrectArrayAndExpectedSearchResults()
     {
+        $correctArray = array_pop(array_pop($this->provideCorrectArray()));
         return [
             [
-                [
-                    [
-                        "event_id" => 1,
-                        "key" => "0000000000000000000000000000000000000000",
-                        "name" => "Test Event",
-                        "description" => "Test Description"
-                    ],
-                    [
-                        "event_id" => 2,
-                        "key" => "0000000000000000000000000000000000000001",
-                        "name" => "Test Event",
-                        "description" => "Test Description"
-                    ],
-                    [
-                        "event_id" => 3,
-                        "key" => "0000000000000000000000000000000000000002",
-                        "name" => "Test Event",
-                        "description" => "Test Description"
-                    ],
-                    [
-                        "event_id" => 4,
-                        "key" => "0000000000000000000000000000000000000003",
-                        "name" => "Test Event",
-                        "description" => "Test Description"
-                    ],
-                    [
-                        "event_id" => 5,
-                        "key" => "0000000000000000000000000000000000000004",
-                        "name" => "Test Event",
-                        "description" => "Test Description"
-                    ],
-                ],
-                1,
-                [
-                    "event_id" => 1,
-                    "key" => "0000000000000000000000000000000000000000",
-                    "name" => "Test Event",
-                    "description" => "Test description"
-                ],
-                "0000000000000000000000000000000000000002",
-                [
-                    "event_id" => 3,
-                    "key" => "0000000000000000000000000000000000000002",
-                    "name" => "Test Event",
-                    "description" => "Test Description"
-                ],
-            ]
+                $correctArray,
+                $correctArray[1],
+                $correctArray[3]
+            ],
+            [
+                $correctArray,
+                $correctArray[2],
+                $correctArray[3]
+            ],
         ];
     }
 
-    private function prepareDbStub($array, $id, $expectedIdResult, $key, $expectedKeyResult)
+    private function prepareDbStub($array, $expectedIdResult, $expectedKeyResult)
     {
         $dbStub = $this->getMockBuilder('Mikron\\ReputationList\\Domain\\Blueprint\\StorageEngine')->getMock();
         $dbStub->method('selectAll')->willReturn($array);

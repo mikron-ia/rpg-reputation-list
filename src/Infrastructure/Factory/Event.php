@@ -5,6 +5,7 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\EventNotFoundException;
+use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForEvent;
 
 /**
@@ -53,7 +54,7 @@ final class Event
      * Retrieves Event objects from database
      *
      * @param StorageEngine $connection
-     * @return array
+     * @return Entity\Event[]
      */
     public function retrieveAllFromDb($connection)
     {
@@ -93,7 +94,7 @@ final class Event
 
     /**
      * @param StorageEngine $connection
-     * @param $key
+     * @param string $key
      * @return Entity\Event
      * @throws EventNotFoundException
      */
@@ -107,8 +108,8 @@ final class Event
     }
 
     /**
-     * @param $eventWrapped
-     * @param $identification
+     * @param array $eventWrapped
+     * @param StorageIdentification $identification
      * @return Entity\Event
      * @throws EventNotFoundException
      */

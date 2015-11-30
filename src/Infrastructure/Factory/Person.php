@@ -5,6 +5,7 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\PersonNotFoundException;
+use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForPerson;
 
 /**
@@ -13,6 +14,14 @@ use Mikron\ReputationList\Infrastructure\Storage\StorageForPerson;
  */
 final class Person
 {
+    /**
+     * @param int $dbId
+     * @param string $key
+     * @param string $name
+     * @param string $description
+     * @param Entity\Reputation[] $reputations
+     * @return Entity\Person
+     */
     public function createFromSingleArray($dbId, $key, $name, $description, $reputations)
     {
         $idFactory = new StorageIdentification();
@@ -54,7 +63,7 @@ final class Person
      * Retrieves Person objects from database
      *
      * @param StorageEngine $connection
-     * @return array
+     * @return Entity\Person[]
      */
     public function retrieveAllFromDb($connection)
     {
@@ -64,8 +73,8 @@ final class Person
 
     /**
      * @param StorageEngine $connection
-     * @param $reputationNetworksList
-     * @param $dbId
+     * @param ReputationNetwork[] $reputationNetworksList
+     * @param int $dbId
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
@@ -79,8 +88,8 @@ final class Person
 
     /**
      * @param StorageEngine $connection
-     * @param $reputationNetworksList
-     * @param $key
+     * @param ReputationNetwork[] $reputationNetworksList
+     * @param string $key
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
@@ -92,6 +101,13 @@ final class Person
         return $this->unwrapPerson($personWrapped, $connection, $reputationNetworksList);
     }
 
+    /**
+     * @param array $personWrapped
+     * @param StorageEngine $connection
+     * @param ReputationNetwork[] $reputationNetworksList
+     * @return Entity\Person
+     * @throws PersonNotFoundException
+     */
     public function unwrapPerson($personWrapped, $connection, $reputationNetworksList)
     {
         if (!empty($personWrapped)) {

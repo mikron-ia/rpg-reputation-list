@@ -2,6 +2,8 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
+use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
+use Mikron\ReputationList\Domain\Entity\Event;
 use Mikron\ReputationList\Domain\Entity\ReputationEvent as ReputationEventEntity;
 use Mikron\ReputationList\Infrastructure\Factory\StorageIdentification as StorageIdentificationFactory;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForReputationEvent;
@@ -12,6 +14,14 @@ use Mikron\ReputationList\Infrastructure\Storage\StorageForReputationEvent;
  */
 final class ReputationEvent
 {
+    /**
+     * @param $reputationNetworksList
+     * @param int $dbId
+     * @param string $reputationNetworkCode
+     * @param int $change
+     * @param Event $event
+     * @return ReputationEventEntity
+     */
     public function createFromSingleArray(
         $reputationNetworksList,
         $dbId,
@@ -32,6 +42,12 @@ final class ReputationEvent
         return new ReputationEventEntity($identification, $reputationNetwork, $change, $event);
     }
 
+    /**
+     * @param StorageEngine $connection
+     * @param $reputationNetworksList
+     * @param int $personId
+     * @return array
+     */
     public function retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $personId)
     {
         $repEventsStorage = new StorageForReputationEvent($connection);

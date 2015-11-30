@@ -59,7 +59,47 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
     public function unwrappingFailsOnEmpty()
     {
         $this->setExpectedException("Mikron\\ReputationList\\Domain\\Exception\\EventNotFoundException");
-        $eventUnwrapped = $this->eventFactory->unwrapEvent(null, "test");
+        $this->eventFactory->unwrapEvent(null, "test");
+    }
+
+    /**
+     * @test
+     * @dataProvider provideCorrectArrayAndExpectedSearchResults
+     * @param $array
+     * @param $id
+     * @param $expectedIdResult
+     * @param $key
+     * @param $expectedKeyResult
+     */
+    public function eventFromDbIsFoundById($array, $id, $expectedIdResult, $key, $expectedKeyResult)
+    {
+        $dbStub = $this->prepareDbStub($array, $id, $expectedIdResult, $key, $expectedKeyResult);
+
+        $expectedEventWrapped = $this->eventFactory->createFromCompleteArray([$expectedIdResult]);
+        $expectedEvent = array_pop($expectedEventWrapped);
+        $actualEvent = $this->eventFactory->retrieveEventFromDbById($dbStub, $id);
+
+        $this->assertEquals($expectedEvent, $actualEvent);
+    }
+
+    /**
+     * @test
+     * @dataProvider provideCorrectArrayAndExpectedSearchResults
+     * @param $array
+     * @param $id
+     * @param $expectedIdResult
+     * @param $key
+     * @param $expectedKeyResult
+     */
+    public function eventFromDbIsFoundByKey($array, $id, $expectedIdResult, $key, $expectedKeyResult)
+    {
+        $dbStub = $this->prepareDbStub($array, $id, $expectedIdResult, $key, $expectedKeyResult);
+
+        $expectedEventWrapped = $this->eventFactory->createFromCompleteArray([$expectedKeyResult]);
+        $expectedEvent = array_pop($expectedEventWrapped);
+        $actualEvent = $this->eventFactory->retrieveEventFromDbByKey($dbStub, $key);
+
+        $this->assertEquals($expectedEvent, $actualEvent);
     }
 
     public function provideCorrectRow()
@@ -94,30 +134,94 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
                     ],
                     [
                         "event_id" => 2,
-                        "key" => "0000000000000000000000000000000000000000",
+                        "key" => "0000000000000000000000000000000000000001",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                     [
                         "event_id" => 3,
-                        "key" => "0000000000000000000000000000000000000000",
+                        "key" => "0000000000000000000000000000000000000002",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                     [
                         "event_id" => 4,
-                        "key" => "0000000000000000000000000000000000000000",
+                        "key" => "0000000000000000000000000000000000000003",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                     [
                         "event_id" => 5,
-                        "key" => "0000000000000000000000000000000000000000",
+                        "key" => "0000000000000000000000000000000000000004",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                 ]
             ]
         ];
+    }
+
+    public function provideCorrectArrayAndExpectedSearchResults()
+    {
+        return [
+            [
+                [
+                    [
+                        "event_id" => 1,
+                        "key" => "0000000000000000000000000000000000000000",
+                        "name" => "Test Event",
+                        "description" => "Test Description"
+                    ],
+                    [
+                        "event_id" => 2,
+                        "key" => "0000000000000000000000000000000000000001",
+                        "name" => "Test Event",
+                        "description" => "Test Description"
+                    ],
+                    [
+                        "event_id" => 3,
+                        "key" => "0000000000000000000000000000000000000002",
+                        "name" => "Test Event",
+                        "description" => "Test Description"
+                    ],
+                    [
+                        "event_id" => 4,
+                        "key" => "0000000000000000000000000000000000000003",
+                        "name" => "Test Event",
+                        "description" => "Test Description"
+                    ],
+                    [
+                        "event_id" => 5,
+                        "key" => "0000000000000000000000000000000000000004",
+                        "name" => "Test Event",
+                        "description" => "Test Description"
+                    ],
+                ],
+                1,
+                [
+                    "event_id" => 1,
+                    "key" => "0000000000000000000000000000000000000000",
+                    "name" => "Test Event",
+                    "description" => "Test description"
+                ],
+                "0000000000000000000000000000000000000002",
+                [
+                    "event_id" => 3,
+                    "key" => "0000000000000000000000000000000000000002",
+                    "name" => "Test Event",
+                    "description" => "Test Description"
+                ],
+            ]
+        ];
+    }
+
+    private function prepareDbStub($array, $id, $expectedIdResult, $key, $expectedKeyResult)
+    {
+        $dbStub = $this->getMockBuilder('Mikron\\ReputationList\\Domain\\Blueprint\\StorageEngine')->getMock();
+        $dbStub->method('selectAll')->willReturn($array);
+        $dbStub->method('selectByKey')->willReturn([$expectedKeyResult]);
+        $dbStub->method('selectByPrimaryKey')->willReturn([$expectedIdResult]);
+
+        return $dbStub;
     }
 }

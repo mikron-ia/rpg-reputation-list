@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
+use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\EventNotFoundException;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForEvent;
@@ -59,10 +60,11 @@ final class Event
         $eventStorage = new StorageForEvent($connection);
 
         $array = $eventStorage->retrieveAll();
+        $eventList = [];
 
         if (!empty($array)) {
             foreach ($array as $record) {
-                $list[] = $this->createFromSingleArray(
+                $eventList[] = $this->createFromSingleArray(
                     $record['event_id'],
                     $record['key'],
                     $record['name'],
@@ -71,7 +73,7 @@ final class Event
             }
         }
 
-        return $list;
+        return $eventList;
     }
 
     /**

@@ -41,25 +41,70 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider provideWrappedCorrectRow
+     * @dataProvider provideCorrectRow
      * @param $eventWrapped
      * @throws \Mikron\ReputationList\Domain\Exception\EventNotFoundException
      */
     public function unwrappingWorks($eventWrapped)
     {
-        $eventUnwrapped = $this->eventFactory->unwrapEvent($eventWrapped, "test");
+        $eventUnwrapped = $this->eventFactory->unwrapEvent([$eventWrapped], "test");
         $this->assertInstanceOf("Mikron\\ReputationList\\Domain\\Entity\\Event",$eventUnwrapped);
     }
 
     /**
      * @test
-     * @dataProvider provideWrappedCorrectRow
      * @throws \Mikron\ReputationList\Domain\Exception\EventNotFoundException
      */
     public function unwrappingFailsOnEmpty()
     {
         $this->setExpectedException("Mikron\\ReputationList\\Domain\\Exception\\EventNotFoundException");
-        $eventUnwrapped = $this->eventFactory->unwrapEvent(null, "test");
+        $this->eventFactory->unwrapEvent(null, "test");
+    }
+
+    /**
+     * @test
+     * @dataProvider provideCorrectArrayAndExpectedSearchResults
+     * @param $array
+     * @param $expectedIdResult
+     * @param $expectedKeyResult
+     */
+    public function eventFromDbIsFoundById($array, $expectedIdResult, $expectedKeyResult)
+    {
+        $dbStub = $this->prepareDbStub($array, $expectedIdResult, $expectedKeyResult);
+
+        $expectedEventWrapped = $this->eventFactory->createFromCompleteArray([$expectedIdResult]);
+        $expectedEvent = array_pop($expectedEventWrapped);
+
+        /* Note: due to mocking the DB, key does not matter */
+        $actualEvent = $this->eventFactory->retrieveEventFromDbById(
+            $dbStub,
+            0
+        );
+
+        $this->assertEquals($expectedEvent, $actualEvent);
+    }
+
+    /**
+     * @test
+     * @dataProvider provideCorrectArrayAndExpectedSearchResults
+     * @param $array
+     * @param $expectedIdResult
+     * @param $expectedKeyResult
+     */
+    public function eventFromDbIsFoundByKey($array, $expectedIdResult, $expectedKeyResult)
+    {
+        $dbStub = $this->prepareDbStub($array, $expectedIdResult, $expectedKeyResult);
+
+        $expectedEventWrapped = $this->eventFactory->createFromCompleteArray([$expectedKeyResult]);
+        $expectedEvent = array_pop($expectedEventWrapped);
+
+        /* Note: due to mocking the DB, key does not matter */
+        $actualEvent = $this->eventFactory->retrieveEventFromDbByKey(
+            $dbStub,
+            "0000000000000000000000000000000000000000"
+        );
+
+        $this->assertEquals($expectedEvent, $actualEvent);
     }
 
     public function provideCorrectRow()
@@ -71,13 +116,6 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
                 "name" => "Test Event",
                 "description" => "Test Description"
             ],
-        ];
-    }
-
-    public function provideWrappedCorrectRow()
-    {
-        return [
-            [$this->provideCorrectRow()]
         ];
     }
 
@@ -94,30 +132,57 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
                     ],
                     [
                         "event_id" => 2,
-                        "key" => "0000000000000000000000000000000000000000",
+                        "key" => "0000000000000000000000000000000000000001",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                     [
                         "event_id" => 3,
-                        "key" => "0000000000000000000000000000000000000000",
+                        "key" => "0000000000000000000000000000000000000002",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                     [
                         "event_id" => 4,
-                        "key" => "0000000000000000000000000000000000000000",
+                        "key" => "0000000000000000000000000000000000000003",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                     [
                         "event_id" => 5,
-                        "key" => "0000000000000000000000000000000000000000",
+                        "key" => "0000000000000000000000000000000000000004",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                 ]
             ]
         ];
+    }
+
+    public function provideCorrectArrayAndExpectedSearchResults()
+    {
+        $correctArray = array_pop(array_pop($this->provideCorrectArray()));
+        return [
+            [
+                $correctArray,
+                $correctArray[1],
+                $correctArray[2]
+            ],
+            [
+                $correctArray,
+                $correctArray[3],
+                $correctArray[4]
+            ],
+        ];
+    }
+
+    private function prepareDbStub($array, $expectedIdResult, $expectedKeyResult)
+    {
+        $dbStub = $this->getMockBuilder('Mikron\\ReputationList\\Domain\\Blueprint\\StorageEngine')->getMock();
+        $dbStub->method('selectAll')->willReturn($array);
+        $dbStub->method('selectByKey')->willReturn([$expectedKeyResult]);
+        $dbStub->method('selectByPrimaryKey')->willReturn([$expectedIdResult]);
+
+        return $dbStub;
     }
 }

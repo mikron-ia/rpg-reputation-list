@@ -5,7 +5,7 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\EventNotFoundException;
-use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
+use Mikron\ReputationList\Domain\ValueObject;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForEvent;
 
 /**
@@ -22,7 +22,7 @@ final class Event
      */
     public function createFromSingleArray($dbId, $key, $name, $description)
     {
-        $idFactory = new StorageIdentification();
+        $idFactory = new StorageIdentification($dbId, $key);
         $identification = $idFactory->createFromData($dbId, $key);
 
         return new Entity\Event($identification, $name, $description);
@@ -109,7 +109,7 @@ final class Event
 
     /**
      * @param array $eventWrapped
-     * @param StorageIdentification $identification
+     * @param ValueObject\StorageIdentification $identification
      * @return Entity\Event
      * @throws EventNotFoundException
      */

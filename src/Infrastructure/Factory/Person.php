@@ -5,7 +5,6 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\PersonNotFoundException;
-use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForPerson;
 
 /**

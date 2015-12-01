@@ -2,7 +2,7 @@
 
 namespace Mikron\ReputationList\Domain\ValueObject;
 
-use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
+use Mikron\ReputationList\Domain\Exception\AuthenticationException;
 
 final class AuthenticationToken
 {
@@ -33,12 +33,16 @@ final class AuthenticationToken
     /**
      * @param $key
      * @return bool
-     * @throws ExceptionWithSafeMessage
+     * @throws AuthenticationException
      */
     private function isValid($key)
     {
         if (empty($key)) {
-            throw new ExceptionWithSafeMessage("Authentication key incorrect", "Key must not be empty");
+            throw new AuthenticationException("Authentication key incorrect", "Key must not be empty");
+        }
+
+        if (strlen($key) < 20) {
+            throw new AuthenticationException("Authentication key incorrect", "Key is too short to be used");
         }
 
         return true;

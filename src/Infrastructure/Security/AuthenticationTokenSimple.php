@@ -1,10 +1,11 @@
 <?php
 
-namespace Mikron\ReputationList\Domain\ValueObject;
+namespace Mikron\ReputationList\Infrastructure\Security;
 
+use Mikron\ReputationList\Domain\Blueprint\AuthenticationToken;
 use Mikron\ReputationList\Domain\Exception\AuthenticationException;
 
-final class AuthenticationToken
+final class AuthenticationTokenSimple implements AuthenticationToken
 {
     /**
      * @var string
@@ -46,5 +47,10 @@ final class AuthenticationToken
         }
 
         return true;
+    }
+
+    public function checksOut($token)
+    {
+        return $this->key = $token->getKey();
     }
 }

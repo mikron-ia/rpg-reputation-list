@@ -19,7 +19,7 @@ return [
             'allowedStrategies' => [],
             'settingsByStrategy' => []
         ],
-        'reference' => [
+        'authenticationMethodReference' => [
             'auth-simple' => 'simple',
         ],
     ],

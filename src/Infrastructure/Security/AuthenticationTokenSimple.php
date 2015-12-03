@@ -24,32 +24,32 @@ final class AuthenticationTokenSimple implements AuthenticationToken
 
     /**
      * AuthenticationToken constructor.
-     * @param array $configAuthenticationSettings Configuration data for simple authentication strategy
+     * @param array $configAuthenticationSettingsForMethod Configuration data for simple authentication strategy
      * @param string $key Key received from the outside
      * @throws AuthenticationException Thrown in case the key is invalid
      */
-    public function __construct($configAuthenticationSettings, $key)
+    public function __construct($configAuthenticationSettingsForMethod, $key)
     {
         if ($this->isValid($key, 'received')) {
             $this->receivedKey = $key;
         }
 
-        if (!isset($configAuthenticationSettings['simple'])) {
+        if (!isset($configAuthenticationSettingsForMethod['simple'])) {
             throw new AuthenticationException(
                 "Authentication configuration incorrect",
                 "No configuration for simple authentication set"
             );
         }
 
-        if (!isset($configAuthenticationSettings['simple']['authenticationKey'])) {
+        if (!isset($configAuthenticationSettingsForMethod['simple']['authenticationKey'])) {
             throw new AuthenticationException(
                 "Authentication configuration incorrect",
                 "No authentication key for simple authentication set"
             );
         }
 
-        if ($this->isValid($configAuthenticationSettings['simple']['authenticationKey'], 'internal')) {
-            $this->correctKey = $configAuthenticationSettings['simple']['authenticationKey'];
+        if ($this->isValid($configAuthenticationSettingsForMethod['simple']['authenticationKey'], 'internal')) {
+            $this->correctKey = $configAuthenticationSettingsForMethod['simple']['authenticationKey'];
         }
     }
 
@@ -64,14 +64,14 @@ final class AuthenticationTokenSimple implements AuthenticationToken
         if (empty($key)) {
             throw new AuthenticationException(
                 "Authentication key incorrect",
-                ucfirst($identificationForErrors) . " key must not be empty"
+                "Authentication key incorrect: ".ucfirst($identificationForErrors) . " key must not be empty"
             );
         }
 
         if (strlen($key) < 20) {
             throw new AuthenticationException(
                 "Authentication key incorrect",
-                ucfirst($identificationForErrors) . " key is too short to be used"
+                "Authentication key incorrect: ".ucfirst($identificationForErrors) . " key is too short to be used"
             );
         }
 

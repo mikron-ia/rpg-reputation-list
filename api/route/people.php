@@ -6,6 +6,7 @@ $app->get('/people/{authenticationMethod}/{authenticationKey}/', function ($auth
     $peopleFactory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
     $auth = new \Mikron\ReputationList\Infrastructure\Security\Authentication(
         $app['config']['authentication'],
+        'hub',
         $authenticationMethod,
         $authenticationKey
     );

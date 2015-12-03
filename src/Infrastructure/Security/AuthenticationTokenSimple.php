@@ -51,6 +51,6 @@ final class AuthenticationTokenSimple implements AuthenticationToken
 
     public function checksOut($token)
     {
-        return $this->key = $token->getKey();
+        return $this->key == $token->getKey();
     }
 }

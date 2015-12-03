@@ -11,6 +11,23 @@ return [
     ],
     'debug' => false,
     'authentication' => [
-        'outgoingKey' => null,
+        'hub' => [
+            'allowedStrategies' => ['simple'],
+            'settingsByStrategy' => [
+                'simple' => [
+                    'authenticationMethod' => '',
+                    'authenticationKey' => null,
+                ]
+            ]
+        ],
+        'manager' => [
+            'allowedStrategies' => ['simple'],
+            'settingsByStrategy' => [
+                'simple' => [
+                    'authenticationMethod' => '',
+                    'authenticationKey' => null,
+                ]
+            ]
+        ],
     ],
 ];

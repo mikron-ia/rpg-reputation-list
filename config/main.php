@@ -11,6 +11,13 @@ return [
         'mongodb' => "MongoDb",
     ],
     'authentication' => [
-        'outgoingKey' => null,
+        'hub' => [
+            'allowedStrategies' => [],
+            'settingsByStrategy' => []
+        ],
+        'manager' => [
+            'allowedStrategies' => [],
+            'settingsByStrategy' => []
+        ],
     ],
 ];

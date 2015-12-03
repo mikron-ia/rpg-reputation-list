@@ -5,6 +5,10 @@ namespace Mikron\ReputationList\Infrastructure\Security;
 use Mikron\ReputationList\Domain\Blueprint\AuthenticationToken;
 use Mikron\ReputationList\Domain\Exception\AuthenticationException;
 
+/**
+ * Class AuthenticationTokenSimple - simple key-based authentication
+ * @package Mikron\ReputationList\Infrastructure\Security
+ */
 final class AuthenticationTokenSimple implements AuthenticationToken
 {
     /**

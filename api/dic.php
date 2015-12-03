@@ -17,9 +17,15 @@ $app['networks'] = $app->share(function ($app) {
     return $list;
 });
 
-$app['authenticationTokenOutgoing'] = $app->share(function ($app) {
-    $tokenFactory = new \Mikron\ReputationList\Infrastructure\Factory\AuthenticationToken();
-    return $tokenFactory->createFromString($app['config']['authentication']['outgoingKey']);
+/**
+ * @todo DI for all acceptable authentication strategies
+ */
+$app['authenticationTokensForHub'] = $app->share(function ($app) {
+    return null;
+});
+
+$app['authenticationTokensForManager'] = $app->share(function ($app) {
+    return null;
 });
 
 /**

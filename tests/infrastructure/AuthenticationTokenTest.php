@@ -4,16 +4,15 @@ use Mikron\ReputationList\Infrastructure\Security\AuthenticationTokenSimple;
 
 class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @test
-     */
-    public function keyIsCorrect()
+    private $config;
+
+    protected function setUp()
     {
-        $token = new AuthenticationTokenSimple("0000000000000000000000000000000000000000");
-
-        $expectation = "0000000000000000000000000000000000000000";
-
-        $this->assertEquals($expectation, $token->getKey());
+        $config = [
+            'simple'  => [
+                'authenticationKey' => '0000000000000000000000000000000000000000',
+            ],
+        ];
     }
 
     /**
@@ -21,8 +20,14 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
      */
     public function emptyTokenNotAllowed()
     {
+        $config = [
+            'simple'  => [
+                'authenticationKey' => '0000000000000000000000000000000000000000',
+            ],
+        ];
+
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\AuthenticationException');
-        new AuthenticationTokenSimple("");
+        new AuthenticationTokenSimple($config, "");
     }
 
     /**
@@ -30,8 +35,57 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
      */
     public function shortTokenNotAllowed()
     {
+        $config = [
+            'simple'  => [
+                'authenticationKey' => '0000000000000000000000000000000000000000',
+            ],
+        ];
+
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\AuthenticationException');
-        new AuthenticationTokenSimple("SHORTY");
+        new AuthenticationTokenSimple($config, "SHORTY");
+    }
+
+    /**
+     * @test
+     */
+    public function incompleteConfigNotAllowed()
+    {
+        $config = [
+            'simple'  => [],
+        ];
+
+        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\AuthenticationException');
+        new AuthenticationTokenSimple($config, "0000000000000000000000000000000000000000");
+    }
+
+    /**
+     * @test
+     */
+    public function emptyKeyNotAllowed()
+    {
+        $config = [
+            'simple'  => [
+                'authenticationKey' => '',
+            ],
+        ];
+
+        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\AuthenticationException');
+        new AuthenticationTokenSimple($config, "0000000000000000000000000000000000000000");
+    }
+
+    /**
+     * @test
+     */
+    public function shortKeyNotAllowed()
+    {
+        $config = [
+            'simple'  => [
+                'authenticationKey' => 'SHORTY',
+            ],
+        ];
+
+        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\AuthenticationException');
+        new AuthenticationTokenSimple($config, "0000000000000000000000000000000000000000");
     }
 
     /**
@@ -39,10 +93,14 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
      */
     public function checksOutTrue()
     {
-        $tokenMain = new AuthenticationTokenSimple("0000000000000000000000000000000000000000");
-        $tokenReceived  = new AuthenticationTokenSimple("0000000000000000000000000000000000000000");
+        $config = [
+            'simple'  => [
+                'authenticationKey' => '0000000000000000000000000000000000000000',
+            ],
+        ];
 
-        $this->assertTrue($tokenMain->checksOut($tokenReceived));
+        $token = new AuthenticationTokenSimple($config, "0000000000000000000000000000000000000000");
+        $this->assertTrue($token->checksOut());
     }
 
     /**
@@ -50,9 +108,13 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
      */
     public function checksOutFalse()
     {
-        $tokenMain = new AuthenticationTokenSimple("0000000000000000000000000000000000000000");
-        $tokenReceived  = new AuthenticationTokenSimple("0000000000000000000000000000000000000001");
+        $config = [
+            'simple'  => [
+                'authenticationKey' => '0000000000000000000000000000000000000000',
+            ],
+        ];
 
-        $this->assertFalse($tokenMain->checksOut($tokenReceived));
+        $token = new AuthenticationTokenSimple($config, "0000000000000000000000000000000000000001");
+        $this->assertFalse($token->checksOut());
     }
 }

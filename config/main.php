@@ -19,5 +19,8 @@ return [
             'allowedStrategies' => [],
             'settingsByStrategy' => []
         ],
+        'reference' => [
+            'auth-simple' => 'simple',
+        ],
     ],
 ];

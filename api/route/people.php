@@ -4,14 +4,14 @@
 $app->get('/people/{authenticationMethod}/{authenticationKey}/', function ($authenticationMethod, $authenticationKey) use ($app) {
     $connectionFactory = new \Mikron\ReputationList\Infrastructure\Storage\ConnectorFactory($app['config']);
     $peopleFactory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
-    $auth = new \Mikron\ReputationList\Infrastructure\Security\Authentication(
+    $authentication = new \Mikron\ReputationList\Infrastructure\Security\Authentication(
         $app['config']['authentication'],
         'hub',
         $authenticationMethod,
         $authenticationKey
     );
 
-    if ($auth->isAuthenticated()) {
+    if ($authentication->isAuthenticated()) {
         $connection = $connectionFactory->getConnection();
         $peopleObjects = $peopleFactory->retrieveAllFromDb($connection);
         $peopleList = [];

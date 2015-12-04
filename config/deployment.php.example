@@ -9,5 +9,25 @@ return [
         'host' => '',
         'driver' => 'mysqli'
     ],
-    'debug' => false
+    'debug' => false,
+    'authentication' => [
+        'hub' => [
+            'allowedStrategies' => ['simple'],
+            'settingsByStrategy' => [
+                'simple' => [
+                    'authenticationMethod' => '',
+                    'authenticationKey' => null,
+                ]
+            ]
+        ],
+        'manager' => [
+            'allowedStrategies' => ['simple'],
+            'settingsByStrategy' => [
+                'simple' => [
+                    'authenticationMethod' => '',
+                    'authenticationKey' => null,
+                ]
+            ]
+        ],
+    ],
 ];

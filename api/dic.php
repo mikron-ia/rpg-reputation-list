@@ -18,6 +18,17 @@ $app['networks'] = $app->share(function ($app) {
 });
 
 /**
+ * @todo DI for all acceptable authentication strategies
+ */
+$app['authenticationTokensForHub'] = $app->share(function ($app) {
+    return null;
+});
+
+$app['authenticationTokensForManager'] = $app->share(function ($app) {
+    return null;
+});
+
+/**
  * Registration of external tools
  */
 

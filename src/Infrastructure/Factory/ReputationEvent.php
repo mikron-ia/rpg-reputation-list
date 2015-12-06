@@ -5,6 +5,8 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity\Event;
 use Mikron\ReputationList\Domain\Entity\ReputationEvent as ReputationEventEntity;
+use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
+use Mikron\ReputationList\Domain\Exception\RecordNotFoundException;
 use Mikron\ReputationList\Infrastructure\Factory\StorageIdentification as StorageIdentificationFactory;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForReputationEvent;
 
@@ -21,6 +23,7 @@ final class ReputationEvent
      * @param int $change
      * @param Event $event
      * @return ReputationEventEntity
+     * @throws RecordNotFoundException
      */
     public function createFromSingleArray(
         $reputationNetworksList,
@@ -33,7 +36,10 @@ final class ReputationEvent
         if (isset($reputationNetworksList[$reputationNetworkCode])) {
             $reputationNetwork = $reputationNetworksList[$reputationNetworkCode];
         } else {
-            $reputationNetwork = null;
+            throw new RecordNotFoundException(
+                "Reputation not found",
+                "Record with DB ID == " . $dbId . " has an unrecognised reputation code: " . $reputationNetworkCode
+            );
         }
 
         $idFactory = new StorageIdentificationFactory();

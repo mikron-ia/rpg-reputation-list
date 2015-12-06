@@ -48,7 +48,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
             "name" => $reputation->getName(),
             "code" => $reputation->getCode(),
             "description" => $reputation->getDescription(),
-            "value" => $reputation->getValue()
+            "value" => $reputation->getValues([])
         ];
 
         $this->assertEquals($expectation, $reputation->getCompleteData());

@@ -4,6 +4,7 @@ namespace Mikron\ReputationList\Domain\Entity;
 
 use Mikron\ReputationList\Domain\Blueprint\Displayable;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
+use Mikron\ReputationList\Domain\ValueObject\ReputationValues;
 
 /**
  * Class Reputation - a combination of all ReputationEvents and reputation object for Person
@@ -20,12 +21,11 @@ class Reputation implements Displayable
 
     /**
      * @var ReputationEvent[] Events attached to the reputation
-     * @todo Do something about redundancy - there is repNetwork as field and repNetwork in events
      */
     private $reputationEvents;
 
     /**
-     * @var int Reputation value
+     * @var ReputationValues Reputation value
      */
     private $value;
 
@@ -46,13 +46,15 @@ class Reputation implements Displayable
      */
     private function calculateValue()
     {
-        $sum = 0;
+        $values = [];
 
         foreach ($this->reputationEvents as $repEvent) {
-            $sum += $repEvent->getValue();
+            $values[] = $repEvent->getValue();
         }
 
-        return $sum;
+        $value = new ReputationValues($values);
+
+        return $value;
     }
 
     /**
@@ -76,7 +78,7 @@ class Reputation implements Displayable
      */
     public function getValue()
     {
-        return $this->value;
+        return $this->value->getValue();
     }
 
     /**
@@ -104,6 +106,15 @@ class Reputation implements Displayable
     }
 
     /**
+     * @param $config
+     * @return array
+     */
+    public function getValues($config)
+    {
+        return $this->value->getAll();
+    }
+
+    /**
      * @return array Simple representation of the object content, fit for basic display
      */
     public function getSimpleData()
@@ -122,7 +133,7 @@ class Reputation implements Displayable
             "name" => $this->getName(),
             "code" => $this->getCode(),
             "description" => $this->getDescription(),
-            "value" => $this->getValue()
+            "value" => $this->getValues([]),
         ];
     }
 }

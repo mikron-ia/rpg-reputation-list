@@ -88,7 +88,7 @@ final class Person implements Displayable
     {
         $reps = [];
         foreach ($this->reputations as $reputation) {
-            $reps['reputations'][] = $reputation->getCompleteData();
+            $reps[] = $reputation->getCompleteData();
         }
         return $reps;
     }

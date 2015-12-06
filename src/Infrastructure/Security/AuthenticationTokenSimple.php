@@ -4,7 +4,6 @@ namespace Mikron\ReputationList\Infrastructure\Security;
 
 use Mikron\ReputationList\Domain\Blueprint\AuthenticationToken;
 use Mikron\ReputationList\Domain\Exception\AuthenticationException;
-use Mikron\ReputationList\Domain\Exception\MissingComponentException;
 
 /**
  * Class AuthenticationTokenSimple - simple key-based authentication
@@ -64,14 +63,14 @@ final class AuthenticationTokenSimple implements AuthenticationToken
         if (empty($key)) {
             throw new AuthenticationException(
                 "Authentication key incorrect",
-                "Authentication key incorrect: ".ucfirst($identificationForErrors) . " key must not be empty"
+                "Authentication key incorrect: " . ucfirst($identificationForErrors) . " key must not be empty"
             );
         }
 
         if (strlen($key) < 20) {
             throw new AuthenticationException(
                 "Authentication key incorrect",
-                "Authentication key incorrect: ".ucfirst($identificationForErrors) . " key is too short to be used"
+                "Authentication key incorrect: " . ucfirst($identificationForErrors) . " key is too short to be used"
             );
         }
 

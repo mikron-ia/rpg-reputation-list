@@ -10,7 +10,7 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
     public function emptyTokenNotAllowed()
     {
         $config = [
-            'simple'  => [
+            'simple' => [
                 'authenticationKey' => '0000000000000000000000000000000000000000',
             ],
         ];
@@ -25,7 +25,7 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
     public function shortTokenNotAllowed()
     {
         $config = [
-            'simple'  => [
+            'simple' => [
                 'authenticationKey' => '0000000000000000000000000000000000000000',
             ],
         ];
@@ -37,10 +37,21 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function noConfigNotAllowed()
+    {
+        $config = [];
+
+        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\AuthenticationException');
+        new AuthenticationTokenSimple($config, "0000000000000000000000000000000000000000");
+    }
+
+    /**
+     * @test
+     */
     public function incompleteConfigNotAllowed()
     {
         $config = [
-            'simple'  => [],
+            'simple' => [],
         ];
 
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\AuthenticationException');
@@ -53,7 +64,7 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
     public function emptyKeyNotAllowed()
     {
         $config = [
-            'simple'  => [
+            'simple' => [
                 'authenticationKey' => '',
             ],
         ];
@@ -68,7 +79,7 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
     public function shortKeyNotAllowed()
     {
         $config = [
-            'simple'  => [
+            'simple' => [
                 'authenticationKey' => 'SHORTY',
             ],
         ];
@@ -83,7 +94,7 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
     public function checksOutTrue()
     {
         $config = [
-            'simple'  => [
+            'simple' => [
                 'authenticationKey' => '0000000000000000000000000000000000000000',
             ],
         ];
@@ -98,7 +109,7 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
     public function checksOutFalse()
     {
         $config = [
-            'simple'  => [
+            'simple' => [
                 'authenticationKey' => '0000000000000000000000000000000000000000',
             ],
         ];

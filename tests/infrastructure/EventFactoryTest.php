@@ -25,7 +25,7 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
     public function arrayFactoryReturnsEvent($dbId, $key, $name, $description)
     {
         $event = $this->eventFactory->createFromSingleArray($dbId, $key, $name, $description);
-        $this->assertInstanceOf("Mikron\\ReputationList\\Domain\\Entity\\Event", $event);
+        $this->assertInstanceOf('Mikron\ReputationList\Domain\Entity\Event', $event);
     }
 
     /**
@@ -36,7 +36,7 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
     public function massiveFactoryReturnsEvents($array)
     {
         $events = $this->eventFactory->createFromCompleteArray($array);
-        $this->assertContainsOnlyInstancesOf("Mikron\\ReputationList\\Domain\\Entity\\Event", $events);
+        $this->assertContainsOnlyInstancesOf('Mikron\ReputationList\Domain\Entity\Event', $events);
     }
 
     /**
@@ -47,8 +47,8 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function unwrappingWorks($eventWrapped)
     {
-        $eventUnwrapped = $this->eventFactory->unwrapEvent([$eventWrapped], "test");
-        $this->assertInstanceOf("Mikron\\ReputationList\\Domain\\Entity\\Event",$eventUnwrapped);
+        $eventUnwrapped = $this->eventFactory->unwrapEvent([$eventWrapped], 'test');
+        $this->assertInstanceOf('Mikron\ReputationList\Domain\Entity\Event', $eventUnwrapped);
     }
 
     /**
@@ -57,7 +57,7 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function unwrappingFailsOnEmpty()
     {
-        $this->setExpectedException("Mikron\\ReputationList\\Domain\\Exception\\EventNotFoundException");
+        $this->setExpectedException('Mikron\ReputationList\Domain\Exception\EventNotFoundException');
         $this->eventFactory->unwrapEvent(null, "test");
     }
 

@@ -162,7 +162,8 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
     public function provideCorrectArrayAndExpectedSearchResults()
     {
         $arrayToExtract = $this->provideCorrectArray();
-        $correctArray = array_pop(array_pop($arrayToExtract));
+        $arrayExtracted = array_pop($arrayToExtract);
+        $correctArray = array_pop($arrayExtracted);
         return [
             [
                 $correctArray,

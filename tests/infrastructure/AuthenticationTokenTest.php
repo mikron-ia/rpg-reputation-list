@@ -4,17 +4,6 @@ use Mikron\ReputationList\Infrastructure\Security\AuthenticationTokenSimple;
 
 class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
 {
-    private $config;
-
-    protected function setUp()
-    {
-        $config = [
-            'simple'  => [
-                'authenticationKey' => '0000000000000000000000000000000000000000',
-            ],
-        ];
-    }
-
     /**
      * @test
      */

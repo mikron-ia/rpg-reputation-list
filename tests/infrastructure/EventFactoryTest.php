@@ -161,7 +161,8 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
 
     public function provideCorrectArrayAndExpectedSearchResults()
     {
-        $correctArray = array_pop(array_pop($this->provideCorrectArray()));
+        $arrayToExtract = $this->provideCorrectArray();
+        $correctArray = array_pop(array_pop($arrayToExtract));
         return [
             [
                 $correctArray,
@@ -178,7 +179,7 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
 
     private function prepareDbStub($array, $expectedIdResult, $expectedKeyResult)
     {
-        $dbStub = $this->getMockBuilder('Mikron\\ReputationList\\Domain\\Blueprint\\StorageEngine')->getMock();
+        $dbStub = $this->getMockBuilder('Mikron\ReputationList\Domain\Blueprint\StorageEngine')->getMock();
         $dbStub->method('selectAll')->willReturn($array);
         $dbStub->method('selectByKey')->willReturn([$expectedKeyResult]);
         $dbStub->method('selectByPrimaryKey')->willReturn([$expectedIdResult]);

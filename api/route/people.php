@@ -27,5 +27,7 @@ $app->get('/people/{authenticationMethod}/{authenticationKey}/', function ($auth
         );
 
         return $app->json($output->getArrayForJson());
+    } else {
+        throw new AuthenticationException("Authentication code does not check out");
     }
 });

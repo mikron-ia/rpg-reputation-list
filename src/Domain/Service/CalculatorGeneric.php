@@ -2,6 +2,10 @@
 
 namespace Mikron\ReputationList\Domain\Service;
 
+/**
+ * Class CalculatorGeneric - basic calculations that are likely to be common
+ * @package Mikron\ReputationList\Domain\Service
+ */
 class CalculatorGeneric
 {
     /**

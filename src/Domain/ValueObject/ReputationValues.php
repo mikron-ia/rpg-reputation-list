@@ -2,81 +2,73 @@
 
 namespace Mikron\ReputationList\Domain\ValueObject;
 
-
 use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
+use Mikron\ReputationList\Domain\Exception\MissingComponentException;
 
+/**
+ * Class ReputationValues - value object responsible for processing and storing pure numbers associated with Reputation
+ * @package Mikron\ReputationList\Domain\ValueObject
+ */
 class ReputationValues
 {
     /**
-     * @var int[]
+     * @var int[] Reputation values
      */
     private $values;
 
     /**
-     * @var int Sum of all negative values
+     * @var int[] All values derived from $values
      */
-    private $negative;
-
-    /**
-     * @var int Sum of all positive values
-     */
-    private $positive;
-
-    /**
-     * @var int Sum of all values
-     */
-    private $balance;
-
-    /**
-     * @var int[] Complex calculations, sometimes system specific
-     */
-    private $complex;
+    private $results;
 
     /**
      * ReputationValues constructor.
-     * @param \int[] $values
-     * @param array $complex
+     * @param \int[] $values List of reputation values
+     * @param array $methodsToUse Methods that are supposed to be used to calculate results other than basics
      * @todo Parameters from calculateComplex() must be moved to configuration, likely system
      */
-    public function __construct(array $values, array $complex = [])
+    public function __construct(array $values, array $methodsToUse = [])
     {
         $this->values = $values;
 
-        $this->calculateSimple();
+        $this->results = $this->calculateSimple();
 
-        $currentComplex = [
+        $methodsToUse = [
             'generic' => ['calculateLowestAndHighest'],
             'seventhSea' => ['seventhSeaCalculateDice']
         ];
 
-        $this->complex = [];
-
-        $this->calculateComplex($currentComplex);
+        $this->calculateComplex($methodsToUse);
     }
 
     /**
      * Calculates basic sums
+     * @return int[]
      */
     public function calculateSimple()
     {
-        $this->negative = 0;
-        $this->positive = 0;
+        $negative = 0;
+        $positive = 0;
 
         foreach ($this->values as $value) {
             if ($value > 0) {
-                $this->positive += $value;
+                $positive += $value;
             } else {
-                $this->negative += $value;
+                $negative += $value;
             }
         }
 
-        $this->balance = $this->positive + $this->negative;
+        return [
+            'balance' => $positive + $negative,
+            'negative' => $negative,
+            'positive' => $positive,
+        ];
     }
 
     /**
      * Calculates more advanced derived values
      * @param $complex
-     * @throws ExceptionWithSafeMessage
+     * @throws MissingComponentException
      */
     public function calculateComplex($complex)
     {
@@ -84,7 +76,7 @@ class ReputationValues
             $packClassName = '\Mikron\ReputationList\Domain\Service\Calculator' . ucfirst($packName);
 
             if (!class_exists($packClassName)) {
-                throw new ExceptionWithSafeMessage(
+                throw new MissingComponentException(
                     "Unable to find required class",
                     "Unable to find required class $packClassName"
                 );
@@ -94,41 +86,19 @@ class ReputationValues
             foreach ($packMethods as $packMethod) {
                 $currentState = $this->getAll();
                 $result = call_user_func([$packObject, $packMethod], $this->values, $currentState);
-                $this->complex = array_merge($this->complex, $result);
+                $this->results = array_merge($this->results, $result);
             }
         }
     }
 
     /**
-     * @return int
-     */
-    public function getNegative()
-    {
-        return $this->negative;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPositive()
-    {
-        return $this->positive;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBalance()
-    {
-        return $this->balance;
-    }
-
-    /**
+     * Legacy method for value return
+     *
      * @return int
      */
     public function getValue()
     {
-        return $this->getBalance();
+        return $this->results['balance'];
     }
 
     /**
@@ -137,12 +107,6 @@ class ReputationValues
      */
     public function getAll()
     {
-        $basic = [
-            'balance' => $this->getBalance(),
-            'negative' => $this->getNegative(),
-            'positive' => $this->getPositive(),
-        ];
-
-        return array_merge($basic, $this->complex);
+        return $this->results;
     }
 }

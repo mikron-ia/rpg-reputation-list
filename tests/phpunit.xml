@@ -2,6 +2,7 @@
     <testsuites>
         <testsuite name="All tests">
             <directory>.</directory>
+            <exclude>../vendor/</exclude>
         </testsuite>
     </testsuites>
 </phpunit>

@@ -3,6 +3,8 @@
 namespace Mikron\ReputationList\Domain\ValueObject;
 
 
+use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
+
 class ReputationValues
 {
     /**
@@ -41,7 +43,15 @@ class ReputationValues
         $this->values = $values;
 
         $this->calculateSimple();
-        $this->calculateComplex(['calculateLowestAndHighest', 'seventhSeaCalculateDice']);
+
+        $currentComplex = [
+            'generic' => ['calculateLowestAndHighest'],
+            'seventhSea' => ['seventhSeaCalculateDice']
+        ];
+
+        $this->complex = [];
+
+        $this->calculateComplex($currentComplex);
     }
 
     /**
@@ -69,8 +79,12 @@ class ReputationValues
      */
     public function calculateComplex($complex)
     {
-        foreach ($complex as $method) {
-            call_user_func([$this, $method]);
+        foreach ($complex as $packMethods) {
+            foreach ($packMethods as $packMethod) {
+                $currentState = $this->getAll();
+                $result = call_user_func([$this, $packMethod], $currentState);
+                $this->complex = array_merge($this->complex, $result);
+            }
         }
     }
 
@@ -130,8 +144,11 @@ class ReputationValues
      *
      * 2, 1, -2 will generate  0 / 1 / 3
      * -2, 1, 2 will generate -2 / 1 / 1
+     *
+     * @param $currentState
+     * @return array
      */
-    private function calculateLowestAndHighest()
+    private function calculateLowestAndHighest($currentState)
     {
         $lowest = 0;
         $highest = 0;
@@ -150,35 +167,45 @@ class ReputationValues
             }
         }
 
-        $this->complex['negativeMin'] = $lowest;
-        $this->complex['positiveMax'] = $highest;
+        return [
+            'negativeMin' => $lowest,
+            'positiveMax' => $highest
+        ];
     }
 
     /**
-     * Calculates dice according to balance and extremes. Requires calculateLowestAndHighest() to work
+     * Calculates dice according to balance and extremes. Requires calculateLowestAndHighest() to be called first
      * @todo Calculation of group rep that includes influence reputation - in this or in separate method
+     * @param $currentState
+     * @return array
+     * @throws ExceptionWithSafeMessage
      */
-    private function seventhSeaCalculateDice()
+    private function seventhSeaCalculateDice($currentState)
     {
-        /* Extremes are used here */
-        if (!isset($this->complex['negativeMin']) || !isset($this->complex['positiveMax'])) {
-            $this->calculateLowestAndHighest();
+        if (!isset($currentState['negativeMin']) || !isset($currentState['positiveMax'])) {
+            throw new ExceptionWithSafeMessage(
+                "Missing values necessary to operate",
+                "Missing extremes. Call calculateLowestAndHighest() first."
+            );
         }
 
         if ($this->balance < 5 && $this->balance > -5) {
-            $this->complex['dice'] = 0;
+            $dice = 0;
         } elseif ($this->balance > 0) {
-            if ($this->balance == $this->complex['positiveMax']) {
-                $this->complex['dice'] = ceil($this->balance / 10);
+            if ($this->balance == $currentState['positiveMax']) {
+                $dice = ceil($this->balance / 10);
             } else {
-                $this->complex['dice'] = floor($this->balance / 10);
+                $dice = floor($this->balance / 10);
             }
         } else {
-            if ($this->balance == $this->complex['negativeMin']) {
-                $this->complex['dice'] = floor($this->balance / 10);
+            if ($this->balance == $currentState['negativeMin']) {
+                $dice = floor($this->balance / 10);
             } else {
-                $this->complex['dice'] = ceil($this->balance / 10);
+                $dice = ceil($this->balance / 10);
             }
         }
+        return [
+            'dice' => $dice
+        ];
     }
 }

@@ -76,13 +76,24 @@ class ReputationValues
     /**
      * Calculates more advanced derived values
      * @param $complex
+     * @throws ExceptionWithSafeMessage
      */
     public function calculateComplex($complex)
     {
-        foreach ($complex as $packMethods) {
+        foreach ($complex as $packName => $packMethods) {
+            $packClassName = '\Mikron\ReputationList\Domain\Service\Calculator' . ucfirst($packName);
+
+            if (!class_exists($packClassName)) {
+                throw new ExceptionWithSafeMessage(
+                    "Unable to find required class",
+                    "Unable to find required class $packClassName"
+                );
+            }
+
+            $packObject = new $packClassName();
             foreach ($packMethods as $packMethod) {
                 $currentState = $this->getAll();
-                $result = call_user_func([$this, $packMethod], $currentState);
+                $result = call_user_func([$packObject, $packMethod], $this->values, $currentState);
                 $this->complex = array_merge($this->complex, $result);
             }
         }
@@ -133,79 +144,5 @@ class ReputationValues
         ];
 
         return array_merge($basic, $this->complex);
-    }
-
-    /* System-specific methods */
-
-    /**
-     * Calculates greatest extremes across history, ie. lowest ever and highest ever reputation
-     *
-     * Note: order in which changes occurred matter:
-     *
-     * 2, 1, -2 will generate  0 / 1 / 3
-     * -2, 1, 2 will generate -2 / 1 / 1
-     *
-     * @param $currentState
-     * @return array
-     */
-    private function calculateLowestAndHighest($currentState)
-    {
-        $lowest = 0;
-        $highest = 0;
-
-        $cumulative = 0;
-
-        foreach ($this->values as $value) {
-            $cumulative += $value;
-
-            if ($cumulative > $highest) {
-                $highest = $cumulative;
-            }
-
-            if ($cumulative < $lowest) {
-                $lowest = $cumulative;
-            }
-        }
-
-        return [
-            'negativeMin' => $lowest,
-            'positiveMax' => $highest
-        ];
-    }
-
-    /**
-     * Calculates dice according to balance and extremes. Requires calculateLowestAndHighest() to be called first
-     * @todo Calculation of group rep that includes influence reputation - in this or in separate method
-     * @param $currentState
-     * @return array
-     * @throws ExceptionWithSafeMessage
-     */
-    private function seventhSeaCalculateDice($currentState)
-    {
-        if (!isset($currentState['negativeMin']) || !isset($currentState['positiveMax'])) {
-            throw new ExceptionWithSafeMessage(
-                "Missing values necessary to operate",
-                "Missing extremes. Call calculateLowestAndHighest() first."
-            );
-        }
-
-        if ($this->balance < 5 && $this->balance > -5) {
-            $dice = 0;
-        } elseif ($this->balance > 0) {
-            if ($this->balance == $currentState['positiveMax']) {
-                $dice = ceil($this->balance / 10);
-            } else {
-                $dice = floor($this->balance / 10);
-            }
-        } else {
-            if ($this->balance == $currentState['negativeMin']) {
-                $dice = floor($this->balance / 10);
-            } else {
-                $dice = ceil($this->balance / 10);
-            }
-        }
-        return [
-            'dice' => $dice
-        ];
     }
 }

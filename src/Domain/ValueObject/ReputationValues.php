@@ -34,8 +34,15 @@ class ReputationValues
         $this->results = $this->calculateSimple();
 
         $methodsToUse = [
-            'generic' => ['calculateLowestAndHighest'],
-            'seventhSea' => ['seventhSeaCalculateDice']
+            'generic' => [
+                'calculateLowestAndHighest',
+                'calculateAbsolute'
+            ],
+            'seventhSea' => [
+                'seventhSeaCalculateDice',
+                'seventhSeaCalculateRecognitionValue',
+                'seventhSeaCalculateRecognitionDice'
+            ]
         ];
 
         $this->calculateComplex($methodsToUse);

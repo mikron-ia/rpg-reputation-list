@@ -46,4 +46,32 @@ class CalculatorSeventhSea
             'dice' => $dice
         ];
     }
+
+    public function seventhSeaCalculateRecognitionValue($values, $currentState)
+    {
+        if (!isset($currentState['absolute'])) {
+            throw new ExceptionWithSafeMessage(
+                "Missing values necessary to operate",
+                "Missing absolute. Call calculateAbsolute() first."
+            );
+        }
+
+        return [
+            'recognition' => $currentState['absolute']
+        ];
+    }
+
+    public function seventhSeaCalculateRecognitionDice($values, $currentState)
+    {
+        if (!isset($currentState['recognition'])) {
+            throw new ExceptionWithSafeMessage(
+                "Missing values necessary to operate",
+                "Missing absolute. Call seventhSeaCalculateRecognitionValue() first."
+            );
+        }
+
+        return [
+            'recognitionDice' => round($currentState['recognition']/10)
+        ];
+    }
 }

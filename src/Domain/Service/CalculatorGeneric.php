@@ -44,4 +44,22 @@ class CalculatorGeneric
             'positiveMax' => $highest
         ];
     }
+
+    /**
+     * @param $values
+     * @param $currentState
+     * @return int|number
+     */
+    public function calculateAbsolute($values, $currentState)
+    {
+        $result = 0;
+
+        foreach($values as $value) {
+            $result += abs($value);
+        }
+
+        return [
+            'absolute' => $result
+        ];
+    }
 }

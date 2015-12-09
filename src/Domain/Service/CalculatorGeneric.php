@@ -9,6 +9,32 @@ namespace Mikron\ReputationList\Domain\Service;
 class CalculatorGeneric
 {
     /**
+     * Calculates basic sums
+     * @param $values
+     * @param $currentState
+     * @return \int[]
+     */
+    public static function calculateSimple($values, $currentState)
+    {
+        $negative = 0;
+        $positive = 0;
+
+        foreach ($values as $value) {
+            if ($value > 0) {
+                $positive += $value;
+            } else {
+                $negative += $value;
+            }
+        }
+
+        return [
+            'balance' => $positive + $negative,
+            'negative' => $negative,
+            'positive' => $positive,
+        ];
+    }
+
+    /**
      * Calculates greatest extremes across history, ie. lowest ever and highest ever reputation
      *
      * Note: order in which changes occurred matter:
@@ -20,7 +46,7 @@ class CalculatorGeneric
      * @param $currentState
      * @return array
      */
-    public function calculateLowestAndHighest($values, $currentState)
+    public static function calculateLowestAndHighest($values, $currentState)
     {
         $lowest = 0;
         $highest = 0;
@@ -50,7 +76,7 @@ class CalculatorGeneric
      * @param $currentState
      * @return int|number
      */
-    public function calculateAbsolute($values, $currentState)
+    public static function calculateAbsolute($values, $currentState)
     {
         $result = 0;
 

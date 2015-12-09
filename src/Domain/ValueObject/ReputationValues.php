@@ -4,6 +4,7 @@ namespace Mikron\ReputationList\Domain\ValueObject;
 
 use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
 use Mikron\ReputationList\Domain\Exception\MissingComponentException;
+use Mikron\ReputationList\Domain\Service\CalculatorGeneric;
 
 /**
  * Class ReputationValues - value object responsible for processing and storing pure numbers associated with Reputation
@@ -31,7 +32,7 @@ class ReputationValues
     {
         $this->values = $values;
 
-        $this->results = $this->calculateSimple();
+        $this->results = CalculatorGeneric::calculateSimple($this->values, []);
 
         $methodsToUse = [
             'generic' => [
@@ -46,30 +47,6 @@ class ReputationValues
         ];
 
         $this->calculateComplex($methodsToUse);
-    }
-
-    /**
-     * Calculates basic sums
-     * @return int[]
-     */
-    public function calculateSimple()
-    {
-        $negative = 0;
-        $positive = 0;
-
-        foreach ($this->values as $value) {
-            if ($value > 0) {
-                $positive += $value;
-            } else {
-                $negative += $value;
-            }
-        }
-
-        return [
-            'balance' => $positive + $negative,
-            'negative' => $negative,
-            'positive' => $positive,
-        ];
     }
 
     /**
@@ -92,7 +69,7 @@ class ReputationValues
             $packObject = new $packClassName();
             foreach ($packMethods as $packMethod) {
                 $currentState = $this->getAll();
-                $result = call_user_func([$packObject, $packMethod], $this->values, $currentState);
+                $result = $packObject::$packMethod($this->values, $currentState);
                 $this->results = array_merge($this->results, $result);
             }
         }

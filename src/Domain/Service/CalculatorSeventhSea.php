@@ -2,7 +2,7 @@
 
 namespace Mikron\ReputationList\Domain\Service;
 
-use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
+use Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException;
 
 /**
  * Class CalculatorSeventhSea
@@ -21,12 +21,12 @@ class CalculatorSeventhSea
      * @param $values
      * @param $currentState
      * @return int[]
-     * @throws ExceptionWithSafeMessage
+     * @throws MissingCalculationBaseException
      */
     public static function calculateDice($values, $currentState)
     {
         if (!isset($currentState['negativeMin']) || !isset($currentState['positiveMax'])) {
-            throw new ExceptionWithSafeMessage(
+            throw new MissingCalculationBaseException(
                 "Missing values necessary to operate",
                 "Missing extremes. Call calculateLowestAndHighest() first."
             );
@@ -56,12 +56,12 @@ class CalculatorSeventhSea
      * @param int[] $values
      * @param int[] $currentState
      * @return int[]
-     * @throws ExceptionWithSafeMessage
+     * @throws MissingCalculationBaseException
      */
     public static function calculateRecognitionValue($values, $currentState)
     {
         if (!isset($currentState['absolute'])) {
-            throw new ExceptionWithSafeMessage(
+            throw new MissingCalculationBaseException(
                 "Missing values necessary to operate",
                 "Missing absolute. Call calculateAbsolute() first."
             );
@@ -76,12 +76,12 @@ class CalculatorSeventhSea
      * @param int[] $values
      * @param int[] $currentState
      * @return int[]
-     * @throws ExceptionWithSafeMessage
+     * @throws MissingCalculationBaseException
      */
     public static function calculateRecognitionDice($values, $currentState)
     {
         if (!isset($currentState['recognition'])) {
-            throw new ExceptionWithSafeMessage(
+            throw new MissingCalculationBaseException(
                 "Missing values necessary to operate",
                 "Missing absolute. Call seventhSeaCalculateRecognitionValue() first."
             );

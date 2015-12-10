@@ -126,6 +126,22 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
                 ['dice' => 0, 'recognition' => 0, 'recognitionDice' => 0]
             ],
             [
+                [4],
+                ['dice' => 0, 'recognition' => 4, 'recognitionDice' => 0]
+            ],
+            [
+                [-4],
+                ['dice' => 0, 'recognition' => 4, 'recognitionDice' => 0]
+            ],
+            [
+                [5],
+                ['dice' => 1, 'recognition' => 5, 'recognitionDice' => 1]
+            ],
+            [
+                [-5],
+                ['dice' => -1, 'recognition' => 5, 'recognitionDice' => 1]
+            ],
+            [
                 [0, 0],
                 ['dice' => 0, 'recognition' => 0, 'recognitionDice' => 0]
             ],
@@ -148,6 +164,10 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
             [
                 [5, -10],
                 ['dice' => -1, 'recognition' => 15, 'recognitionDice' => 2]
+            ],
+            [
+                [10, -5],
+                ['dice' => 0, 'recognition' => 15, 'recognitionDice' => 2]
             ],
         ];
     }

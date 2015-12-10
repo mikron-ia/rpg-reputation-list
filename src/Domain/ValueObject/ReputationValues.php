@@ -76,16 +76,6 @@ class ReputationValues
     }
 
     /**
-     * Legacy method for value return
-     *
-     * @return int
-     */
-    public function getValue()
-    {
-        return $this->results['balance'];
-    }
-
-    /**
      * Returns all basics and configured advanced
      * @return int[]
      */

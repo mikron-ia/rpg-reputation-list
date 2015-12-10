@@ -74,14 +74,6 @@ class Reputation implements Displayable
     }
 
     /**
-     * @return int
-     */
-    public function getValue()
-    {
-        return $this->value->getValue();
-    }
-
-    /**
      * @return string
      */
     public function getName()

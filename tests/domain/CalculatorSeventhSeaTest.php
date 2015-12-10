@@ -27,7 +27,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
         $currentState = CalculatorGeneric::calculateSimple($values, [])
             + CalculatorGeneric::calculateLowestAndHighest($values, []);
 
-        $result = CalculatorSeventhSea::seventhSeaCalculateDice($values, $currentState);
+        $result = CalculatorSeventhSea::calculateDice($values, $currentState);
 
         $this->assertEquals($expectation, $result);
     }
@@ -48,7 +48,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
 
         $currentState = CalculatorGeneric::calculateSimple($values, [])
             + CalculatorGeneric::calculateAbsolute($values, []);
-        $result = CalculatorSeventhSea::seventhSeaCalculateRecognitionValue($values, $currentState);
+        $result = CalculatorSeventhSea::calculateRecognitionValue($values, $currentState);
 
         $this->assertEquals($expectation, $result);
     }
@@ -69,9 +69,9 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
 
         $currentStateBase = CalculatorGeneric::calculateSimple($values, [])
             + CalculatorGeneric::calculateAbsolute($values, []);
-        $currentState = CalculatorSeventhSea::seventhSeaCalculateRecognitionValue($values, $currentStateBase);
+        $currentState = CalculatorSeventhSea::calculateRecognitionValue($values, $currentStateBase);
 
-        $result = CalculatorSeventhSea::seventhSeaCalculateRecognitionDice($values, $currentState);
+        $result = CalculatorSeventhSea::calculateRecognitionDice($values, $currentState);
 
         $this->assertEquals($expectation, $result);
     }
@@ -87,7 +87,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
     public function calculateDiceFailsWithoutExtremes($values, $expectations)
     {
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage');
-        CalculatorSeventhSea::seventhSeaCalculateDice($values, []);
+        CalculatorSeventhSea::calculateDice($values, []);
     }
 
     /**
@@ -101,7 +101,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
     public function calculateRecognitionValueFailsWithoutExtremes($values, $expectations)
     {
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage');
-        CalculatorSeventhSea::seventhSeaCalculateRecognitionValue($values, []);
+        CalculatorSeventhSea::calculateRecognitionValue($values, []);
     }
 
     /**
@@ -115,7 +115,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
     public function calculateRecognitionDiceFailsWithoutExtremes($values, $expectations)
     {
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage');
-        CalculatorSeventhSea::seventhSeaCalculateRecognitionDice($values, []);
+        CalculatorSeventhSea::calculateRecognitionDice($values, []);
     }
 
     public function valuesProvider()

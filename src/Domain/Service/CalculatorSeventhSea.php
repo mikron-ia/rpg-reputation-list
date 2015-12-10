@@ -18,7 +18,7 @@ class CalculatorSeventhSea
      * @return int[]
      * @throws ExceptionWithSafeMessage
      */
-    public static function seventhSeaCalculateDice($values, $currentState)
+    public static function calculateDice($values, $currentState)
     {
         if (!isset($currentState['negativeMin']) || !isset($currentState['positiveMax'])) {
             throw new ExceptionWithSafeMessage(
@@ -53,7 +53,7 @@ class CalculatorSeventhSea
      * @return int[]
      * @throws ExceptionWithSafeMessage
      */
-    public static function seventhSeaCalculateRecognitionValue($values, $currentState)
+    public static function calculateRecognitionValue($values, $currentState)
     {
         if (!isset($currentState['absolute'])) {
             throw new ExceptionWithSafeMessage(
@@ -73,7 +73,7 @@ class CalculatorSeventhSea
      * @return int[]
      * @throws ExceptionWithSafeMessage
      */
-    public static function seventhSeaCalculateRecognitionDice($values, $currentState)
+    public static function calculateRecognitionDice($values, $currentState)
     {
         if (!isset($currentState['recognition'])) {
             throw new ExceptionWithSafeMessage(

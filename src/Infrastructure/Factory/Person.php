@@ -74,7 +74,7 @@ final class Person
      * @param StorageEngine $connection
      * @param ReputationNetwork[] $reputationNetworksList
      * @param int $dbId
-     * @param $methodsToCalculate
+     * @param string[] $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
@@ -90,7 +90,7 @@ final class Person
      * @param StorageEngine $connection
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string $key
-     * @param $methodsToCalculate
+     * @param string[] $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
@@ -106,7 +106,7 @@ final class Person
      * @param array $personWrapped
      * @param StorageEngine $connection
      * @param ReputationNetwork[] $reputationNetworksList
-     * @param $methodsToCalculate
+     * @param string[] $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */

@@ -15,10 +15,10 @@ return [
         'reputations' => []
     ],
     'calculation' => [
-        'seventhSea' => [
-            'seventhSeaCalculateDice',
-            'seventhSeaCalculateRecognitionValue',
-            'seventhSeaCalculateRecognitionDice'
-        ]
+        'generic.calculateLowestAndHighest',
+        'generic.calculateAbsolute',
+        'seventhSea.CalculateDice',
+        'seventhSea.CalculateRecognitionValue',
+        'seventhSea.CalculateRecognitionDice'
     ]
 ];

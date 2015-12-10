@@ -68,4 +68,7 @@ return [
             ],
         ]
     ],
+    'calculation' => [
+        'generic.calculateAbsolute',
+    ]
 ];

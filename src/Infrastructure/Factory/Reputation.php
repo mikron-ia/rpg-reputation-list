@@ -11,7 +11,7 @@ final class Reputation
     /**
      * @param \Mikron\ReputationList\Domain\ValueObject\ReputationNetwork $reputationNetwork
      * @param \Mikron\ReputationList\Domain\Entity\ReputationEvent[] $reputationEvents
-     * @param string[][] $methodsToCalculate
+     * @param string[] $methodsToCalculate
      * @return \Mikron\ReputationList\Domain\Entity\Reputation
      */
     public function createFromParameters($reputationNetwork, $reputationEvents, $methodsToCalculate)
@@ -21,7 +21,7 @@ final class Reputation
 
     /**
      * @param $reputationEventsWild
-     * @param string[][] $methodsToCalculate
+     * @param string[] $methodsToCalculate
      * @return \Mikron\ReputationList\Domain\Entity\Reputation ;
      */
     public function createFromReputationEvents($reputationEventsWild, $methodsToCalculate)

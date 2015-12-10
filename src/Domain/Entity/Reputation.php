@@ -38,7 +38,7 @@ class Reputation implements Displayable
      * Reputation constructor.
      * @param ReputationNetwork $reputationNetwork
      * @param ReputationEvent[] $reputationEvents
-     * @param \string[][] $methodsToCalculate
+     * @param \string[] $methodsToCalculate
      */
     public function __construct(ReputationNetwork $reputationNetwork, array $reputationEvents, array $methodsToCalculate)
     {

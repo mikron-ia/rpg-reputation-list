@@ -23,10 +23,12 @@ return [
             'auth-simple' => 'simple',
         ],
     ],
-    'calculation' => [
-        'generic' => [
-            'calculateLowestAndHighest',
-            'calculateAbsolute'
-        ],
-    ],
+    /*
+     * Methods of reputation calculations used by the system, in form of `pack.methodName`
+     * They all receive list of reputation numbers, and current state - all already calculated data
+     * They are executed in the order they are listed, which matters if previous ones provide data for latter ones
+     *
+     * All systems should list a complete list, not relaying on previous ones
+     */
+    'calculation' => [],
 ];

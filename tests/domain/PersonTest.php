@@ -96,26 +96,39 @@ class PersonTest extends PHPUnit_Framework_TestCase
     {
         $repNetCivil = new ReputationNetwork("c", ["name" => "CivicNet", "description" => "Corporations"]);
         $repNetMilitary = new ReputationNetwork("m", ["name" => "MilNet", "description" => "Mercenaries"]);
-
+        $calculators = [];
+        
         return [
             [
                 [
-                    new Reputation($repNetMilitary, [
-                        new ReputationEvent(null, $repNetMilitary, 2, null),
-                        new ReputationEvent(null, $repNetMilitary, 3, null),
-                    ]),
-                    new Reputation($repNetCivil, [
-                        new ReputationEvent(null, $repNetCivil, 1, null),
-                        new ReputationEvent(null, $repNetCivil, 2, null),
-                    ])
+                    new Reputation(
+                        $repNetMilitary,
+                        [
+                            new ReputationEvent(null, $repNetMilitary, 2, null),
+                            new ReputationEvent(null, $repNetMilitary, 3, null),
+                        ],
+                        $calculators
+                    ),
+                    new Reputation(
+                        $repNetCivil,
+                        [
+                            new ReputationEvent(null, $repNetCivil, 1, null),
+                            new ReputationEvent(null, $repNetCivil, 2, null),
+                        ],
+                        $calculators
+                    )
                 ]
             ],
             [
                 [
-                    new Reputation($repNetMilitary, [
-                        new ReputationEvent(null, $repNetMilitary, 2, null),
-                        new ReputationEvent(null, $repNetMilitary, 3, null),
-                    ])
+                    new Reputation(
+                        $repNetMilitary,
+                        [
+                            new ReputationEvent(null, $repNetMilitary, 2, null),
+                            new ReputationEvent(null, $repNetMilitary, 3, null),
+                        ],
+                        $calculators
+                    )
                 ]
             ],
             [

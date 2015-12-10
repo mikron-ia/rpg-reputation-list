@@ -26,37 +26,34 @@ class ReputationValues
      * ReputationValues constructor.
      * @param \int[] $values List of reputation values
      * @param array $methodsToUse Methods that are supposed to be used to calculate results other than basics
-     * @todo Parameters from calculateComplex() must be moved to configuration, likely system
      */
     public function __construct(array $values, array $methodsToUse = [])
     {
         $this->values = $values;
-
         $this->results = CalculatorGeneric::calculateSimple($this->values, []);
-/*
-        $methodsToUse = [
-            'generic' => [
-                'calculateLowestAndHighest',
-                'calculateAbsolute'
-            ],
-            'seventhSea' => [
-                'seventhSeaCalculateDice',
-                'seventhSeaCalculateRecognitionValue',
-                'seventhSeaCalculateRecognitionDice'
-            ]
-        ];
-*/
         $this->calculateComplex($methodsToUse);
     }
 
     /**
      * Calculates more advanced derived values
-     * @param $complex
+     * @param $methodsToUse
      * @throws MissingComponentException
      */
-    public function calculateComplex($complex)
+    public function calculateComplex($methodsToUse)
     {
-        foreach ($complex as $packName => $packMethods) {
+        foreach ($methodsToUse as $packMethod) {
+            $explodedMethod = explode('.', $packMethod);
+
+            if (!isset($explodedMethod[0]) || !isset($explodedMethod[1])) {
+                throw new MissingComponentException(
+                    "Incorrect method",
+                    "Method $packMethod does not have class name or proper name"
+                );
+            }
+
+            $packName = $explodedMethod[0];
+            $packMethod = $explodedMethod[1];
+
             $packClassName = '\Mikron\ReputationList\Domain\Service\Calculator' . ucfirst($packName);
 
             if (!class_exists($packClassName)) {
@@ -67,11 +64,9 @@ class ReputationValues
             }
 
             $packObject = new $packClassName();
-            foreach ($packMethods as $packMethod) {
-                $currentState = $this->getAll();
-                $result = $packObject::$packMethod($this->values, $currentState);
-                $this->results = array_merge($this->results, $result);
-            }
+            $currentState = $this->getAll();
+            $result = $packObject::$packMethod($this->values, $currentState);
+            $this->results = array_merge($this->results, $result);
         }
     }
 

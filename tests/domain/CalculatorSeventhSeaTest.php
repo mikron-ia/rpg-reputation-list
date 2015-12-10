@@ -15,8 +15,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @dataProvider valuesProvider
      *
      * @param int[] $values
-     * @param $expectations
-     * @return int|number
+     * @param int[] $expectations
      * @throws \Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage
      */
     public function calculateDiceWorks($values, $expectations)
@@ -38,8 +37,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @dataProvider valuesProvider
      *
      * @param int[] $values
-     * @param $expectations
-     * @return int|number
+     * @param int[] $expectations
      * @throws \Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage
      */
     public function calculateRecognitionWorks($values, $expectations)
@@ -60,8 +58,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @dataProvider valuesProvider
      *
      * @param int[] $values
-     * @param $expectations
-     * @return int|number
+     * @param int[] $expectations
      * @throws \Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage
      */
     public function calculateRecognitionDiceWorks($values, $expectations)
@@ -77,6 +74,48 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
         $result = CalculatorSeventhSea::seventhSeaCalculateRecognitionDice($values, $currentState);
 
         $this->assertEquals($expectation, $result);
+    }
+
+    /**
+     * @test
+     * @dataProvider valuesProvider
+     *
+     * @param int[] $values
+     * @param int[] $expectations
+     * @throws \Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage
+     */
+    public function calculateDiceFailsWithoutExtremes($values, $expectations)
+    {
+        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage');
+        CalculatorSeventhSea::seventhSeaCalculateDice($values, []);
+    }
+
+    /**
+     * @test
+     * @dataProvider valuesProvider
+     *
+     * @param int[] $values
+     * @param int[] $expectations
+     * @throws \Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage
+     */
+    public function calculateRecognitionValueFailsWithoutExtremes($values, $expectations)
+    {
+        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage');
+        CalculatorSeventhSea::seventhSeaCalculateRecognitionValue($values, []);
+    }
+
+    /**
+     * @test
+     * @dataProvider valuesProvider
+     *
+     * @param int[] $values
+     * @param int[] $expectations
+     * @throws \Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage
+     */
+    public function calculateRecognitionDiceFailsWithoutExtremes($values, $expectations)
+    {
+        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage');
+        CalculatorSeventhSea::seventhSeaCalculateRecognitionDice($values, []);
     }
 
     public function valuesProvider()

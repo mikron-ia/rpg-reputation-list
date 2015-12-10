@@ -2,9 +2,8 @@
 
 namespace Mikron\ReputationList\Domain\ValueObject;
 
-use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
+use Mikron\ReputationList\Domain\Exception\ErroneousComponentException;
 use Mikron\ReputationList\Domain\Exception\MissingComponentException;
-use Mikron\ReputationList\Domain\Service\CalculatorGeneric;
 
 /**
  * Class ReputationValues - value object responsible for processing and storing pure numbers associated with Reputation
@@ -36,6 +35,7 @@ class ReputationValues
     /**
      * Calculates more advanced derived values
      * @param $methodsToUse
+     * @throws ErroneousComponentException
      * @throws MissingComponentException
      */
     public function calculate($methodsToUse)
@@ -44,7 +44,7 @@ class ReputationValues
             $explodedMethod = explode('.', $packMethod);
 
             if (!isset($explodedMethod[0]) || !isset($explodedMethod[1])) {
-                throw new MissingComponentException(
+                throw new ErroneousComponentException(
                     "Incorrect method",
                     "Method $packMethod does not have class name or proper name"
                 );

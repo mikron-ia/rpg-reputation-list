@@ -18,7 +18,7 @@ class ReputationValuesTest extends PHPUnit_Framework_TestCase
      */
     public function calculateComplexFailsIfMethodNameLacksClass()
     {
-        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\MissingComponentException');
+        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\ErroneousComponentException');
         $reputationValues = new \Mikron\ReputationList\Domain\ValueObject\ReputationValues([], []);
 
         $reputationValues->calculate(['methodWithoutAClass']);

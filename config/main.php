@@ -23,4 +23,10 @@ return [
             'auth-simple' => 'simple',
         ],
     ],
+    'calculation' => [
+        'generic' => [
+            'calculateLowestAndHighest',
+            'calculateAbsolute'
+        ],
+    ],
 ];

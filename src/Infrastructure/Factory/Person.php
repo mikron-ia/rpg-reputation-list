@@ -74,40 +74,43 @@ final class Person
      * @param StorageEngine $connection
      * @param ReputationNetwork[] $reputationNetworksList
      * @param int $dbId
+     * @param $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
-    public function retrievePersonFromDbById($connection, $reputationNetworksList, $dbId)
+    public function retrievePersonFromDbById($connection, $reputationNetworksList, $dbId, $methodsToCalculate)
     {
         $personStorage = new StorageForPerson($connection);
         $personWrapped = $personStorage->retrieveById($dbId);
 
-        return $this->unwrapPerson($personWrapped, $connection, $reputationNetworksList);
+        return $this->unwrapPerson($personWrapped, $connection, $reputationNetworksList, $methodsToCalculate);
     }
 
     /**
      * @param StorageEngine $connection
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string $key
+     * @param $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
-    public function retrievePersonFromDbByKey($connection, $reputationNetworksList, $key)
+    public function retrievePersonFromDbByKey($connection, $reputationNetworksList, $key, $methodsToCalculate)
     {
         $personStorage = new StorageForPerson($connection);
         $personWrapped = $personStorage->retrieveByKey($key);
 
-        return $this->unwrapPerson($personWrapped, $connection, $reputationNetworksList);
+        return $this->unwrapPerson($personWrapped, $connection, $reputationNetworksList, $methodsToCalculate);
     }
 
     /**
      * @param array $personWrapped
      * @param StorageEngine $connection
      * @param ReputationNetwork[] $reputationNetworksList
+     * @param $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
-    public function unwrapPerson($personWrapped, $connection, $reputationNetworksList)
+    public function unwrapPerson($personWrapped, $connection, $reputationNetworksList, $methodsToCalculate)
     {
         if (!empty($personWrapped)) {
             $personUnwrapped = array_pop($personWrapped);
@@ -122,7 +125,7 @@ final class Person
                 $reputationNetworksList,
                 $personDbId
             );
-            $personReputations = $reputationFactory->createFromReputationEvents($personReputationEvents);
+            $personReputations = $reputationFactory->createFromReputationEvents($personReputationEvents, $methodsToCalculate);
 
             $person = $this->createFromSingleArray(
                 $personUnwrapped['person_id'],

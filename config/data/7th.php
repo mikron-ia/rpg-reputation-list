@@ -14,4 +14,11 @@ return [
          */
         'reputations' => []
     ],
+    'calculation' => [
+        'seventhSea' => [
+            'seventhSeaCalculateDice',
+            'seventhSeaCalculateRecognitionValue',
+            'seventhSeaCalculateRecognitionDice'
+        ]
+    ]
 ];

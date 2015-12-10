@@ -17,7 +17,7 @@ $app->get(
 
         if ($authentication->isAuthenticated()) {
             $connection = $connectionFactory->getConnection();
-            $person = $personFactory->retrievePersonFromDbById($connection, $app['networks'], $id);
+            $person = $personFactory->retrievePersonFromDbById($connection, $app['networks'], $id, $app['config']['calculation']);
 
             $output = new \Mikron\ReputationList\Domain\Service\Output(
                 "Personal profile",
@@ -47,7 +47,7 @@ $app->get(
 
         if ($authentication->isAuthenticated()) {
             $connection = $connectionFactory->getConnection();
-            $person = $personFactory->retrievePersonFromDbByKey($connection, $app['networks'], $key);
+            $person = $personFactory->retrievePersonFromDbByKey($connection, $app['networks'], $key, $app['config']['calculation']);
 
             $output = new \Mikron\ReputationList\Domain\Service\Output(
                 "Personal profile",

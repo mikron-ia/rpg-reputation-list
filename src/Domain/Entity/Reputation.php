@@ -30,16 +30,25 @@ class Reputation implements Displayable
     private $value;
 
     /**
+     * @var string[][]
+     */
+    private $methodsToCalculate;
+
+    /**
      * Reputation constructor.
      * @param ReputationNetwork $reputationNetwork
      * @param ReputationEvent[] $reputationEvents
+     * @param \string[][] $methodsToCalculate
      */
-    public function __construct(ReputationNetwork $reputationNetwork, array $reputationEvents)
+    public function __construct(ReputationNetwork $reputationNetwork, array $reputationEvents, array $methodsToCalculate)
     {
         $this->reputationNetwork = $reputationNetwork;
         $this->reputationEvents = $reputationEvents;
+        $this->methodsToCalculate = $methodsToCalculate;
+
         $this->value = $this->calculateValue();
     }
+
 
     /**
      * @return int Sum of all reputation event values
@@ -52,7 +61,7 @@ class Reputation implements Displayable
             $values[] = $repEvent->getValue();
         }
 
-        $value = new ReputationValues($values);
+        $value = new ReputationValues($values, $this->methodsToCalculate);
 
         return $value;
     }

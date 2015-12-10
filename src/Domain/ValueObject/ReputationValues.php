@@ -33,7 +33,7 @@ class ReputationValues
         $this->values = $values;
 
         $this->results = CalculatorGeneric::calculateSimple($this->values, []);
-
+/*
         $methodsToUse = [
             'generic' => [
                 'calculateLowestAndHighest',
@@ -45,7 +45,7 @@ class ReputationValues
                 'seventhSeaCalculateRecognitionDice'
             ]
         ];
-
+*/
         $this->calculateComplex($methodsToUse);
     }
 

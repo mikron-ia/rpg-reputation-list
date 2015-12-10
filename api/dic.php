@@ -34,3 +34,10 @@ $app['authenticationTokensForManager'] = $app->share(function ($app) {
 
 /* URL generator */
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+/* Logging system */
+$app->register(new \Silex\Provider\MonologServiceProvider(), array(
+    'monolog.logfile' => __DIR__.'/../build/log/complete.log',
+    'monolog.name' => "rpg-reputation",
+    'monolog.level'=> \Monolog\Logger::WARNING
+));

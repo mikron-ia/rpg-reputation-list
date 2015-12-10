@@ -72,45 +72,48 @@ final class Person
 
     /**
      * @param StorageEngine $connection
+     * @param $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param int $dbId
      * @param string[] $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
-    public function retrievePersonFromDbById($connection, $reputationNetworksList, $dbId, $methodsToCalculate)
+    public function retrievePersonFromDbById($connection, $logger, $reputationNetworksList, $dbId, $methodsToCalculate)
     {
         $personStorage = new StorageForPerson($connection);
         $personWrapped = $personStorage->retrieveById($dbId);
 
-        return $this->unwrapPerson($personWrapped, $connection, $reputationNetworksList, $methodsToCalculate);
+        return $this->unwrapPerson($personWrapped, $connection, $logger, $reputationNetworksList, $methodsToCalculate);
     }
 
     /**
      * @param StorageEngine $connection
+     * @param \Monolog\Logger $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string $key
      * @param string[] $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
-    public function retrievePersonFromDbByKey($connection, $reputationNetworksList, $key, $methodsToCalculate)
+    public function retrievePersonFromDbByKey($connection, $logger, $reputationNetworksList, $key, $methodsToCalculate)
     {
         $personStorage = new StorageForPerson($connection);
         $personWrapped = $personStorage->retrieveByKey($key);
 
-        return $this->unwrapPerson($personWrapped, $connection, $reputationNetworksList, $methodsToCalculate);
+        return $this->unwrapPerson($personWrapped, $connection, $logger, $reputationNetworksList, $methodsToCalculate);
     }
 
     /**
      * @param array $personWrapped
      * @param StorageEngine $connection
+     * @param \Monolog\Logger $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string[] $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
-    public function unwrapPerson($personWrapped, $connection, $reputationNetworksList, $methodsToCalculate)
+    public function unwrapPerson($personWrapped, $connection, $logger, $reputationNetworksList, $methodsToCalculate)
     {
         if (!empty($personWrapped)) {
             $personUnwrapped = array_pop($personWrapped);
@@ -122,6 +125,7 @@ final class Person
 
             $personReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb(
                 $connection,
+                $logger,
                 $reputationNetworksList,
                 $personDbId
             );

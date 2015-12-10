@@ -50,11 +50,13 @@ final class ReputationEvent
 
     /**
      * @param StorageEngine $connection
+     * @param \Monolog\Logger $logger
      * @param $reputationNetworksList
      * @param int $personId
      * @return array
+     * @throws RecordNotFoundException
      */
-    public function retrieveReputationEventsForPersonFromDb($connection, $reputationNetworksList, $personId)
+    public function retrieveReputationEventsForPersonFromDb($connection, $logger, $reputationNetworksList, $personId)
     {
         $repEventsStorage = new StorageForReputationEvent($connection);
         $repEventsWrapped = $repEventsStorage->retrieveByPerson($personId);
@@ -63,13 +65,17 @@ final class ReputationEvent
 
         if (!empty($repEventsWrapped)) {
             foreach ($repEventsWrapped as $repEventUnwrapped) {
-                $repEvents[] = $this->createFromSingleArray(
-                    $reputationNetworksList,
-                    $repEventUnwrapped['reputation_event_id'],
-                    $repEventUnwrapped['rep_network_code'],
-                    $repEventUnwrapped['change'],
-                    null
-                );
+                try {
+                    $repEvents[] = $this->createFromSingleArray(
+                        $reputationNetworksList,
+                        $repEventUnwrapped['reputation_event_id'],
+                        $repEventUnwrapped['rep_network_code'],
+                        $repEventUnwrapped['change'],
+                        null
+                    );
+                } catch(RecordNotFoundException $e) {
+                    $logger->addWarning("Source data error (RecordNotFoundException): ".$e->getMessage());
+                }
             }
         }
 

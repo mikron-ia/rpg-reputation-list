@@ -10,7 +10,7 @@ class ReputationValuesTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\MissingComponentException');
         $reputationValues = new \Mikron\ReputationList\Domain\ValueObject\ReputationValues([], []);
 
-        $reputationValues->calculateComplex(['ClassThatDoesNotExist.methodInClassThatDoesNotExist']);
+        $reputationValues->calculate(['ClassThatDoesNotExist.methodInClassThatDoesNotExist']);
     }
 
     /**
@@ -21,6 +21,6 @@ class ReputationValuesTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\MissingComponentException');
         $reputationValues = new \Mikron\ReputationList\Domain\ValueObject\ReputationValues([], []);
 
-        $reputationValues->calculateComplex(['methodWithoutAClass']);
+        $reputationValues->calculate(['methodWithoutAClass']);
     }
 }

@@ -20,7 +20,7 @@ class ReputationValues
     /**
      * @var int[] All values derived from $values
      */
-    private $results;
+    private $results = [];
 
     /**
      * ReputationValues constructor.
@@ -30,8 +30,7 @@ class ReputationValues
     public function __construct(array $values, array $methodsToUse = [])
     {
         $this->values = $values;
-        $this->results = CalculatorGeneric::calculateSimple($this->values, []);
-        $this->calculateComplex($methodsToUse);
+        $this->calculate($methodsToUse);
     }
 
     /**
@@ -39,7 +38,7 @@ class ReputationValues
      * @param $methodsToUse
      * @throws MissingComponentException
      */
-    public function calculateComplex($methodsToUse)
+    public function calculate($methodsToUse)
     {
         foreach ($methodsToUse as $packMethod) {
             $explodedMethod = explode('.', $packMethod);

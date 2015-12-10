@@ -24,7 +24,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
             'dice' => $expectations['dice']
         ];
 
-        $currentState = CalculatorGeneric::calculateSimple($values, [])
+        $currentState = CalculatorGeneric::calculateBasic($values, [])
             + CalculatorGeneric::calculateLowestAndHighest($values, []);
 
         $result = CalculatorSeventhSea::calculateDice($values, $currentState);
@@ -46,7 +46,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
             'recognition' => $expectations['recognition']
         ];
 
-        $currentState = CalculatorGeneric::calculateSimple($values, [])
+        $currentState = CalculatorGeneric::calculateBasic($values, [])
             + CalculatorGeneric::calculateAbsolute($values, []);
         $result = CalculatorSeventhSea::calculateRecognitionValue($values, $currentState);
 
@@ -67,7 +67,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
             'recognitionDice' => $expectations['recognitionDice']
         ];
 
-        $currentStateBase = CalculatorGeneric::calculateSimple($values, [])
+        $currentStateBase = CalculatorGeneric::calculateBasic($values, [])
             + CalculatorGeneric::calculateAbsolute($values, []);
         $currentState = CalculatorSeventhSea::calculateRecognitionValue($values, $currentStateBase);
 

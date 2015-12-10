@@ -6,6 +6,11 @@ use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
 
 /**
  * Class CalculatorSeventhSea
+ *
+ * seventhSea.calculateDice - calculates reputation dice based on balance and local extremes
+ * seventhSea.calculateRecognitionValue - calculates recognition value (fame of the person)
+ * seventhSea.calculateRecognitionDice - calculates recognition dice (used in tests of recognition)
+ *
  * @package Mikron\ReputationList\Domain\Service\Calculator
  */
 class CalculatorSeventhSea

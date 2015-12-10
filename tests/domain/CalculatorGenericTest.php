@@ -43,10 +43,10 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
      * @param int $highest
      * @param int $abs
      */
-    public function calculateBasicsCalculatesCorrectly($values, $currentState, $basics, $lowest, $highest, $abs)
+    public function calculateBasicCalculatesCorrectly($values, $currentState, $basics, $lowest, $highest, $abs)
     {
         $expectation = $basics;
-        $result = CalculatorGeneric::calculateSimple($values, $currentState);
+        $result = CalculatorGeneric::calculateBasic($values, $currentState);
 
         $this->assertEquals($expectation, $result);
     }

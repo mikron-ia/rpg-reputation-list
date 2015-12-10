@@ -4,6 +4,12 @@ namespace Mikron\ReputationList\Domain\Service;
 
 /**
  * Class CalculatorGeneric - basic calculations that are likely to be common
+ *
+ * Contains:
+ * generic.calculateBasic - gives sum of positive values, negative values and total balance
+ * generic.calculateLowestAndHighest - gives local extremes (minimums and maximums)
+ * generic.calculateAbsolute - gives sum of absolute values
+ *
  * @package Mikron\ReputationList\Domain\Service
  */
 class CalculatorGeneric
@@ -14,7 +20,7 @@ class CalculatorGeneric
      * @param $currentState
      * @return \int[]
      */
-    public static function calculateSimple($values, $currentState)
+    public static function calculateBasic($values, $currentState)
     {
         $negative = 0;
         $positive = 0;

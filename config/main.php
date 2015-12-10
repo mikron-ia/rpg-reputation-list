@@ -6,6 +6,11 @@ return [
         "title" => "Reputation Board",
         "welcome" => "Welcome to Reputation Board",
     ],
+    /*
+     * This describes list of database engines available
+     *
+     * THIS PART SHOULD NOT BE CHANGED BY OTHER CONFIG FILES
+     */
     "databaseReference" => [
         'mysql' => "MySql",
         'mongodb' => "MongoDb",
@@ -19,16 +24,25 @@ return [
             'allowedStrategies' => [],
             'settingsByStrategy' => []
         ],
+        /*
+         * This describes list of authentication ways, along with their class suffixes
+         *
+         * THIS PART SHOULD NOT BE CHANGED BY OTHER CONFIG FILES
+         */
         'authenticationMethodReference' => [
             'auth-simple' => 'simple',
         ],
     ],
     /*
-     * Methods of reputation calculations used by the system, in form of `pack.methodName`
-     * They all receive list of reputation numbers, and current state - all already calculated data
-     * They are executed in the order they are listed, which matters if previous ones provide data for latter ones
+     * Methods to calculate specific values derived from raw reputation numbers, in form of `pack.methodName`
      *
-     * All systems should list a complete list, not relaying on previous ones
+     * They all receive list of reputation numbers and data calculated by previous methods; they are executed in
+     * the order they are listed
+     *
+     * All config files should list a complete list they intend to use, not relying on those in higher config files;
+     * due to design decision, this section is completely overwritten if next level config file also has one
      */
-    'calculation' => [],
+    'calculation' => [
+        'generic.calculateBasic'
+    ],
 ];

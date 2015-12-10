@@ -15,7 +15,7 @@ class CalculatorSeventhSea
      * @todo Calculation of group rep that includes influence reputation - in this or in separate method
      * @param $values
      * @param $currentState
-     * @return array
+     * @return int[]
      * @throws ExceptionWithSafeMessage
      */
     public static function seventhSeaCalculateDice($values, $currentState)
@@ -43,10 +43,16 @@ class CalculatorSeventhSea
             }
         }
         return [
-            'dice' => $dice
+            'dice' => (int)$dice
         ];
     }
 
+    /**
+     * @param int[] $values
+     * @param int[] $currentState
+     * @return int[]
+     * @throws ExceptionWithSafeMessage
+     */
     public static function seventhSeaCalculateRecognitionValue($values, $currentState)
     {
         if (!isset($currentState['absolute'])) {
@@ -61,6 +67,12 @@ class CalculatorSeventhSea
         ];
     }
 
+    /**
+     * @param int[] $values
+     * @param int[] $currentState
+     * @return int[]
+     * @throws ExceptionWithSafeMessage
+     */
     public static function seventhSeaCalculateRecognitionDice($values, $currentState)
     {
         if (!isset($currentState['recognition'])) {

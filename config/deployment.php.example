@@ -30,4 +30,10 @@ return [
             ]
         ],
     ],
+    'logging' => [
+        'logfile' => __DIR__.'/../build/log/complete.log',
+        'projectNameForLogging' => 'rpg-reputation-list',
+        'logLevel' => \Monolog\Logger::WARNING,
+        'logLevelDebug' => \Monolog\Logger::NOTICE,
+    ],
 ];

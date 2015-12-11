@@ -37,7 +37,7 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 /* Logging system */
 $app->register(new \Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile' => __DIR__.'/../build/log/complete.log',
-    'monolog.name' => "rpg-reputation",
-    'monolog.level'=> \Monolog\Logger::WARNING
+    'monolog.logfile' => $app['config']['logging']['logfile'],
+    'monolog.name' => $app['config']['logging']['projectNameForLogging'],
+    'monolog.level'=> $app['config']['debug']?$app['config']['logging']['logLevel']:$app['config']['logging']['logLevelDebug'],
 ));

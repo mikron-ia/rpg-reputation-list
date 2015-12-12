@@ -9,7 +9,7 @@ use Mikron\ReputationList\Domain\Exception\MissingComponentException;
  * Class ReputationValues - value object responsible for processing and storing pure numbers associated with Reputation
  * @package Mikron\ReputationList\Domain\ValueObject
  */
-class ReputationValues
+final class ReputationValues
 {
     /**
      * @var int[] Reputation values

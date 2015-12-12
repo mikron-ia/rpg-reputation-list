@@ -1,19 +1,19 @@
 engines:
   csslint:
     enabled: true
-  phpmd:
-    enabled: true
-    config:
-      file_extensions: "php"
-      rulesets: "codesize,controversial,design,unusedcode"
-  phpcodesniffer:
-    enabled: true
   duplication:
     enabled: true
     config:
       languages:
       - javascript
       - php
+  phpcodesniffer:
+    enabled: true
+  phpmd:
+    enabled: true
+    config:
+      file_extensions: "php"
+      rulesets: "codesize,controversial,design,unusedcode"
 
 ratings:
   paths:

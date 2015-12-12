@@ -12,7 +12,7 @@ use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
  *
  * @package Mikron\ReputationList\Domain\Entity
  */
-class Event implements Displayable
+final class Event implements Displayable
 {
     /**
      * @var StorageIdentification

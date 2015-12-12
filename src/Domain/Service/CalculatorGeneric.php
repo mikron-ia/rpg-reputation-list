@@ -12,7 +12,7 @@ namespace Mikron\ReputationList\Domain\Service;
  *
  * @package Mikron\ReputationList\Domain\Service
  */
-class CalculatorGeneric
+final class CalculatorGeneric
 {
     /**
      * Calculates basic sums

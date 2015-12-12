@@ -12,7 +12,7 @@ use Mikron\ReputationList\Domain\ValueObject\ReputationValues;
  *
  * @package Mikron\ReputationList\Domain\Entity
  */
-class Reputation implements Displayable
+final class Reputation implements Displayable
 {
     /**
      * @var ReputationNetwork Network the Reputation belongs to

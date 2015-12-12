@@ -32,6 +32,10 @@ final class Person implements Displayable
      * @var Reputation[] Reputations of the person
      */
     private $reputations;
+    /**
+     * @var ReputationEvent[]
+     */
+    private $reputationEvents;
 
     /**
      * Person constructor
@@ -40,13 +44,15 @@ final class Person implements Displayable
      * @param string $name
      * @param $description
      * @param Reputation[] $reputations
+     * @param array $reputationEvents
      */
-    public function __construct($identification, $name, $description, array $reputations)
+    public function __construct($identification, $name, $description, array $reputations, array $reputationEvents)
     {
         $this->identification = $identification;
         $this->name = $name;
         $this->description = $description;
         $this->reputations = $reputations;
+        $this->reputationEvents = $reputationEvents;
     }
 
     /**
@@ -102,13 +108,35 @@ final class Person implements Displayable
     }
 
     /**
+     * @return ReputationEvent[]
+     */
+    public function getReputationEvents()
+    {
+        return $this->reputationEvents;
+    }
+
+    /**
+     * @return ReputationEvent[]
+     */
+    public function getReputationEventsCompleteData()
+    {
+        $reputationEventsCompleteData = [];
+
+        foreach ($this->reputationEvents as $reputationEvent) {
+            $reputationEventsCompleteData[] = $reputationEvent->getCompleteData();
+        }
+
+        return $reputationEventsCompleteData;
+    }
+
+    /**
      * @return array Simple representation of the object content, fit for basic display
      */
     public function getSimpleData()
     {
         return [
-            "name" => $this->getName(),
-            "key" => $this->identification->getUuid(),
+            'name' => $this->getName(),
+            'key' => $this->identification->getUuid(),
         ];
     }
 
@@ -118,10 +146,11 @@ final class Person implements Displayable
     public function getCompleteData()
     {
         $data = [
-            "name" => $this->getName(),
-            "key" => $this->getKey(),
-            "description" => $this->getDescription(),
-            "reputations" => $this->getReputationCompleteData()
+            'name' => $this->getName(),
+            'key' => $this->getKey(),
+            'description' => $this->getDescription(),
+            'reputations' => $this->getReputationCompleteData(),
+            'reputationEvents' => $this->getReputationEventsCompleteData(),
         ];
 
         return $data;

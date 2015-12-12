@@ -22,10 +22,18 @@ class PersonFactoryTest extends PHPUnit_Framework_TestCase
      * @param $name
      * @param $description
      * @param $reputations
+     * @param $reputationEvents
      */
-    public function arrayFactoryReturnsPerson($dbId, $key, $name, $description, $reputations)
+    public function arrayFactoryReturnsPerson($dbId, $key, $name, $description, $reputations, $reputationEvents)
     {
-        $person = $this->personFactory->createFromSingleArray($dbId, $key, $name, $description, $reputations);
+        $person = $this->personFactory->createFromSingleArray(
+            $dbId,
+            $key,
+            $name,
+            $description,
+            $reputations,
+            $reputationEvents
+        );
         $this->assertInstanceOf("Mikron\\ReputationList\\Domain\\Entity\\Person", $person);
     }
 
@@ -48,6 +56,7 @@ class PersonFactoryTest extends PHPUnit_Framework_TestCase
                 "key" => "0000000000000000000000000000000000000000",
                 "name" => "Test Person",
                 "description" => "Test Description",
+                [],
                 []
             ],
         ];
@@ -63,6 +72,7 @@ class PersonFactoryTest extends PHPUnit_Framework_TestCase
                         "key" => "0000000000000000000000000000000000000001",
                         "name" => "Test Person",
                         "description" => "Test Description",
+                        [],
                         []
                     ],
                     [
@@ -70,6 +80,7 @@ class PersonFactoryTest extends PHPUnit_Framework_TestCase
                         "key" => "0000000000000000000000000000000000000002",
                         "name" => "Test Person",
                         "description" => "Test Description",
+                        [],
                         []
                     ],
                     [
@@ -77,6 +88,7 @@ class PersonFactoryTest extends PHPUnit_Framework_TestCase
                         "key" => "0000000000000000000000000000000000000003",
                         "name" => "Test Person",
                         "description" => "Test Description",
+                        [],
                         []
                     ],
                     [
@@ -84,6 +96,7 @@ class PersonFactoryTest extends PHPUnit_Framework_TestCase
                         "key" => "0000000000000000000000000000000000000004",
                         "name" => "Test Person",
                         "description" => "Test Description",
+                        [],
                         []
                     ],
                     [
@@ -91,6 +104,7 @@ class PersonFactoryTest extends PHPUnit_Framework_TestCase
                         "key" => "0000000000000000000000000000000000000005",
                         "name" => "Test Person",
                         "description" => "Test Description",
+                        [],
                         []
                     ],
                 ]

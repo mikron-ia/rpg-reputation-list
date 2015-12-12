@@ -22,7 +22,7 @@ final class Reputation
     /**
      * @param $reputationEventsWild
      * @param string[] $methodsToCalculate
-     * @return \Mikron\ReputationList\Domain\Entity\Reputation ;
+     * @return \Mikron\ReputationList\Domain\Entity\Reputation[]
      */
     public function createFromReputationEvents($reputationEventsWild, $methodsToCalculate)
     {

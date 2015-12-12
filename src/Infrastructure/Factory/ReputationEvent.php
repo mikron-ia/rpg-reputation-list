@@ -5,7 +5,6 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity\Event;
 use Mikron\ReputationList\Domain\Entity\ReputationEvent as ReputationEventEntity;
-use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
 use Mikron\ReputationList\Domain\Exception\RecordNotFoundException;
 use Mikron\ReputationList\Infrastructure\Factory\StorageIdentification as StorageIdentificationFactory;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForReputationEvent;
@@ -53,7 +52,7 @@ final class ReputationEvent
      * @param \Monolog\Logger $logger
      * @param $reputationNetworksList
      * @param int $personId
-     * @return array
+     * @return ReputationEventEntity[]
      * @throws RecordNotFoundException
      */
     public function retrieveReputationEventsForPersonFromDb($connection, $logger, $reputationNetworksList, $personId)

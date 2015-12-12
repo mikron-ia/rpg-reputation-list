@@ -12,7 +12,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $idFactory = new \Mikron\ReputationList\Infrastructure\Factory\StorageIdentification();
-        $this->identification = $idFactory->createFromData(1, "Test Key");
+        $this->identification = $idFactory->createFromData(1, 'Test Key');
     }
 
     /**
@@ -20,7 +20,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function identificationIsCorrect()
     {
-        $person = new Person($this->identification, "Test Name", "Test Description", []);
+        $person = new Person($this->identification, 'Test Name', 'Test Description', [], []);
         $this->assertEquals($this->identification, $person->getIdentification());
     }
 
@@ -29,8 +29,8 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function nameIsCorrect()
     {
-        $person = new Person($this->identification, "Test Name", "Test Description", []);
-        $this->assertEquals("Test Name", $person->getName());
+        $person = new Person($this->identification, 'Test Name', 'Test Description', [], []);
+        $this->assertEquals('Test Name', $person->getName());
     }
 
     /**
@@ -40,8 +40,8 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function reputationsAreCorrectType($reputations)
     {
-        $person = new Person($this->identification, "Test Name", "Test Description", $reputations);
-        $this->assertContainsOnlyInstancesOf("Mikron\\ReputationList\\Domain\\Entity\\Reputation",
+        $person = new Person($this->identification, 'Test Name', 'Test Description', $reputations, []);
+        $this->assertContainsOnlyInstancesOf('Mikron\\ReputationList\\Domain\\Entity\\Reputation',
             $person->getReputations());
     }
 
@@ -50,8 +50,8 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function descriptionIsCorrect()
     {
-        $person = new Person($this->identification, "Test Name", "Test Description", []);
-        $this->assertEquals("Test Description", $person->getDescription());
+        $person = new Person($this->identification, 'Test Name', 'Test Description', [], []);
+        $this->assertEquals('Test Description', $person->getDescription());
     }
 
     /**
@@ -60,11 +60,11 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function simpleDataIsCorrect()
     {
-        $person = new Person($this->identification, "Test Name", "Test Description", []);
+        $person = new Person($this->identification, 'Test Name', 'Test Description', [], []);
 
         $expected = [
-            "name" => $person->getName(),
-            "key" => $person->getKey(),
+            'name' => $person->getName(),
+            'key' => $person->getKey(),
         ];
 
         $this->assertEquals($expected, $person->getSimpleData());
@@ -80,13 +80,14 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function completeDataIsCorrect($reputations)
     {
-        $person = new Person($this->identification, "Test Name", "Test Description", $reputations);
+        $person = new Person($this->identification, 'Test Name', 'Test Description', $reputations, []);
 
         $expected = [
-            "name" => $person->getName(),
-            "key" => $person->getKey(),
-            "description" => $person->getDescription(),
-            "reputations" => $person->getReputationCompleteData()
+            'name' => $person->getName(),
+            'key' => $person->getKey(),
+            'description' => $person->getDescription(),
+            'reputations' => $person->getReputationCompleteData(),
+            'reputationEvents' => $person->getReputationEvents()
         ];
 
         $this->assertEquals($expected, $person->getCompleteData());
@@ -94,8 +95,8 @@ class PersonTest extends PHPUnit_Framework_TestCase
 
     public function reputationDataProvider()
     {
-        $repNetCivil = new ReputationNetwork("c", ["name" => "CivicNet", "description" => "Corporations"]);
-        $repNetMilitary = new ReputationNetwork("m", ["name" => "MilNet", "description" => "Mercenaries"]);
+        $repNetCivil = new ReputationNetwork('c', ['name' => 'CivicNet', 'description' => 'Corporations']);
+        $repNetMilitary = new ReputationNetwork('m', ['name' => 'MilNet', 'description' => 'Mercenaries']);
         $calculators = [];
         
         return [

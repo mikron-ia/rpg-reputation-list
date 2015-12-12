@@ -1,41 +1,13 @@
 <?php
 
 use Mikron\ReputationList\Domain\Exception\AuthenticationException;
-
-/* Reputation data of a particular person via DB ID */
-$app->get(
-    '/person/id/{id}/{authenticationMethod}/{authenticationKey}/',
-    function ($id, $authenticationMethod, $authenticationKey) use ($app) {
-        $connectionFactory = new \Mikron\ReputationList\Infrastructure\Storage\ConnectorFactory($app['config']);
-        $personFactory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
-        $authentication = new \Mikron\ReputationList\Infrastructure\Security\Authentication(
-            $app['config']['authentication'],
-            'hub',
-            $authenticationMethod,
-            $authenticationKey
-        );
-
-        if ($authentication->isAuthenticated()) {
-            $connection = $connectionFactory->getConnection();
-            $person = $personFactory->retrievePersonFromDbById($connection, $app['monolog'], $app['networks'], $id, $app['config']['calculation']);
-
-            $output = new \Mikron\ReputationList\Domain\Service\Output(
-                "Personal profile",
-                "This is a reputation characteristic of a chosen person",
-                $person->getCompleteData()
-            );
-
-            return $app->json($output->getArrayForJson());
-        } else {
-            throw new AuthenticationException("Authentication code does not check out");
-        }
-    }
-)->bind('personById');
+use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
 
 /* Reputation data of a particular person via the key */
 $app->get(
-    '/person/key/{key}/{authenticationMethod}/{authenticationKey}/',
-    function ($key, $authenticationMethod, $authenticationKey) use ($app) {
+    '/person/{identificationMethod}/{identificationKey}/{authenticationMethod}/{authenticationKey}/',
+    function ($identificationMethod, $identificationKey, $authenticationMethod, $authenticationKey) use ($app) {
+        /* Prepare the factories and tokens */
         $connectionFactory = new \Mikron\ReputationList\Infrastructure\Storage\ConnectorFactory($app['config']);
         $personFactory = new \Mikron\ReputationList\Infrastructure\Factory\Person();
         $authentication = new \Mikron\ReputationList\Infrastructure\Security\Authentication(
@@ -45,22 +17,36 @@ $app->get(
             $authenticationKey
         );
 
-        if ($authentication->isAuthenticated()) {
-            $connection = $connectionFactory->getConnection();
-            $person = $personFactory->retrievePersonFromDbByKey($connection, $app['monolog'], $app['networks'], $key, $app['config']['calculation']);
-
-            $output = new \Mikron\ReputationList\Domain\Service\Output(
-                "Personal profile",
-                "This is a reputation characteristic of a chosen person",
-                $person->getCompleteData()
+        /* Check credentials */
+        if (!$authentication->isAuthenticated()) {
+            throw new AuthenticationException(
+                "Authentication code does not check out",
+                "Authentication code $authenticationKey for method $authenticationMethod does not check out"
             );
-
-            return $app->json($output->getArrayForJson());
-        } else {
-            throw new AuthenticationException("Authentication code does not check out");
         }
+
+        /* Verify whether identification method makes sense */
+        $method = "retrievePersonFromDbBy" . ucfirst($identificationMethod);
+        if (!method_exists($personFactory, $method)) {
+            throw new ExceptionWithSafeMessage(
+                'Error: "' . $identificationMethod . '" is not a valid way for object identification'
+            );
+        }
+
+        /* Prepare data and start the factory */
+        $connection = $connectionFactory->getConnection();
+        $person = $personFactory->$method($connection, $app['monolog'], $app['networks'], $identificationKey,
+            $app['config']['calculation']);
+
+        /* Cook and return the JSON */
+        $output = new \Mikron\ReputationList\Domain\Service\Output(
+            "Personal profile",
+            "This is a reputation characteristic of a chosen person",
+            $person->getCompleteData()
+        );
+        return $app->json($output->getArrayForJson());
     }
-)->bind('personByKey');
+)->bind('personDefault');
 
 /* Redirect for direct route to person */
 $app->get(
@@ -68,9 +54,10 @@ $app->get(
     function ($key, $authenticationMethod, $authenticationKey) use ($app) {
         return $app->redirect(
             $app["url_generator"]->generate(
-                "personByKey",
+                "personDefault",
                 [
-                    'key' => $key,
+                    'identificationMethod' => 'key',
+                    'identificationKey' => $key,
                     'authenticationMethod' => $authenticationMethod,
                     'authenticationKey' => $authenticationKey
                 ]

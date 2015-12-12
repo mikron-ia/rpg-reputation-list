@@ -62,7 +62,7 @@ final class MySqlStorageEngine implements StorageEngine
         try {
             $config = new Configuration();
             $this->connection = DriverManager::getConnection($dbConfig, $config);
-            $statement = $this->connection->executeQuery('SELECT 0');
+            $this->connection->executeQuery('SELECT 0');
         } catch (\Exception $e) {
             throw new Exception('Database connection test failed: ' . $e->getMessage());
         }

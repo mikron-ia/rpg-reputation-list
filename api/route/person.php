@@ -35,8 +35,13 @@ $app->get(
 
         /* Prepare data and start the factory */
         $connection = $connectionFactory->getConnection();
-        $person = $personFactory->$method($connection, $app['monolog'], $app['networks'], $identificationKey,
-            $app['config']['calculation']);
+        $person = $personFactory->$method(
+            $connection,
+            $app['monolog'],
+            $app['networks'],
+            $identificationKey,
+            $app['config']['calculation']
+        );
 
         /* Cook and return the JSON */
         $output = new \Mikron\ReputationList\Domain\Service\Output(

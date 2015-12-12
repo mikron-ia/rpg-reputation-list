@@ -111,8 +111,8 @@ final class ReputationEvent implements Displayable
     public function getSimpleData()
     {
         return [
-            "name" => $this->getName(),
-            "value" => $this->getValue()
+            'name' => $this->getName(),
+            'value' => $this->getValue()
         ];
     }
 
@@ -122,10 +122,10 @@ final class ReputationEvent implements Displayable
     public function getCompleteData()
     {
         return [
-            "name" => $this->reputationNetwork->getName(),
-            "code" => $this->reputationNetwork->getCode(),
-            "value" => $this->getValue(),
-            "event" => isset($this->event) ? $this->event->getCompleteData() : null,
+            'name' => $this->reputationNetwork->getName(),
+            'code' => $this->reputationNetwork->getCode(),
+            'value' => $this->getValue(),
+            'event' => isset($this->event) ? $this->event->getCompleteData() : null,
         ];
     }
 }

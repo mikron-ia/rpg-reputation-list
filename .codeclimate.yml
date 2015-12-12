@@ -8,6 +8,12 @@ engines:
       rulesets: "codesize,controversial,design,unusedcode"
   phpcodesniffer:
     enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+      - php
 
 ratings:
   paths:

@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Infrastructure\Storage;
 
+use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Exception\KeyNotSupportedException;
 use Mikron\ReputationList\Domain\Storage\StorageForObject;
 
@@ -12,7 +13,7 @@ use Mikron\ReputationList\Domain\Storage\StorageForObject;
 final class StorageForReputationEvent implements StorageForObject
 {
     /**
-     * @var Storage
+     * @var StorageEngine
      */
     private $storage;
 

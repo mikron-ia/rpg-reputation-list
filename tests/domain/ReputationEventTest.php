@@ -3,14 +3,15 @@
 use Mikron\ReputationList\Domain\Entity\Event;
 use Mikron\ReputationList\Domain\Entity\ReputationEvent;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
-use Mikron\ReputationList\Infrastructure\Factory\StorageIdentification;
+use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
+use Mikron\ReputationList\Infrastructure\Factory\StorageIdentification as StorageIdentificationFactory;
 
 class ReputationEventTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
      * @dataProvider reputationEventWithNoEventData
-     * @param $identification
+     * @param StorageIdentification $identification
      * @param $reputationNetwork
      * @param $value
      * @param $event
@@ -123,7 +124,7 @@ class ReputationEventTest extends PHPUnit_Framework_TestCase
     {
         $reputationNetwork = new ReputationNetwork("c", ["name" => "CivicNet", "description" => "Corporations"]);
 
-        $idFactory = new StorageIdentification();
+        $idFactory = new StorageIdentificationFactory();
         $identification = $idFactory->createFromData(1, null);
 
         return [

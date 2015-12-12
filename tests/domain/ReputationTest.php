@@ -3,6 +3,7 @@
 use Mikron\ReputationList\Domain\Entity\Reputation;
 use Mikron\ReputationList\Domain\Entity\ReputationEvent;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
+use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
 
 class ReputationTest extends PHPUnit_Framework_TestCase
 {
@@ -80,14 +81,14 @@ class ReputationTest extends PHPUnit_Framework_TestCase
             [
                 $reputationNetwork,
                 [
-                    new ReputationEvent(1, $reputationNetwork, 5, null)
+                    new ReputationEvent(new StorageIdentification(1, null), $reputationNetwork, 5, null)
                 ]
             ],
             [
                 $reputationNetwork,
                 [
-                    new ReputationEvent(1, $reputationNetwork, 5, null),
-                    new ReputationEvent(2, $reputationNetwork, 2, null)
+                    new ReputationEvent(new StorageIdentification(1, null), $reputationNetwork, 5, null),
+                    new ReputationEvent(new StorageIdentification(2, null), $reputationNetwork, 2, null)
                 ]
             ],
         ];

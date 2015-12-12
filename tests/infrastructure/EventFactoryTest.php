@@ -58,7 +58,7 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
     public function unwrappingFailsOnEmpty()
     {
         $this->setExpectedException('Mikron\ReputationList\Domain\Exception\EventNotFoundException');
-        $this->eventFactory->unwrapEvent(null, "test");
+        $this->eventFactory->unwrapEvent(null, null);
     }
 
     /**

@@ -39,7 +39,7 @@ final class ReputationNetworkList
     }
 
     /**
-     * @param $listToCompareTo ReputationNetwork[]
+     * @param $listToCompareTo ReputationNetworkList
      * @return ReputationNetwork[]
      */
     public function detectDuplicates($listToCompareTo)
@@ -50,7 +50,7 @@ final class ReputationNetworkList
     }
 
     /**
-     * @param $listToCompareTo ReputationNetwork[]
+     * @param $listToCompareTo ReputationNetworkList
      * @return boolean
      */
     public function areUnique($listToCompareTo)

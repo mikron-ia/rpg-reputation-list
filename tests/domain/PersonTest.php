@@ -41,7 +41,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
     public function reputationsAreCorrectType($reputations)
     {
         $person = new Person($this->identification, 'Test Name', 'Test Description', $reputations, []);
-        $this->assertContainsOnlyInstancesOf('Mikron\\ReputationList\\Domain\\Entity\\Reputation',
+        $this->assertContainsOnlyInstancesOf('Mikron\ReputationList\Domain\Entity\Reputation',
             $person->getReputations());
     }
 

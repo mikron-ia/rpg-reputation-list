@@ -22,6 +22,11 @@ final class Event implements Displayable
     /**
      * @var string
      */
+    private $time;
+
+    /**
+     * @var string
+     */
     private $name;
 
     /**
@@ -30,15 +35,16 @@ final class Event implements Displayable
     private $description;
 
     /**
-     * Event constructor
-     *
-     * @param $identification
+     * Event constructor.
+     * @param StorageIdentification $identification
+     * @param string $time
      * @param string $name
      * @param string $description
      */
-    public function __construct($identification, $name, $description)
+    public function __construct($identification, $time, $name, $description)
     {
         $this->identification = $identification;
+        $this->time = $time;
         $this->name = $name;
         $this->description = $description;
     }
@@ -57,6 +63,14 @@ final class Event implements Displayable
     public function getDbId()
     {
         return $this->identification->getDbId();
+    }
+
+    /**
+     * @return string
+     */
+    public function getTime()
+    {
+        return $this->time;
     }
 
     /**
@@ -91,8 +105,9 @@ final class Event implements Displayable
     public function getCompleteData()
     {
         return [
-            "name" => $this->name,
-            "description" => $this->description
+            "name" => $this->getName(),
+            "description" => $this->getDescription(),
+            "time" => $this->getTime(),
         ];
     }
 }

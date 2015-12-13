@@ -18,7 +18,7 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function identificationIsCorrect()
     {
-        $event = new Event($this->identification, "Test Event", "Test Description");
+        $event = new Event($this->identification, "Test Time", "Test Event", "Test Description");
         $this->assertEquals($this->identification, $event->getIdentification());
     }
 
@@ -27,7 +27,7 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function idIsCorrect()
     {
-        $event = new Event($this->identification, "Test Event", "Test Description");
+        $event = new Event($this->identification, "Test Time", "Test Event", "Test Description");
         $this->assertEquals(1, $event->getDbId());
     }
 
@@ -36,7 +36,7 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function nameIsCorrect()
     {
-        $event = new Event($this->identification, "Test Event", "Test Description");
+        $event = new Event($this->identification, "Test Time", "Test Event", "Test Description");
         $this->assertEquals("Test Event", $event->getName());
     }
 
@@ -45,7 +45,7 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function descriptionIsCorrect()
     {
-        $event = new Event($this->identification, "Test Event", "Test Description");
+        $event = new Event($this->identification, "Test Time", "Test Event", "Test Description");
         $this->assertEquals("Test Description", $event->getDescription());
     }
 
@@ -54,7 +54,7 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function simpleDataIsCorrect()
     {
-        $event = new Event($this->identification, "Test Event", "Test Description");
+        $event = new Event($this->identification, "Test Time", "Test Event", "Test Description");
         $this->assertEquals(["name" => "Test Event"], $event->getSimpleData());
     }
 
@@ -63,7 +63,7 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function completeDataIsCorrect()
     {
-        $event = new Event($this->identification, "Test Event", "Test Description");
-        $this->assertEquals(["name" => "Test Event", "description" => "Test Description"], $event->getCompleteData());
+        $event = new Event($this->identification, "Test Time", "Test Event", "Test Description");
+        $this->assertEquals(["name" => "Test Event", "description" => "Test Description", "time" => "Test Time"], $event->getCompleteData());
     }
 }

@@ -128,7 +128,7 @@ class ReputationEventTest extends PHPUnit_Framework_TestCase
         $identification = $idFactory->createFromData(1, null);
 
         return [
-            [$identification, $reputationNetwork, 5, new Event(null, "Event testowy", null)],
+            [$identification, $reputationNetwork, 5, new Event(null, null, "Event testowy", null)],
         ];
     }
 }

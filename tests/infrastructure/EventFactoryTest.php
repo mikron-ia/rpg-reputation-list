@@ -19,12 +19,13 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
      * @dataProvider provideCorrectRow
      * @param $dbId
      * @param $key
+     * @param $time
      * @param $name
      * @param $description
      */
-    public function arrayFactoryReturnsEvent($dbId, $key, $name, $description)
+    public function arrayFactoryReturnsEvent($dbId, $key, $time, $name, $description)
     {
-        $event = $this->eventFactory->createFromSingleArray($dbId, $key, $name, $description);
+        $event = $this->eventFactory->createFromSingleArray($dbId, $key, $time, $name, $description);
         $this->assertInstanceOf('Mikron\ReputationList\Domain\Entity\Event', $event);
     }
 
@@ -113,6 +114,7 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
             [
                 "event_id" => 1,
                 "key" => "0000000000000000000000000000000000000000",
+                "time" => "Test Time",
                 "name" => "Test Event",
                 "description" => "Test Description"
             ],
@@ -127,30 +129,35 @@ class EventFactoryTest extends PHPUnit_Framework_TestCase
                     [
                         "event_id" => 1,
                         "key" => "0000000000000000000000000000000000000000",
+                        "time" => "Test Time",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                     [
                         "event_id" => 2,
                         "key" => "0000000000000000000000000000000000000001",
+                        "time" => "Test Time",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                     [
                         "event_id" => 3,
                         "key" => "0000000000000000000000000000000000000002",
+                        "time" => "Test Time",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                     [
                         "event_id" => 4,
                         "key" => "0000000000000000000000000000000000000003",
+                        "time" => "Test Time",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],
                     [
                         "event_id" => 5,
                         "key" => "0000000000000000000000000000000000000004",
+                        "time" => "Test Time",
                         "name" => "Test Event",
                         "description" => "Test Description"
                     ],

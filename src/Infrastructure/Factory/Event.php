@@ -20,12 +20,12 @@ final class Event
      * @param $description
      * @return Entity\Event
      */
-    public function createFromSingleArray($dbId, $key, $name, $description)
+    public function createFromSingleArray($dbId, $key, $time, $name, $description)
     {
         $idFactory = new StorageIdentification($dbId, $key);
         $identification = $idFactory->createFromData($dbId, $key);
 
-        return new Entity\Event($identification, $name, $description);
+        return new Entity\Event($identification, $time, $name, $description);
     }
 
     /**
@@ -41,6 +41,7 @@ final class Event
                 $list[] = $this->createFromSingleArray(
                     $record['event_id'],
                     $record['key'],
+                    $record['time'],
                     $record['name'],
                     $record['description']
                 );
@@ -68,6 +69,7 @@ final class Event
                 $eventList[] = $this->createFromSingleArray(
                     $record['event_id'],
                     $record['key'],
+                    $record['time'],
                     $record['name'],
                     $record['description']
                 );
@@ -120,6 +122,7 @@ final class Event
             $event = $this->createFromSingleArray(
                 $eventUnwrapped['event_id'],
                 $eventUnwrapped['key'],
+                $eventUnwrapped['time'],
                 $eventUnwrapped['name'],
                 $eventUnwrapped['description']
             );

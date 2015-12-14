@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Registration of external tools
+ */
+
+/* URL generator */
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+/* Logging system */
+$app->register(new \Silex\Provider\MonologServiceProvider(), array(
+    'monolog.logfile' => $app['config']['logging']['logfile'],
+    'monolog.name' => $app['config']['logging']['projectNameForLogging'],
+    'monolog.level' => $app['config']['debug'] ? $app['config']['logging']['logLevel'] : $app['config']['logging']['logLevelDebug'],
+));
+
+/**
  * Inter-application dependency injections
  */
 
@@ -16,28 +30,3 @@ $app['networks'] = $app->share(function ($app) {
     }
     return $list;
 });
-
-/**
- * @todo DI for all acceptable authentication strategies
- */
-$app['authenticationTokensForHub'] = $app->share(function ($app) {
-    return null;
-});
-
-$app['authenticationTokensForManager'] = $app->share(function ($app) {
-    return null;
-});
-
-/**
- * Registration of external tools
- */
-
-/* URL generator */
-$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
-
-/* Logging system */
-$app->register(new \Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile' => $app['config']['logging']['logfile'],
-    'monolog.name' => $app['config']['logging']['projectNameForLogging'],
-    'monolog.level' => $app['config']['debug'] ? $app['config']['logging']['logLevel'] : $app['config']['logging']['logLevelDebug'],
-));

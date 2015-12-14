@@ -111,7 +111,7 @@ final class Event
 
     /**
      * @param array $eventWrapped
-     * @param ValueObject\StorageIdentification $identification
+     * @param int|string $identification
      * @return Entity\Event
      * @throws EventNotFoundException
      */

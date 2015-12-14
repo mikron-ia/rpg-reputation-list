@@ -37,7 +37,7 @@ $app->get(
         $connection = $connectionFactory->getConnection();
         $person = $personFactory->$method(
             $connection,
-            $app['monolog'],
+            $app['logger'],
             $app['networks'],
             $identificationKey,
             $app['config']['calculation']

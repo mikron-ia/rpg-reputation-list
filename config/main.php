@@ -5,6 +5,7 @@ return [
         "title" => "Reputation Board",
         "welcome" => "Welcome to Reputation Board",
     ],
+
     /*
      * This describes list of database engines available
      *
@@ -14,6 +15,7 @@ return [
         'mysql' => "MySql",
         'mongodb' => "MongoDb",
     ],
+
     'authentication' => [
         'hub' => [
             'allowedStrategies' => [],
@@ -32,6 +34,7 @@ return [
             'auth-simple' => 'simple',
         ],
     ],
+
     /*
      * Methods to calculate specific values derived from raw reputation numbers, in form of `pack.methodName`
      *
@@ -43,5 +46,17 @@ return [
      */
     'calculation' => [
         'generic.calculateBasic'
+    ],
+
+    /*
+     * Default logging system
+     *
+     * Any other used must comply to LoggerInterface
+     */
+    'logging' => [
+        'logfile' => __DIR__.'/../build/log/complete.log',
+        'projectNameForLogging' => 'rpg-reputation-list',
+        'logLevel' => \Monolog\Logger::WARNING,
+        'logLevelDebug' => \Monolog\Logger::NOTICE,
     ],
 ];

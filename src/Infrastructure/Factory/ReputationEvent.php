@@ -9,6 +9,7 @@ use Mikron\ReputationList\Domain\Exception\RecordNotFoundException;
 use Mikron\ReputationList\Infrastructure\Factory\Event as EventFactory;
 use Mikron\ReputationList\Infrastructure\Factory\StorageIdentification as StorageIdentificationFactory;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForReputationEvent;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class ReputationEvent
@@ -31,7 +32,8 @@ final class ReputationEvent
         $reputationNetworkCode,
         $change,
         $event
-    ) {
+    )
+    {
         if (isset($reputationNetworksList[$reputationNetworkCode])) {
             $reputationNetwork = $reputationNetworksList[$reputationNetworkCode];
         } else {
@@ -49,7 +51,7 @@ final class ReputationEvent
 
     /**
      * @param StorageEngine $connection
-     * @param \Monolog\Logger $logger
+     * @param LoggerInterface $logger
      * @param $reputationNetworksList
      * @param int $personId
      * @return ReputationEventEntity[]
@@ -80,7 +82,10 @@ final class ReputationEvent
                         $event
                     );
                 } catch (RecordNotFoundException $e) {
-                    $logger->addWarning("Source data error (RecordNotFoundException): " . $e->getMessage());
+                    $logger->error(
+                        "Source data error (RecordNotFoundException): " . $e->getMessage(),
+                        ['exception' => $e]
+                    );
                 }
             }
         }

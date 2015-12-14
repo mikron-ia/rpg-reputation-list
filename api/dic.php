@@ -39,5 +39,5 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new \Silex\Provider\MonologServiceProvider(), array(
     'monolog.logfile' => $app['config']['logging']['logfile'],
     'monolog.name' => $app['config']['logging']['projectNameForLogging'],
-    'monolog.level'=> $app['config']['debug']?$app['config']['logging']['logLevel']:$app['config']['logging']['logLevelDebug'],
+    'monolog.level' => $app['config']['debug'] ? $app['config']['logging']['logLevel'] : $app['config']['logging']['logLevelDebug'],
 ));

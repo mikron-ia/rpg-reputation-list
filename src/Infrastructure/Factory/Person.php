@@ -6,6 +6,7 @@ use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\PersonNotFoundException;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForPerson;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Person
@@ -75,7 +76,7 @@ final class Person
 
     /**
      * @param StorageEngine $connection
-     * @param $logger
+     * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param int $dbId
      * @param string[] $methodsToCalculate
@@ -92,7 +93,7 @@ final class Person
 
     /**
      * @param StorageEngine $connection
-     * @param \Monolog\Logger $logger
+     * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string $key
      * @param string[] $methodsToCalculate
@@ -110,7 +111,7 @@ final class Person
     /**
      * @param array $personWrapped
      * @param StorageEngine $connection
-     * @param \Monolog\Logger $logger
+     * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string[] $methodsToCalculate
      * @return Entity\Person

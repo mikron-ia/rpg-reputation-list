@@ -3,6 +3,7 @@
 namespace Mikron\ReputationList\Domain\Entity;
 
 use Mikron\ReputationList\Domain\Blueprint\Displayable;
+use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 use Mikron\ReputationList\Domain\ValueObject\ReputationValues;
 
@@ -116,12 +117,32 @@ final class Reputation implements Displayable
     }
 
     /**
+     * @return int
+     * @throws ExceptionWithSafeMessage
+     */
+    public function getValue()
+    {
+        $values = $this->value->getAll();
+
+        if (!isset($values['balance'])) {
+            throw new ExceptionWithSafeMessage(
+                'Reputation balance not available',
+                'Reputation balance not available. Please add generic.calculateBasic to configuration'
+            );
+        }
+
+        return $values['balance'];
+    }
+
+    /**
      * @return array Simple representation of the object content, fit for basic display
      */
     public function getSimpleData()
     {
         return [
-            "name" => $this->getName()
+            'name' => $this->getName(),
+            'code' => $this->getCode(),
+            'value' => $this->getValue(),
         ];
     }
 
@@ -131,10 +152,10 @@ final class Reputation implements Displayable
     public function getCompleteData()
     {
         return [
-            "name" => $this->getName(),
-            "code" => $this->getCode(),
-            "description" => $this->getDescription(),
-            "value" => $this->getValues([]),
+            'name' => $this->getName(),
+            'code' => $this->getCode(),
+            'description' => $this->getDescription(),
+            'value' => $this->getValues([]),
         ];
     }
 }

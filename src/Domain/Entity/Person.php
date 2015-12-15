@@ -11,7 +11,7 @@ use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
  *
  * @package Mikron\ReputationList\Domain\Entity
  */
-final class Person implements Displayable
+class Person implements Displayable
 {
     /**
      * @var StorageIdentification

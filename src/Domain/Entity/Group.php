@@ -18,12 +18,13 @@ class Group extends Person
      * @param $identification
      * @param string $name
      * @param $description
-     * @param array $reputations
+     * @param Reputation[] $reputations
+     * @param ReputationEvent[] $reputationEvents
      * @param Person[] $members
      */
-    public function __construct($identification, $name, $description, array $reputations, array $members)
+    public function __construct($identification, $name, $description, $reputations, $reputationEvents, $members)
     {
-        parent::__construct($identification, $name, $description, $reputations);
+        parent::__construct($identification, $name, $description, $reputations, $reputationEvents);
         $this->members = $members;
     }
 }

@@ -25,14 +25,14 @@ class Authentication
      */
     public function __construct($config, $direction, $authenticationMethodReceived, $authenticationKey)
     {
-        if(!isset($config['authenticationMethodReference'])) {
+        if (!isset($config['authenticationMethodReference'])) {
             throw new AuthenticationException(
                 "Authentication configuration error",
                 "Authentication configuration error: missing reference table for authentication methods"
             );
         }
 
-        if(!isset($config['authenticationMethodReference'][$authenticationMethodReceived])) {
+        if (!isset($config['authenticationMethodReference'][$authenticationMethodReceived])) {
             throw new AuthenticationException(
                 "Authentication configuration error",
                 "Authentication configuration error: missing reference for '$authenticationMethodReceived' method"

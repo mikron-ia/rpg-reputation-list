@@ -16,7 +16,11 @@ final class Reputation
      */
     public function createFromParameters($reputationNetwork, $reputationEvents, $methodsToCalculate)
     {
-        return new \Mikron\ReputationList\Domain\Entity\Reputation($reputationNetwork, $reputationEvents, $methodsToCalculate);
+        return new \Mikron\ReputationList\Domain\Entity\Reputation(
+            $reputationNetwork,
+            $reputationEvents,
+            $methodsToCalculate
+        );
     }
 
     /**
@@ -45,7 +49,11 @@ final class Reputation
         foreach ($reputationEventsOrdered as $reputationEventsCategory) {
             $reputationNetwork = $reputationEventsCategory[0]->getReputationNetwork();
 
-            $reputation = $reputationFactory->createFromParameters($reputationNetwork, $reputationEventsCategory, $methodsToCalculate);
+            $reputation = $reputationFactory->createFromParameters(
+                $reputationNetwork,
+                $reputationEventsCategory,
+                $methodsToCalculate
+            );
             $reputations[$reputation->getReputationNetwork()->getCode()] = $reputation;
         }
 

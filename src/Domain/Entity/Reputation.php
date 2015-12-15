@@ -41,8 +41,11 @@ final class Reputation implements Displayable
      * @param ReputationEvent[] $reputationEvents
      * @param \string[] $methodsToCalculate
      */
-    public function __construct(ReputationNetwork $reputationNetwork, array $reputationEvents, array $methodsToCalculate)
-    {
+    public function __construct(
+        ReputationNetwork $reputationNetwork,
+        array $reputationEvents,
+        array $methodsToCalculate
+    ) {
         $this->reputationNetwork = $reputationNetwork;
         $this->reputationEvents = $reputationEvents;
         $this->methodsToCalculate = $methodsToCalculate;
@@ -135,7 +138,7 @@ final class Reputation implements Displayable
     }
 
     /**
-     * @return array Simple representation of the object content, fit for basic display
+     * @return string[] Simple representation of the object content, fit for basic display
      */
     public function getSimpleData()
     {
@@ -147,7 +150,7 @@ final class Reputation implements Displayable
     }
 
     /**
-     * @return array Complete representation of public parts of object content, fit for full card display
+     * @return string[] Complete representation of public parts of object content, fit for full card display
      */
     public function getCompleteData()
     {

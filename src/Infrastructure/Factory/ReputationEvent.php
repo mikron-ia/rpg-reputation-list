@@ -32,8 +32,7 @@ final class ReputationEvent
         $reputationNetworkCode,
         $change,
         $event
-    )
-    {
+    ) {
         if (isset($reputationNetworksList[$reputationNetworkCode])) {
             $reputationNetwork = $reputationNetworksList[$reputationNetworkCode];
         } else {

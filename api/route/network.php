@@ -26,6 +26,6 @@ $app->get('/network/{id}/{authenticationMethod}/{authenticationKey}/', function 
 
         return $app->json($output->getArrayForJson());
     } else {
-        throw new AuthenticationException("Authentication code does not check out");
+        throw new \Mikron\ReputationList\Domain\Exception\AuthenticationException("Authentication code does not check out");
     }
 });

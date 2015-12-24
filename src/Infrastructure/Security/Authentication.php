@@ -17,9 +17,14 @@ class Authentication
     private $token;
 
     /**
+     * @var string Key that was provided from outside
+     */
+    private $authenticationKey;
+
+    /**
      * @param array $config Configuration segment responsible for authentication
      * @param string $direction Who is trying to talk to us and which keyset is used?
-     * @param $authenticationMethodReceived What method are they trying to use?
+     * @param string $authenticationMethodReceived What method are they trying to use?
      * @param string $authenticationKey What is the key they present?
      * @throws AuthenticationException
      */
@@ -47,17 +52,17 @@ class Authentication
             );
         }
 
-        $this->token = $this->createToken($config[$direction], $authenticationMethod, $authenticationKey);
+        $this->token = $this->createToken($config[$direction], $authenticationMethod);
+        $this->authenticationKey = $authenticationKey;
     }
 
     /**
      * @param array $configWithChosenDirection
      * @param string $authenticationMethod
-     * @param string $authenticationKey
      * @return AuthenticationToken
      * @throws AuthenticationException
      */
-    private function createToken($configWithChosenDirection, $authenticationMethod, $authenticationKey)
+    private function createToken($configWithChosenDirection, $authenticationMethod)
     {
         $className = 'Mikron\ReputationList\Infrastructure\Security\AuthenticationToken' . ucfirst($authenticationMethod);
 
@@ -68,11 +73,14 @@ class Authentication
             );
         }
 
-        return new $className($configWithChosenDirection['settingsByStrategy'], $authenticationKey);
+        return new $className($configWithChosenDirection['settingsByStrategy']);
     }
 
+    /**
+     * @return bool
+     */
     public function isAuthenticated()
     {
-        return $this->token->checksOut();
+        return $this->token->checksOut($this->authenticationKey);
     }
 }

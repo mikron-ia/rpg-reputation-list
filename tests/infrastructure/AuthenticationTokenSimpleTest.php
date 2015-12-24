@@ -9,14 +9,8 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
      */
     public function emptyTokenNotAllowed()
     {
-        $config = [
-            'simple' => [
-                'authenticationKey' => '0000000000000000000000000000000000000000',
-            ],
-        ];
-
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\AuthenticationException');
-        new AuthenticationTokenSimple($config, "");
+        AuthenticationTokenSimple::isValid("", "test");
     }
 
     /**
@@ -24,14 +18,8 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
      */
     public function shortTokenNotAllowed()
     {
-        $config = [
-            'simple' => [
-                'authenticationKey' => '0000000000000000000000000000000000000000',
-            ],
-        ];
-
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\AuthenticationException');
-        new AuthenticationTokenSimple($config, "SHORTY");
+        AuthenticationTokenSimple::isValid("SHORTY", "test");
     }
 
     /**
@@ -99,8 +87,8 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
             ],
         ];
 
-        $token = new AuthenticationTokenSimple($config, "0000000000000000000000000000000000000000");
-        $this->assertTrue($token->checksOut());
+        $token = new AuthenticationTokenSimple($config);
+        $this->assertTrue($token->checksOut("0000000000000000000000000000000000000000"));
     }
 
     /**
@@ -114,7 +102,7 @@ class AuthenticationTokenSimpleTest extends PHPUnit_Framework_TestCase
             ],
         ];
 
-        $token = new AuthenticationTokenSimple($config, "0000000000000000000000000000000000000001");
-        $this->assertFalse($token->checksOut());
+        $token = new AuthenticationTokenSimple($config);
+        $this->assertFalse($token->checksOut("0000000000000000000000000000000000000001"));
     }
 }

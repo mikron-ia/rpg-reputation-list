@@ -12,11 +12,6 @@ use Mikron\ReputationList\Domain\Exception\AuthenticationException;
 final class AuthenticationTokenSimple implements AuthenticationToken
 {
     /**
-     * @var string Key received from the outside
-     */
-    private $receivedKey;
-
-    /**
      * @var string Key stored in configuration
      */
     private $correctKey;
@@ -24,15 +19,10 @@ final class AuthenticationTokenSimple implements AuthenticationToken
     /**
      * AuthenticationToken constructor.
      * @param array $configAuthenticationSettingsForMethod Configuration data for simple authentication strategy
-     * @param string $key Key received from the outside
      * @throws AuthenticationException Thrown in case the key is invalid
      */
-    public function __construct($configAuthenticationSettingsForMethod, $key)
+    public function __construct($configAuthenticationSettingsForMethod)
     {
-        if ($this->isValid($key, 'received')) {
-            $this->receivedKey = $key;
-        }
-
         if (!isset($configAuthenticationSettingsForMethod['simple'])) {
             throw new AuthenticationException(
                 "Authentication configuration incorrect",
@@ -47,7 +37,7 @@ final class AuthenticationTokenSimple implements AuthenticationToken
             );
         }
 
-        if ($this->isValid($configAuthenticationSettingsForMethod['simple']['authenticationKey'], 'internal')) {
+        if (self::isValid($configAuthenticationSettingsForMethod['simple']['authenticationKey'], 'internal')) {
             $this->correctKey = $configAuthenticationSettingsForMethod['simple']['authenticationKey'];
         }
     }
@@ -58,7 +48,7 @@ final class AuthenticationTokenSimple implements AuthenticationToken
      * @return bool
      * @throws AuthenticationException
      */
-    private function isValid($key, $identificationForErrors)
+    static public function isValid($key, $identificationForErrors)
     {
         if (empty($key)) {
             throw new AuthenticationException(
@@ -77,8 +67,25 @@ final class AuthenticationTokenSimple implements AuthenticationToken
         return true;
     }
 
-    public function checksOut()
+    /**
+     * @param string $key Key received from the outside
+     * @return bool
+     */
+    public function checksOut($key)
     {
-        return $this->receivedKey == $this->correctKey;
+        if (!self::isValid($key, 'received')) {
+            return null;
+        }
+
+        return $key == $this->correctKey;
+    }
+
+    /**
+     * Provides a key to be sent as authentication
+     * @return string Provided key
+     */
+    public function provide()
+    {
+        return $this->correctKey;
     }
 }

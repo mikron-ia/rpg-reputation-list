@@ -80,12 +80,13 @@ final class AuthenticationTokenSimple implements AuthenticationToken
         return $key == $this->correctKey;
     }
 
-    /**
-     * Provides a key to be sent as authentication
-     * @return string Provided key
-     */
-    public function provide()
+    public function provideKey()
     {
         return $this->correctKey;
+    }
+
+    public function provideMethod()
+    {
+        return 'simple';
     }
 }

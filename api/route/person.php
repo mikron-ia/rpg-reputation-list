@@ -13,12 +13,11 @@ $app->get(
         $authentication = new \Mikron\ReputationList\Infrastructure\Security\Authentication(
             $app['config']['authentication'],
             'hub',
-            $authenticationMethod,
-            $authenticationKey
+            $authenticationMethod
         );
 
         /* Check credentials */
-        if (!$authentication->isAuthenticated()) {
+        if (!$authentication->isAuthenticated($authenticationKey)) {
             throw new AuthenticationException(
                 "Authentication code does not check out",
                 "Authentication code $authenticationKey for method $authenticationMethod does not check out"

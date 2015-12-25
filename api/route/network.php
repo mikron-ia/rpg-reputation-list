@@ -12,12 +12,10 @@ $app->get('/network/{id}/{authenticationMethod}/{authenticationKey}/', function 
     $authentication = new \Mikron\ReputationList\Infrastructure\Security\Authentication(
         $app['config']['authentication'],
         'hub',
-        $authenticationMethod,
-        $authenticationKey
+        $authenticationMethod
     );
 
-    if ($authentication->isAuthenticated()) {
-
+    if ($authentication->isAuthenticated($authenticationKey)) {
         $output = new \Mikron\ReputationList\Domain\Service\Output(
             "Reputation network",
             "This is a list of all reputations in single network",

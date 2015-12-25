@@ -5,11 +5,10 @@ $app->get('/networks/{authenticationMethod}/{authenticationKey}/', function ($au
     $authentication = new \Mikron\ReputationList\Infrastructure\Security\Authentication(
         $app['config']['authentication'],
         'hub',
-        $authenticationMethod,
-        $authenticationKey
+        $authenticationMethod
     );
 
-    if ($authentication->isAuthenticated()) {
+    if ($authentication->isAuthenticated($authenticationKey)) {
         $networks = $app['networks'];
         $arrays = [];
 

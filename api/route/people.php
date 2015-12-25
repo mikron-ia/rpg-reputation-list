@@ -7,11 +7,10 @@ $app->get('/people/{authenticationMethod}/{authenticationKey}/', function ($auth
     $authentication = new \Mikron\ReputationList\Infrastructure\Security\Authentication(
         $app['config']['authentication'],
         'hub',
-        $authenticationMethod,
-        $authenticationKey
+        $authenticationMethod
     );
 
-    if ($authentication->isAuthenticated()) {
+    if ($authentication->isAuthenticated($authenticationKey)) {
         $connection = $connectionFactory->getConnection();
         $peopleObjects = $peopleFactory->retrieveAllFromDb($connection);
         $peopleList = [];

@@ -7,6 +7,15 @@ CREATE TABLE `event` (
   PRIMARY KEY (`event_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `group` (
+  `group_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(80) NOT NULL,
+  `name` varchar(80) NOT NULL,
+  `description` text,
+  `base_id` int(10) unsigned,
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `person` (
   `person_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `key` varchar(80) NOT NULL,

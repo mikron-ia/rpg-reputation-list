@@ -4,6 +4,9 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity;
+use Mikron\ReputationList\Domain\Exception\GroupNotFoundException;
+use Mikron\ReputationList\Infrastructure\Storage\StorageForGroup;
+use Psr\Log\LoggerInterface;
 
 class Group
 {
@@ -37,5 +40,65 @@ class Group
             $reputationEvents,
             $members
         );
+    }
+
+    /**
+     * @param StorageEngine $connection
+     * @param LoggerInterface $logger
+     * @param ReputationNetwork[] $reputationNetworksList
+     * @param string $key
+     * @param string[] $methodsToCalculate
+     * @return Entity\Group
+     * @throws GroupNotFoundException
+     */
+    public function retrieveGroupFromDbByKey($connection, $logger, $reputationNetworksList, $key, $methodsToCalculate)
+    {
+        $groupStorage = new StorageForGroup($connection);
+        $groupWrapped = $groupStorage->retrieveByKey($key);
+
+        return $this->unwrapGroup($groupWrapped, $connection, $logger, $reputationNetworksList, $methodsToCalculate);
+    }
+
+    /**
+     * @param array $groupWrapped
+     * @param StorageEngine $connection
+     * @param LoggerInterface $logger
+     * @param ReputationNetwork[] $reputationNetworksList
+     * @param string[] $methodsToCalculate
+     * @return Entity\Group
+     * @throws GroupNotFoundException
+     */
+    public function unwrapGroup($groupWrapped, $connection, $logger, $reputationNetworksList, $methodsToCalculate)
+    {
+        if (!empty($groupWrapped)) {
+            $groupUnwrapped = array_pop($groupWrapped);
+
+            $groupDbId = $groupUnwrapped['group_id'];
+
+            $reputationEventsFactory = new ReputationEvent();
+            $reputationFactory = new Reputation();
+
+            $groupReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb(
+                $connection,
+                $logger,
+                $reputationNetworksList,
+                $groupDbId
+            );
+            $groupReputations = $reputationFactory->createFromReputationEvents($groupReputationEvents, $methodsToCalculate);
+
+            $group = $this->createFromSingleArray(
+                $groupUnwrapped['group_id'],
+                $groupUnwrapped['key'],
+                $groupUnwrapped['name'],
+                $groupUnwrapped['description'],
+                $groupReputations,
+                $groupReputationEvents,
+                []
+            );
+
+            return $group;
+        } else {
+            throw new GroupNotFoundException("Group with given ID has not been found in our database");
+        }
     }
 }

@@ -109,6 +109,22 @@ final class Person
     }
 
     /**
+     * @param StorageEngine $connection
+     * @param LoggerInterface $logger
+     * @param ReputationNetwork[] $reputationNetworksList
+     * @param int $groupId
+     * @return Person[]
+     * @todo Rework unwrapper - it has to be used here, as createFromCompleteArray() does not load reputations
+     */
+    public function retrievePersonForGroupFromDb($connection, $logger, $reputationNetworksList, $groupId)
+    {
+        $personStorage = new StorageForPerson($connection);
+        $personWrapped = $personStorage->retrieveByGroup($groupId);
+
+        return $this->createFromCompleteArray($personWrapped);
+    }
+
+    /**
      * @param array $personWrapped
      * @param StorageEngine $connection
      * @param LoggerInterface $logger

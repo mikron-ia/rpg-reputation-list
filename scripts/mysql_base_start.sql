@@ -36,3 +36,12 @@ CREATE TABLE `reputation_event` (
   CONSTRAINT `reputation_event_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`),
   CONSTRAINT `reputation_event_ibfk_2` FOREIGN KEY (`person_id`) REFERENCES `person` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `group_members` (
+  `group_id` int(10) unsigned NOT NULL,
+  `person_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`group_id`,`person_id`),
+  KEY `person_id` (`person_id`),
+  CONSTRAINT `group_members_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `person` (`person_id`),
+  CONSTRAINT `group_members_ibfk_2` FOREIGN KEY (`group_id`) REFERENCES `group` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

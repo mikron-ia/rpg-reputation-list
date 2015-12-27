@@ -41,4 +41,10 @@ final class StorageForPerson implements StorageForObject
 
         return $result;
     }
+
+    public function retrieveByGroup($groupId)
+    {
+        /* Standard approach will not work here - it is a table-joined n:n relation */
+        return [];
+    }
 }

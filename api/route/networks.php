@@ -9,6 +9,9 @@ $app->get('/networks/{authenticationMethod}/{authenticationKey}/', function ($au
     );
 
     if ($authentication->isAuthenticated($authenticationKey)) {
+        /**
+         * @var \Mikron\ReputationList\Domain\Blueprint\Displayable[] $networks
+         */
         $networks = $app['networks'];
         $arrays = [];
 

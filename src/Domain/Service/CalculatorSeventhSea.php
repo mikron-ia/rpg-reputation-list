@@ -88,7 +88,45 @@ final class CalculatorSeventhSea
         }
 
         return [
-            'recognitionDice' => round($currentState['recognition']/10)
+            'recognitionDice' => round($currentState['recognition'] / 10)
+        ];
+    }
+
+    public static function calculateInfluenceExtended($values, $currentState)
+    {
+        if (!isset($currentState['balance'])) {
+            throw new MissingCalculationBaseException(
+                "Missing values necessary to operate",
+                "Missing balance / total. Call calculateBasic() first."
+            );
+        }
+
+        if (!isset($currentState['influenceDivider'])) {
+            throw new MissingCalculationBaseException(
+                "Missing values necessary to operate",
+                "Missing influence divider. Provide as parameter."
+            );
+        }
+
+        if ($currentState['influenceDivider'] == 0) {
+            throw new MissingCalculationBaseException(
+                "Erroneous value among values necessary to operate",
+                "Influence divider is zero. Provide a valid one as parameter."
+            );
+        }
+
+        if (!isset($currentState['influenceMultiplier'])) {
+            throw new MissingCalculationBaseException(
+                "Missing values necessary to operate",
+                "Missing influence multiplier. Provide as parameter."
+            );
+        }
+
+        return [
+            'influence' => (int)round(
+                ($currentState['balance'] * $currentState['influenceMultiplier']) / $currentState['influenceDivider'],
+                0
+            )
         ];
     }
 }

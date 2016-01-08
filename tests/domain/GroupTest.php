@@ -1,9 +1,11 @@
 <?php
 
 use Mikron\ReputationList\Domain\Entity\Group;
+use Mikron\ReputationList\Domain\Entity\Person;
 use Mikron\ReputationList\Domain\Entity\Reputation;
 use Mikron\ReputationList\Domain\Entity\ReputationEvent;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
+use Mikron\ReputationList\Infrastructure\Factory\StorageIdentification as StorageIdentificationFactory;
 
 class GroupTest extends PHPUnit_Framework_TestCase
 {
@@ -11,7 +13,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $idFactory = new \Mikron\ReputationList\Infrastructure\Factory\StorageIdentification();
+        $idFactory = new StorageIdentificationFactory();
         $this->identification = $idFactory->createFromData(1, 'Test Key');
     }
 
@@ -52,6 +54,28 @@ class GroupTest extends PHPUnit_Framework_TestCase
     {
         $group = new Group($this->identification, 'Test Name', 'Test Description', [], [], []);
         $this->assertEquals('Test Description', $group->getDescription());
+    }
+
+    /**
+     * @test
+     * @dataProvider memberDataProvider
+     * @param $members
+     */
+    public function membersAreCorrectType($members)
+    {
+        $group = new Group($this->identification, 'Test Name', 'Test Description', [], [], $members);
+        $this->assertContainsOnlyInstancesOf('Mikron\ReputationList\Domain\Entity\Person', $group->getMembers());
+    }
+
+    /**
+     * @test
+     * @dataProvider memberDataProvider
+     * @param $members
+     */
+    public function memberCountIsCorrect($members)
+    {
+        $group = new Group($this->identification, 'Test Name', 'Test Description', [], [], $members);
+        $this->assertEquals(count($members), $group->getMemberCount());
     }
 
     /**
@@ -99,7 +123,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
         $repNetCivil = new ReputationNetwork('c', ['name' => 'CivicNet', 'description' => 'Corporations']);
         $repNetMilitary = new ReputationNetwork('m', ['name' => 'MilNet', 'description' => 'Mercenaries']);
         $calculators = [];
-        
+
         return [
             [
                 [
@@ -136,6 +160,29 @@ class GroupTest extends PHPUnit_Framework_TestCase
             [
                 []
             ]
+        ];
+    }
+
+    public function memberDataProvider()
+    {
+        return [
+            [
+                [],
+            ],
+            [
+                [
+                    new Person(null, "Test Person 0", "", [], []),
+                    new Person(null, "Test Person 1", "", [], [])
+                ],
+            ],
+            [
+                [
+                    new Person(null, "Test Person 0", "", [], []),
+                    new Person(null, "Test Person 1", "", [], []),
+                    new Person(null, "Test Person 2", "", [], []),
+                    new Person(null, "Test Person 3", "", [], []),
+                ],
+            ],
         ];
     }
 }

@@ -51,6 +51,14 @@ class Group extends Person
     }
 
     /**
+     * @return int Number of members
+     */
+    public function getMemberCount()
+    {
+        return count($this->members);
+    }
+
+    /**
      * @return array Simple representation of the object content, fit for basic display
      */
     public function getSimpleData()

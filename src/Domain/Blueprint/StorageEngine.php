@@ -13,4 +13,6 @@ interface StorageEngine
     public function selectByKey($table, $primaryKeyName, $keyName, $keyValues);
 
     public function selectByPrimaryKey($table, $primaryKeyName, $primaryKeyValues);
+
+    public function selectViaAssociation($tableToSelectFrom, $associationTable, $primaryKeyName, $keyName, $keyValues);
 }

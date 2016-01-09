@@ -75,6 +75,16 @@ class Group
 
             $groupDbId = $groupUnwrapped['group_id'];
 
+            $personFactory = new Person();
+
+            $members = $personFactory->retrievePersonForGroupFromDb(
+                $connection,
+                $logger,
+                $reputationNetworksList,
+                $methodsToCalculate,
+                $groupDbId
+            );
+
             $reputationEventsFactory = new ReputationEvent();
             $reputationFactory = new Reputation();
 
@@ -84,7 +94,7 @@ class Group
                 $reputationNetworksList,
                 $groupDbId
             );
-            $groupReputations = $reputationFactory->createFromReputationEvents($groupReputationEvents, $methodsToCalculate);
+            $groupReputations = $reputationFactory->createFromReputationEvents($groupReputationEvents, $methodsToCalculate, []);
 
             $group = $this->createFromSingleArray(
                 $groupUnwrapped['group_id'],
@@ -93,7 +103,7 @@ class Group
                 $groupUnwrapped['description'],
                 $groupReputations,
                 $groupReputationEvents,
-                []
+                $members
             );
 
             return $group;

@@ -44,7 +44,7 @@ final class StorageForPerson implements StorageForObject
 
     public function retrieveByGroup($groupId)
     {
-        /* Standard approach will not work here - it is a table-joined n:n relation */
-        return [];
+        $result = $this->storage->selectViaAssociation('person', 'group_members', 'person_id', 'group_id', [$groupId]);
+        return $result;
     }
 }

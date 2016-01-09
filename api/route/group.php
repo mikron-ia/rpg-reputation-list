@@ -49,7 +49,7 @@ $app->get(
 
         /* Cook and return the JSON */
         $output = new \Mikron\ReputationList\Domain\Service\Output(
-            "Groupal profile",
+            "Group profile",
             "This is a reputation characteristic of a chosen group",
             $group->getCompleteData()
         );

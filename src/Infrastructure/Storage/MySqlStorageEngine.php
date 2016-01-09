@@ -85,30 +85,38 @@ final class MySqlStorageEngine implements StorageEngine
 
     public function selectViaAssociation($tableToSelectFrom, $associationTable, $primaryKeyName, $keyName, $keyValues)
     {
-        $basicSql = "SELECT * FROM `$tableToSelectFrom` JOIN `$associationTable` USING ($primaryKeyName)";
-
-        try {
-            if (!empty($keyValues)) {
-                $where = " WHERE `$keyName` IN (?)";
-                $statement = $this->connection->executeQuery($basicSql . $where,
-                    [$keyValues],
-                    [Connection::PARAM_STR_ARRAY]
-                );
-            } else {
-                $statement = $this->connection->executeQuery($basicSql);
-            }
-        } catch (\Exception $e) {
-            throw new ExceptionWithSafeMessage(
-                'Database connection error',
-                'Database connection error: ' . $e->getMessage()
-            );
-        }
+        $statement = $this->generateStatementForAssociation(
+            $tableToSelectFrom,
+            $associationTable,
+            $primaryKeyName,
+            $keyName,
+            $keyValues
+        );
 
         return $statement->fetchAll((\PDO::FETCH_ASSOC));
     }
 
     public function countViaAssociation($tableToSelectFrom, $associationTable, $primaryKeyName, $keyName, $keyValues)
     {
+        $statement = $this->generateStatementForAssociation(
+            $tableToSelectFrom,
+            $associationTable,
+            $primaryKeyName,
+            $keyName,
+            $keyValues
+        );
+
+        return $statement->rowCount();
+    }
+
+    private function generateStatementForAssociation(
+        $tableToSelectFrom,
+        $associationTable,
+        $primaryKeyName,
+        $keyName,
+        $keyValues
+    ) {
+
         $basicSql = "SELECT * FROM `$tableToSelectFrom` JOIN `$associationTable` USING ($primaryKeyName)";
 
         try {
@@ -128,6 +136,6 @@ final class MySqlStorageEngine implements StorageEngine
             );
         }
 
-        return $statement->rowCount();
+        return $statement;
     }
 }

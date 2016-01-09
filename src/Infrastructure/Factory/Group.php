@@ -77,11 +77,17 @@ class Group
 
             $personFactory = new Person();
 
+            $reputationInitialPattern = [
+                'influenceDivider' => $personFactory->countPeopleByGroup($connection, $groupDbId),
+                'influenceMultiplier' => 2,
+            ];
+
             $members = $personFactory->retrievePersonForGroupFromDb(
                 $connection,
                 $logger,
                 $reputationNetworksList,
                 $methodsToCalculate,
+                $reputationInitialPattern,
                 $groupDbId
             );
 
@@ -97,7 +103,7 @@ class Group
             $groupReputations = $reputationFactory->createFromReputationEvents(
                 $groupReputationEvents,
                 $methodsToCalculate,
-                []
+                $reputationInitialPattern
             );
 
             $group = $this->createFromSingleArray(

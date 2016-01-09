@@ -127,6 +127,7 @@ final class Person
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string[] $methodsToCalculate
+     * @param int[] $reputationInitialPattern
      * @param int $groupId
      * @return Person[]
      * @throws PersonNotFoundException
@@ -137,12 +138,11 @@ final class Person
         $logger,
         $reputationNetworksList,
         $methodsToCalculate,
+        $reputationInitialPattern,
         $groupId
     ) {
         $personStorage = new StorageForPerson($connection);
         $personsRetrieved = $personStorage->retrieveByGroup($groupId);
-
-        $initialStateOfCalculations = [];
 
         $persons = [];
 
@@ -153,7 +153,7 @@ final class Person
                 $logger,
                 $reputationNetworksList,
                 $methodsToCalculate,
-                $initialStateOfCalculations
+                $reputationInitialPattern
             );
         }
 
@@ -211,5 +211,13 @@ final class Person
         } else {
             throw new PersonNotFoundException("Person with given ID has not been found in our database");
         }
+    }
+
+    public function countPeopleByGroup($connection, $groupId)
+    {
+        $personStorage = new StorageForPerson($connection);
+        $personCount = $personStorage->countByGroup($groupId);
+
+        return $personCount;
     }
 }

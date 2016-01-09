@@ -47,4 +47,10 @@ final class StorageForPerson implements StorageForObject
         $result = $this->storage->selectViaAssociation('person', 'group_members', 'person_id', 'group_id', [$groupId]);
         return $result;
     }
+
+    public function countByGroup($groupId)
+    {
+        $result = $this->storage->countViaAssociation('person', 'group_members', 'person_id', 'group_id', [$groupId]);
+        return $result;
+    }
 }

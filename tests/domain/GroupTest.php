@@ -133,7 +133,8 @@ class GroupTest extends PHPUnit_Framework_TestCase
                             new ReputationEvent(null, $repNetMilitary, 2, null),
                             new ReputationEvent(null, $repNetMilitary, 3, null),
                         ],
-                        $calculators
+                        $calculators,
+                        []
                     ),
                     new Reputation(
                         $repNetCivil,
@@ -141,7 +142,8 @@ class GroupTest extends PHPUnit_Framework_TestCase
                             new ReputationEvent(null, $repNetCivil, 1, null),
                             new ReputationEvent(null, $repNetCivil, 2, null),
                         ],
-                        $calculators
+                        $calculators,
+                        []
                     )
                 ]
             ],
@@ -153,7 +155,8 @@ class GroupTest extends PHPUnit_Framework_TestCase
                             new ReputationEvent(null, $repNetMilitary, 2, null),
                             new ReputationEvent(null, $repNetMilitary, 3, null),
                         ],
-                        $calculators
+                        $calculators,
+                        []
                     )
                 ]
             ],

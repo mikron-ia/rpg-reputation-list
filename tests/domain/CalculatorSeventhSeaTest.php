@@ -145,11 +145,12 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function calculateInfluenceWorksFailsWithoutParameters()
+    public function calculateInfluenceWorksReturnsEmptyWithoutParameters()
     {
         $currentStateBase = CalculatorGeneric::calculateBasic([0], []);
-        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException');
-        CalculatorSeventhSea::calculateInfluenceExtended([0], $currentStateBase);
+        $result = CalculatorSeventhSea::calculateInfluenceExtended([0], $currentStateBase);
+
+        $this->assertEquals([], $result);
     }
 
     /**

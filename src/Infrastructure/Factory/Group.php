@@ -94,7 +94,11 @@ class Group
                 $reputationNetworksList,
                 $groupDbId
             );
-            $groupReputations = $reputationFactory->createFromReputationEvents($groupReputationEvents, $methodsToCalculate, []);
+            $groupReputations = $reputationFactory->createFromReputationEvents(
+                $groupReputationEvents,
+                $methodsToCalculate,
+                []
+            );
 
             $group = $this->createFromSingleArray(
                 $groupUnwrapped['group_id'],

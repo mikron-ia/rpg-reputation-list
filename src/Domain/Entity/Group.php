@@ -44,7 +44,7 @@ class Group extends Person
         $members = [];
 
         foreach ($this->members as $member) {
-            $members = $member->getCompleteData();
+            $members[] = $member->getCompleteData();
         }
 
         return $members;

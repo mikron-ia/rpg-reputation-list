@@ -20,6 +20,7 @@ return [
         'generic.calculateAbsolute',
         'seventhSea.calculateDice',
         'seventhSea.calculateRecognitionValue',
-        'seventhSea.calculateRecognitionDice'
+        'seventhSea.calculateRecognitionDice',
+        'seventhSea.calculateInfluenceExtended',
     ]
 ];

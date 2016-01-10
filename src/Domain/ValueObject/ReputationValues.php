@@ -24,11 +24,16 @@ final class ReputationValues
     /**
      * ReputationValues constructor.
      * @param \int[] $values List of reputation values
-     * @param array $methodsToUse Methods that are supposed to be used to calculate results other than basics
+     * @param \string[] $methodsToUse Methods that are supposed to be used to calculate results other than basics
+     * @param \int[] $initialState
+     * @throws ErroneousComponentException
+     * @throws MissingComponentException
      */
-    public function __construct(array $values, array $methodsToUse = [])
+    public function __construct(array $values, array $methodsToUse = [], array $initialState = [])
     {
         $this->values = $values;
+        $this->results = $initialState;
+
         $this->calculate($methodsToUse);
     }
 

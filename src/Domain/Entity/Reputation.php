@@ -31,24 +31,32 @@ final class Reputation implements Displayable
     private $value;
 
     /**
-     * @var string[][]
+     * @var string[]
      */
     private $methodsToCalculate;
+
+    /**
+     * @var string[]
+     */
+    private $initialParametersToCalculate;
 
     /**
      * Reputation constructor.
      * @param ReputationNetwork $reputationNetwork
      * @param ReputationEvent[] $reputationEvents
      * @param \string[] $methodsToCalculate
+     * @param \string[] $initialParametersToCalculate
      */
     public function __construct(
         ReputationNetwork $reputationNetwork,
         array $reputationEvents,
-        array $methodsToCalculate
+        array $methodsToCalculate,
+        array $initialParametersToCalculate
     ) {
         $this->reputationNetwork = $reputationNetwork;
         $this->reputationEvents = $reputationEvents;
         $this->methodsToCalculate = $methodsToCalculate;
+        $this->initialParametersToCalculate = $initialParametersToCalculate;
 
         $this->value = $this->calculateValue();
     }
@@ -65,7 +73,7 @@ final class Reputation implements Displayable
             $values[] = $repEvent->getValue();
         }
 
-        $value = new ReputationValues($values, $this->methodsToCalculate);
+        $value = new ReputationValues($values, $this->methodsToCalculate, $this->initialParametersToCalculate);
 
         return $value;
     }

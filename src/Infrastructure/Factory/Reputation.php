@@ -12,23 +12,26 @@ final class Reputation
      * @param \Mikron\ReputationList\Domain\ValueObject\ReputationNetwork $reputationNetwork
      * @param \Mikron\ReputationList\Domain\Entity\ReputationEvent[] $reputationEvents
      * @param string[] $methodsToCalculate
+     * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation
      */
-    public function createFromParameters($reputationNetwork, $reputationEvents, $methodsToCalculate)
+    public function createFromParameters($reputationNetwork, $reputationEvents, $methodsToCalculate, $initialStateOfCalculations)
     {
         return new \Mikron\ReputationList\Domain\Entity\Reputation(
             $reputationNetwork,
             $reputationEvents,
-            $methodsToCalculate
+            $methodsToCalculate,
+            $initialStateOfCalculations
         );
     }
 
     /**
      * @param $reputationEventsWild
      * @param string[] $methodsToCalculate
+     * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation[]
      */
-    public function createFromReputationEvents($reputationEventsWild, $methodsToCalculate)
+    public function createFromReputationEvents($reputationEventsWild, $methodsToCalculate, $initialStateOfCalculations)
     {
         $reputationEventsOrdered = [];
 
@@ -52,7 +55,8 @@ final class Reputation
             $reputation = $reputationFactory->createFromParameters(
                 $reputationNetwork,
                 $reputationEventsCategory,
-                $methodsToCalculate
+                $methodsToCalculate,
+                $initialStateOfCalculations
             );
             $reputations[$reputation->getReputationNetwork()->getCode()] = $reputation;
         }

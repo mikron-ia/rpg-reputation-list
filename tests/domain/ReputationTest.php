@@ -15,7 +15,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
      */
     public function reputationNetworkIsCorrect($repNet, $repEvents)
     {
-        $reputation = new Reputation($repNet, $repEvents, []);
+        $reputation = new Reputation($repNet, $repEvents, [], []);
         $this->assertEquals($repNet, $reputation->getReputationNetwork());
     }
 
@@ -27,7 +27,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
      */
     public function simpleDataIsCorrect($repNet, $repEvents)
     {
-        $reputation = new Reputation($repNet, $repEvents, ['generic.calculateBasic']);
+        $reputation = new Reputation($repNet, $repEvents, ['generic.calculateBasic'], []);
 
         $expectation = [
             'name' => $reputation->getName(),
@@ -45,7 +45,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
      */
     public function completeDataIsCorrect($repNet, $repEvents)
     {
-        $reputation = new Reputation($repNet, $repEvents, []);
+        $reputation = new Reputation($repNet, $repEvents, [], []);
 
         $expectation = [
             'name' => $reputation->getName(),
@@ -65,7 +65,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
      */
     public function reputationEventsAreOfCorrectClass($repNet, $repEvents)
     {
-        $reputation = new Reputation($repNet, $repEvents, []);
+        $reputation = new Reputation($repNet, $repEvents, [], []);
         $className = 'Mikron\\ReputationList\\Domain\\Entity\\ReputationEvent';
 
         $this->assertContainsOnlyInstancesOf($className, $reputation->getReputationEvents());

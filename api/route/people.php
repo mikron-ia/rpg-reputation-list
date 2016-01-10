@@ -1,5 +1,7 @@
 <?php
 
+use Mikron\ReputationList\Domain\Blueprint\Displayable;
+
 /* List of people available for display, along with their IDs */
 $app->get('/people/{authenticationMethod}/{authenticationKey}/', function ($authenticationMethod, $authenticationKey) use ($app) {
     $connectionFactory = new \Mikron\ReputationList\Infrastructure\Storage\ConnectorFactory($app['config']);
@@ -13,6 +15,10 @@ $app->get('/people/{authenticationMethod}/{authenticationKey}/', function ($auth
     if ($authentication->isAuthenticated($authenticationKey)) {
         $connection = $connectionFactory->getConnection();
         $peopleObjects = $peopleFactory->retrieveAllFromDb($connection);
+
+        /**
+         * @var Displayable[]
+         */
         $peopleList = [];
 
         foreach ($peopleObjects as $person) {

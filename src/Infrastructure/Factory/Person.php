@@ -88,7 +88,14 @@ final class Person
         $personStorage = new StorageForPerson($connection);
         $personWrapped = $personStorage->retrieveById($dbId);
 
-        return $this->unwrapPerson($personWrapped, $connection, $logger, $reputationNetworksList, $methodsToCalculate);
+        return $this->unwrapPerson(
+            $personWrapped,
+            $connection,
+            $logger,
+            $reputationNetworksList,
+            $methodsToCalculate,
+            []
+        );
     }
 
     /**
@@ -105,7 +112,52 @@ final class Person
         $personStorage = new StorageForPerson($connection);
         $personWrapped = $personStorage->retrieveByKey($key);
 
-        return $this->unwrapPerson($personWrapped, $connection, $logger, $reputationNetworksList, $methodsToCalculate);
+        return $this->unwrapPerson(
+            $personWrapped,
+            $connection,
+            $logger,
+            $reputationNetworksList,
+            $methodsToCalculate,
+            []
+        );
+    }
+
+    /**
+     * @param StorageEngine $connection
+     * @param LoggerInterface $logger
+     * @param ReputationNetwork[] $reputationNetworksList
+     * @param string[] $methodsToCalculate
+     * @param int[] $reputationInitialPattern
+     * @param int $groupId
+     * @return Person[]
+     * @throws PersonNotFoundException
+     * @todo Rework unwrapper - it has to be used here, as createFromCompleteArray() does not load reputations
+     */
+    public function retrievePersonForGroupFromDb(
+        $connection,
+        $logger,
+        $reputationNetworksList,
+        $methodsToCalculate,
+        $reputationInitialPattern,
+        $groupId
+    ) {
+        $personStorage = new StorageForPerson($connection);
+        $personsRetrieved = $personStorage->retrieveByGroup($groupId);
+
+        $persons = [];
+
+        foreach ($personsRetrieved as $personRetrieved) {
+            $persons[] = $this->unwrapPerson(
+                [$personRetrieved],
+                $connection,
+                $logger,
+                $reputationNetworksList,
+                $methodsToCalculate,
+                $reputationInitialPattern
+            );
+        }
+
+        return $persons;
     }
 
     /**
@@ -114,11 +166,18 @@ final class Person
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string[] $methodsToCalculate
+     * @param int[] $initialStateOfCalculations
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
-    public function unwrapPerson($personWrapped, $connection, $logger, $reputationNetworksList, $methodsToCalculate)
-    {
+    public function unwrapPerson(
+        $personWrapped,
+        $connection,
+        $logger,
+        $reputationNetworksList,
+        $methodsToCalculate,
+        $initialStateOfCalculations
+    ) {
         if (!empty($personWrapped)) {
             $personUnwrapped = array_pop($personWrapped);
 
@@ -133,7 +192,11 @@ final class Person
                 $reputationNetworksList,
                 $personDbId
             );
-            $personReputations = $reputationFactory->createFromReputationEvents($personReputationEvents, $methodsToCalculate);
+            $personReputations = $reputationFactory->createFromReputationEvents(
+                $personReputationEvents,
+                $methodsToCalculate,
+                $initialStateOfCalculations
+            );
 
             $person = $this->createFromSingleArray(
                 $personUnwrapped['person_id'],
@@ -148,5 +211,13 @@ final class Person
         } else {
             throw new PersonNotFoundException("Person with given ID has not been found in our database");
         }
+    }
+
+    public function countPeopleByGroup($connection, $groupId)
+    {
+        $personStorage = new StorageForPerson($connection);
+        $personCount = $personStorage->countByGroup($groupId);
+
+        return $personCount;
     }
 }

@@ -120,7 +120,7 @@ final class Reputation implements Displayable
 
     /**
      * @param $config
-     * @return array
+     * @return int[]
      */
     public function getValues($config)
     {

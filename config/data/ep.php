@@ -69,7 +69,13 @@ return [
         ]
     ],
     'calculation' => [
-        'generic.calculateBasic',
-        'generic.calculateAbsolute',
+        'person' => [
+            'generic.calculateBasic',
+            'generic.calculateAbsolute',
+        ],
+        'group' => [
+            'generic.calculateBasic',
+            'generic.calculateAbsolute',
+        ],
     ]
 ];

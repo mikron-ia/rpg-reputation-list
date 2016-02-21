@@ -15,12 +15,23 @@ return [
         'reputations' => []
     ],
     'calculation' => [
-        'generic.calculateBasic',
-        'generic.calculateLowestAndHighest',
-        'generic.calculateAbsolute',
-        'seventhSea.calculateDice',
-        'seventhSea.calculateRecognitionValue',
-        'seventhSea.calculateRecognitionDice',
-        'seventhSea.calculateInfluenceExtended',
+        'person' => [
+            'generic.calculateBasic',
+            'generic.calculateLowestAndHighest',
+            'generic.calculateAbsolute',
+            'seventhSea.calculateDice',
+            'seventhSea.calculateRecognitionValue',
+            'seventhSea.calculateRecognitionDice',
+            'seventhSea.calculateInfluenceExtended',
+        ],
+        'group' => [
+            'generic.calculateBasic',
+            'generic.calculateLowestAndHighest',
+            'generic.calculateAbsolute',
+            'seventhSea.calculateDice',
+            'seventhSea.calculateRecognitionValue',
+            'seventhSea.calculateRecognitionDice',
+            'seventhSea.calculateInfluenceExtended',
+        ],
     ]
 ];

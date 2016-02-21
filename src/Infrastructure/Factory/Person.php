@@ -79,7 +79,7 @@ final class Person
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param int $dbId
-     * @param string[] $methodsToCalculate
+     * @param string[][] $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
@@ -103,7 +103,7 @@ final class Person
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string $key
-     * @param string[] $methodsToCalculate
+     * @param string[][] $methodsToCalculate
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
@@ -126,7 +126,7 @@ final class Person
      * @param StorageEngine $connection
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
-     * @param string[] $methodsToCalculate
+     * @param string[][] $methodsToCalculate
      * @param int[] $reputationInitialPattern
      * @param int $groupId
      * @return Person[]
@@ -165,7 +165,7 @@ final class Person
      * @param StorageEngine $connection
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
-     * @param string[] $methodsToCalculate
+     * @param string[][] $methodsToCalculate
      * @param int[] $initialStateOfCalculations
      * @return Entity\Person
      * @throws PersonNotFoundException
@@ -194,7 +194,7 @@ final class Person
             );
             $personReputations = $reputationFactory->createFromReputationEvents(
                 $personReputationEvents,
-                $methodsToCalculate,
+                $methodsToCalculate['person'],
                 $initialStateOfCalculations
             );
 

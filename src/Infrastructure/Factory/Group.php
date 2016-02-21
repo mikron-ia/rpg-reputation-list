@@ -47,7 +47,7 @@ class Group
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string $key
-     * @param string[] $methodsToCalculate
+     * @param string[][] $methodsToCalculate
      * @return Entity\Group
      * @throws GroupNotFoundException
      */
@@ -64,7 +64,7 @@ class Group
      * @param StorageEngine $connection
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
-     * @param string[] $methodsToCalculate
+     * @param string[][] $methodsToCalculate
      * @return Entity\Group
      * @throws GroupNotFoundException
      */
@@ -102,7 +102,7 @@ class Group
             );
             $groupReputations = $reputationFactory->createFromReputationEvents(
                 $groupReputationEvents,
-                $methodsToCalculate,
+                $methodsToCalculate['group'],
                 $reputationInitialPattern
             );
 

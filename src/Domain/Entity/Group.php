@@ -14,6 +14,16 @@ class Group extends Person
     private $members;
 
     /**
+     * @var int[][]
+     */
+    private $influencesOfMembers;
+
+    /**
+     * @var int[]
+     */
+    private $sumOfInfluencesOfMembers;
+
+    /**
      * Group constructor.
      * @param $identification
      * @param string $name
@@ -26,6 +36,8 @@ class Group extends Person
     {
         parent::__construct($identification, $name, $description, $reputations, $reputationEvents);
         $this->members = $members;
+        $this->influencesOfMembers = $this->makeMembersInfluences($this->members);
+        $this->sumOfInfluencesOfMembers = $this->makeTotalMembersInfluence($this->influencesOfMembers);
     }
 
     /**
@@ -59,13 +71,14 @@ class Group extends Person
     }
 
     /**
-     * @return int[][]
+     * @param Person[] $members
+     * @return \int[][]
      */
-    public function getMembersInfluences()
+    public function makeMembersInfluences($members)
     {
         $groupInfluences = [];
 
-        foreach ($this->members as $member) {
+        foreach ($members as $member) {
             $reputations = $member->getReputations();
 
             $influences = [];
@@ -83,12 +96,11 @@ class Group extends Person
     }
 
     /**
-     * @return int[]
+     * @param int[][] $groupInfluences
+     * @return \int[]
      */
-    public function getTotalMembersInfluence()
+    public function makeTotalMembersInfluence(array $groupInfluences)
     {
-        $groupInfluences = $this->getMembersInfluences();
-
         $sumOfAllInfluences = [];
 
         foreach ($groupInfluences as $influences) {

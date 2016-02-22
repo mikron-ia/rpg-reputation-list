@@ -74,6 +74,26 @@ class GroupTest extends PHPUnit_Framework_TestCase
      */
     public function memberCountIsCorrect($members)
     {
+        $this->assertFalse(true);
+    }
+
+    /**
+     * @test
+     * @dataProvider memberDataProvider
+     * @param $members
+     */
+    public function memberInfluenceCalculationIsCorrect($members)
+    {
+        $this->assertFalse(true);
+    }
+
+    /**
+     * @test
+     * @dataProvider memberDataProvider
+     * @param $members
+     */
+    public function memberInfluenceTotalIsCorrect($members)
+    {
         $group = new Group($this->identification, 'Test Name', 'Test Description', [], [], $members);
         $this->assertEquals(count($members), $group->getMemberCount());
     }

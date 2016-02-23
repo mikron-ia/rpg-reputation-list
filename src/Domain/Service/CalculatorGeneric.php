@@ -12,15 +12,14 @@ namespace Mikron\ReputationList\Domain\Service;
  *
  * @package Mikron\ReputationList\Domain\Service
  */
-final class CalculatorGeneric
+abstract class CalculatorGeneric
 {
     /**
      * Calculates basic sums
-     * @param $values
-     * @param $currentState
-     * @return \int[]
+     * @param int[] $values
+     * @return int[]
      */
-    public static function calculateBasic($values, $currentState)
+    public static function calculateBasic($values)
     {
         $negative = 0;
         $positive = 0;
@@ -48,11 +47,10 @@ final class CalculatorGeneric
      * 2, 1, -2 will generate  0 / 1 / 3
      * -2, 1, 2 will generate -2 / 1 / 1
      *
-     * @param $values
-     * @param $currentState
-     * @return array
+     * @param int[] $values
+     * @return int[]
      */
-    public static function calculateLowestAndHighest($values, $currentState)
+    public static function calculateLowestAndHighest($values)
     {
         $lowest = 0;
         $highest = 0;
@@ -78,20 +76,34 @@ final class CalculatorGeneric
     }
 
     /**
-     * @param $values
-     * @param $currentState
-     * @return int|number
+     * @param int[] $values
+     * @return int[]
      */
-    public static function calculateAbsolute($values, $currentState)
+    public static function calculateAbsolute($values)
     {
         $result = 0;
 
-        foreach($values as $value) {
+        foreach ($values as $value) {
             $result += abs($value);
         }
 
         return [
             'absolute' => $result
         ];
+    }
+
+    /**
+     * Performs the calculations
+     *
+     * @param array $values
+     * @return \int[]
+     */
+    public function perform(array $values)
+    {
+        $basics = $this->calculateBasic($values);
+        $maximums = $this->calculateLowestAndHighest($values);
+        $absolutes = $this->calculateAbsolute($values);
+
+        return array_merge($basics, $maximums, $absolutes);
     }
 }

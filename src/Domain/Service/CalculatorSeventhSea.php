@@ -13,7 +13,7 @@ use Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException;
  *
  * @package Mikron\ReputationList\Domain\Service\Calculator
  */
-final class CalculatorSeventhSea
+final class CalculatorSeventhSea extends CalculatorGeneric
 {
     /**
      * Calculates dice according to balance and extremes. Requires calculateLowestAndHighest() to be called first
@@ -115,5 +115,16 @@ final class CalculatorSeventhSea
         } else {
             return [];
         }
+    }
+
+    /**
+     * Performs the calculations
+     *
+     * @param array $initialData
+     * @return \int[]
+     */
+    function perform(array $initialData)
+    {
+
     }
 }

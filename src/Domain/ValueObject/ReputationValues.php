@@ -40,43 +40,6 @@ final class ReputationValues
     }
 
     /**
-     * Calculates more advanced derived values
-     * @param $methodsToUse
-     * @throws ErroneousComponentException
-     * @throws MissingComponentException
-     */
-    public function calculate($methodsToUse)
-    {
-        foreach ($methodsToUse as $packMethod) {
-            $explodedMethod = explode('.', $packMethod);
-
-            if (!isset($explodedMethod[0]) || !isset($explodedMethod[1])) {
-                throw new ErroneousComponentException(
-                    "Incorrect method",
-                    "Method $packMethod does not have class name or proper name"
-                );
-            }
-
-            $packName = $explodedMethod[0];
-            $packMethod = $explodedMethod[1];
-
-            $packClassName = '\Mikron\ReputationList\Domain\Service\Calculator' . ucfirst($packName);
-
-            if (!class_exists($packClassName)) {
-                throw new MissingComponentException(
-                    "Unable to find required class",
-                    "Unable to find required class $packClassName"
-                );
-            }
-
-            $packObject = new $packClassName();
-            $currentState = $this->getAll();
-            $result = $packObject::$packMethod($this->values, $currentState);
-            $this->results = array_merge($this->results, $result);
-        }
-    }
-
-    /**
      * Returns all basics and configured advanced
      * @return int[]
      */

@@ -16,25 +16,8 @@ return [
          */
         'reputations' => []
     ],
-    'calculation' => [
-        'person' => [
-            'generic.calculateBasic',
-            'generic.calculateLowestAndHighest',
-            'generic.calculateAbsolute',
-            'seventhSea.calculateDice',
-            'seventhSea.calculateRecognitionValue',
-            'seventhSea.calculateRecognitionDice',
-            'seventhSea.calculateInfluenceExtended',
-        ],
-        'group' => [
-            'generic.calculateBasic',
-            'generic.calculateLowestAndHighest',
-            'generic.calculateAbsolute',
-            'seventhSea.calculateDice',
-            'seventhSea.calculateRecognitionValue',
-            'seventhSea.calculateRecognitionDice',
-            'seventhSea.calculateInfluenceExtended',
-        ],
-    ],
-    'calculator' => 'Mikron\ReputationList\Domain\Service\CalculatorSeventhSea',
+    'calculator' => [
+        'person' => 'Mikron\ReputationList\Domain\Service\CalculatorSeventhSea',
+        'group' => 'Mikron\ReputationList\Domain\Service\CalculatorSeventhSea'
+    ]
 ];

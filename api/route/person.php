@@ -17,12 +17,19 @@ $app->get(
             $authenticationMethod
         );
 
-        if (class_exists($app['config']['calculator'])) {
-            $calculator = new $app['config']['calculator'];
+        if(!isset($app['config']['calculator']['person'])) {
+            throw new \Mikron\ReputationList\Domain\Exception\ConfigurationException(
+                "Missing calculator configuration",
+                "Missing calculator configuration. Please set correct class value in calculator.person configuration."
+            );
+        }
+
+        if (class_exists($app['config']['calculator']['person'])) {
+            $calculator = new $app['config']['calculator']['person'];
         } else {
             throw new \Mikron\ReputationList\Domain\Exception\ConfigurationException(
                 "Missing calculator class",
-                "Missing calculator class. Please set 'calculator' to correct class value."
+                "Missing calculator class. Please set correct class value in calculator.person configuration."
             );
         }
 

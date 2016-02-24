@@ -17,6 +17,22 @@ $app->get(
             $authenticationMethod
         );
 
+        if(!isset($app['config']['calculator']['group'])) {
+            throw new \Mikron\ReputationList\Domain\Exception\ConfigurationException(
+                "Missing calculator configuration",
+                "Missing calculator configuration. Please set correct class value in calculator.group configuration."
+            );
+        }
+
+        if (class_exists($app['config']['calculator']['group'])) {
+            $calculator = new $app['config']['calculator']['group'];
+        } else {
+            throw new \Mikron\ReputationList\Domain\Exception\ConfigurationException(
+                "Missing calculator class",
+                "Missing calculator class. Please set correct class value in calculator.group configuration."
+            );
+        }
+
         /* Check credentials */
         if (!$authentication->isAuthenticated($authenticationKey)) {
             throw new AuthenticationException(
@@ -44,7 +60,7 @@ $app->get(
             $app['logger'],
             $app['networks'],
             $identificationKey,
-            $app['config']['calculation']
+            $calculator
         );
 
         /* Cook and return the JSON */

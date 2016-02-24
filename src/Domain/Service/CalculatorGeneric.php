@@ -7,11 +7,6 @@ use Mikron\ReputationList\Domain\Blueprint\Calculator;
 /**
  * Class CalculatorGeneric - basic calculations that are likely to be common
  *
- * Contains:
- * generic.calculateBasic - gives sum of positive values, negative values and total balance
- * generic.calculateLowestAndHighest - gives local extremes (minimums and maximums)
- * generic.calculateAbsolute - gives sum of absolute values
- *
  * @package Mikron\ReputationList\Domain\Service
  */
 class CalculatorGeneric implements Calculator

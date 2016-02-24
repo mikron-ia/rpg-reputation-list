@@ -35,6 +35,10 @@ final class ReputationValues
         $this->values = $values;
         $this->results = $initialState;
 
+        if (empty($calculator)) {
+            throw new MissingComponentException('No calculator provided');
+        }
+
         $calculator->perform($values, $initialState);
         $this->results = $calculator->getResults();
     }

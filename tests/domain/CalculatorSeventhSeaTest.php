@@ -136,7 +136,8 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
     public function calculateInfluenceWorks($calculator, $balance, $parameters, $expectedInfluence)
     {
         $expectation = [
-            'influence' => $expectedInfluence
+            'influence' => $expectedInfluence,
+            'weight' => 1
         ];
 
         $currentStateBase = $calculator->calculateBasic([$balance]);
@@ -151,25 +152,13 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function calculateInfluenceWorksReturnsEmptyWithoutParameters()
+    public function calculateInfluenceReturnsDefaultWeightWithoutParameters()
     {
         $calculator = new CalculatorSeventhSea();
         $currentStateBase = $calculator->calculateBasic([0]);
         $result = $calculator->calculateInfluenceExtended($currentStateBase);
 
-        $this->assertEquals([], $result);
-    }
-
-    /**
-     * @test
-     */
-    public function calculateInfluenceWorksFailsWithZeroDivider()
-    {
-        $calculator = new CalculatorSeventhSea();
-        $currentStateBase = $calculator->calculateBasic([0]);
-        $currentState = $currentStateBase + ['influenceMultiplier' => 1, 'influenceDivider' => 0];
-        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException');
-        $calculator->calculateInfluenceExtended($currentState);
+        $this->assertEquals(1, $result['weight']);
     }
 
     public function valuesProviderForSimpleCalculations()

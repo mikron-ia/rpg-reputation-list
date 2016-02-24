@@ -8,13 +8,9 @@ use Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException;
 /**
  * Class CalculatorSeventhSea
  *
- * seventhSea.calculateDice - calculates reputation dice based on balance and local extremes
- * seventhSea.calculateRecognitionValue - calculates recognition value (fame of the person)
- * seventhSea.calculateRecognitionDice - calculates recognition dice (used in tests of recognition)
- *
  * @package Mikron\ReputationList\Domain\Service\Calculator
  */
-final class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
+class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
 {
     /**
      * Calculates dice according to balance and extremes. Requires calculateLowestAndHighest() to be called first
@@ -25,6 +21,13 @@ final class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
      */
     public function calculateDice($currentState)
     {
+        if (!isset($currentState['balance'])) {
+            throw new MissingCalculationBaseException(
+                "Missing values necessary to operate",
+                "Missing balance. Call calculateBasic() first."
+            );
+        }
+
         if (!isset($currentState['negativeMin']) || !isset($currentState['positiveMax'])) {
             throw new MissingCalculationBaseException(
                 "Missing values necessary to operate",
@@ -98,27 +101,23 @@ final class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
      */
     public function calculateInfluenceExtended($currentState)
     {
-        if (
-            isset($currentState['balance']) &&
-            isset($currentState['influenceDivider']) &&
-            isset($currentState['influenceMultiplier'])
-        ) {
-            if ($currentState['influenceDivider'] == 0) {
-                throw new MissingCalculationBaseException(
-                    "Erroneous value among values necessary to operate",
-                    "Influence divider is zero. Provide a valid one as parameter."
-                );
-            }
-
-            return [
-                'influence' => (int)round(
-                    ($currentState['balance'] * $currentState['influenceMultiplier']) / $currentState['influenceDivider'],
-                    0
-                )
-            ];
-        } else {
-            return [];
+        if (!isset($currentState['balance'])) {
+            throw new MissingCalculationBaseException(
+                "Missing values necessary to operate",
+                "Missing balance. Call calculateBasic() first."
+            );
         }
+
+        if (!isset($currentState['influenceWeight'])) {
+            $weight = 1;
+        } else {
+            $weight = $currentState['influenceWeight'];
+        }
+
+        return [
+            'influence' => (int)round($currentState['balance'] * $weight, 0),
+            'weight' => $weight
+        ];
     }
 
     /**
@@ -131,13 +130,15 @@ final class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
      */
     function perform($values, $parameters)
     {
-        parent::perform($values, $parameters);
-        $basics = parent::getResults();
+        $basics = $this->calculateBasic($values);
+        $maximums = $this->calculateLowestAndHighest($values);
+        $absolutes = $this->calculateAbsolute($values);
 
-        $dice = $this->calculateDice($basics);
-        $recognitionValue = $this->calculateRecognitionValue($basics);
-        $recognitionDice = $this->calculateRecognitionDice($basics + $recognitionValue);
-        $influenceExtended = $this->calculateInfluenceExtended($basics); //NOTE: basics WILL NOT SUFFICE
+        $dice = $this->calculateDice($basics + $maximums);
+        $recognitionValue = $this->calculateRecognitionValue($absolutes);
+        $recognitionDice = $this->calculateRecognitionDice($recognitionValue);
+
+        $influenceExtended = $this->calculateInfluenceExtended($basics + $parameters);
 
         return array_merge($basics, $dice, $recognitionValue, $recognitionDice, $influenceExtended);
     }

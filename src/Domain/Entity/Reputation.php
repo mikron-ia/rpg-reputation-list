@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Domain\Entity;
 
+use Mikron\ReputationList\Domain\Blueprint\Calculator;
 use Mikron\ReputationList\Domain\Blueprint\Displayable;
 use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
@@ -33,7 +34,7 @@ final class Reputation implements Displayable
     /**
      * @var string[]
      */
-    private $methodsToCalculate;
+    private $calculator;
 
     /**
      * @var string[]
@@ -44,18 +45,18 @@ final class Reputation implements Displayable
      * Reputation constructor.
      * @param ReputationNetwork $reputationNetwork
      * @param ReputationEvent[] $reputationEvents
-     * @param \string[] $methodsToCalculate
+     * @param Calculator $calculator
      * @param \string[] $initialParametersToCalculate
      */
     public function __construct(
         ReputationNetwork $reputationNetwork,
         array $reputationEvents,
-        array $methodsToCalculate,
+        $calculator,
         array $initialParametersToCalculate
     ) {
         $this->reputationNetwork = $reputationNetwork;
         $this->reputationEvents = $reputationEvents;
-        $this->methodsToCalculate = $methodsToCalculate;
+        $this->calculator = $calculator;
         $this->initialParametersToCalculate = $initialParametersToCalculate;
 
         $this->value = $this->calculateValue();
@@ -73,7 +74,7 @@ final class Reputation implements Displayable
             $values[] = $repEvent->getValue();
         }
 
-        $value = new ReputationValues($values, $this->methodsToCalculate, $this->initialParametersToCalculate);
+        $value = new ReputationValues($values, $this->calculator, $this->initialParametersToCalculate);
 
         return $value;
     }

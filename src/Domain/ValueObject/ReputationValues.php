@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Domain\ValueObject;
 
+use Mikron\ReputationList\Domain\Blueprint\Calculator;
 use Mikron\ReputationList\Domain\Exception\ErroneousComponentException;
 use Mikron\ReputationList\Domain\Exception\MissingComponentException;
 
@@ -24,17 +25,18 @@ final class ReputationValues
     /**
      * ReputationValues constructor.
      * @param \int[] $values List of reputation values
-     * @param \string[] $methodsToUse Methods that are supposed to be used to calculate results other than basics
+     * @param Calculator $calculator
      * @param \int[] $initialState
      * @throws ErroneousComponentException
      * @throws MissingComponentException
      */
-    public function __construct(array $values, array $methodsToUse = [], array $initialState = [])
+    public function __construct(array $values, $calculator, array $initialState = [])
     {
         $this->values = $values;
         $this->results = $initialState;
 
-        $this->calculate($methodsToUse);
+        $calculator->perform($values, $initialState);
+        $this->results = $calculator->getResults();
     }
 
     /**

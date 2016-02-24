@@ -1,6 +1,7 @@
 <?php
 
 namespace Mikron\ReputationList\Domain\Service;
+
 use Mikron\ReputationList\Domain\Blueprint\Calculator;
 
 /**

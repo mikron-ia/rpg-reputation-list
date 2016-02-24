@@ -1,6 +1,7 @@
 <?php
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
+use Mikron\ReputationList\Domain\Blueprint\Calculator;
 
 /**
  * Class Reputation
@@ -11,27 +12,27 @@ final class Reputation
     /**
      * @param \Mikron\ReputationList\Domain\ValueObject\ReputationNetwork $reputationNetwork
      * @param \Mikron\ReputationList\Domain\Entity\ReputationEvent[] $reputationEvents
-     * @param string[] $methodsToCalculate
+     * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation
      */
-    public function createFromParameters($reputationNetwork, $reputationEvents, $methodsToCalculate, $initialStateOfCalculations)
+    public function createFromParameters($reputationNetwork, $reputationEvents, $calculator, $initialStateOfCalculations)
     {
         return new \Mikron\ReputationList\Domain\Entity\Reputation(
             $reputationNetwork,
             $reputationEvents,
-            $methodsToCalculate,
+            $calculator,
             $initialStateOfCalculations
         );
     }
 
     /**
      * @param $reputationEventsWild
-     * @param string[] $methodsToCalculate
+     * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation[]
      */
-    public function createFromReputationEvents($reputationEventsWild, $methodsToCalculate, $initialStateOfCalculations)
+    public function createFromReputationEvents($reputationEventsWild, $calculator, $initialStateOfCalculations)
     {
         $reputationEventsOrdered = [];
 
@@ -55,7 +56,7 @@ final class Reputation
             $reputation = $reputationFactory->createFromParameters(
                 $reputationNetwork,
                 $reputationEventsCategory,
-                $methodsToCalculate,
+                $calculator,
                 $initialStateOfCalculations
             );
             $reputations[$reputation->getReputationNetwork()->getCode()] = $reputation;

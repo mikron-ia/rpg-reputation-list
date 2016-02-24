@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
+use Mikron\ReputationList\Domain\Blueprint\Calculator;
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\PersonNotFoundException;
@@ -79,11 +80,11 @@ final class Person
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param int $dbId
-     * @param string[][] $methodsToCalculate
+     * @param Calculator $calculator
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
-    public function retrievePersonFromDbById($connection, $logger, $reputationNetworksList, $dbId, $methodsToCalculate)
+    public function retrievePersonFromDbById($connection, $logger, $reputationNetworksList, $dbId, $calculator)
     {
         $personStorage = new StorageForPerson($connection);
         $personWrapped = $personStorage->retrieveById($dbId);
@@ -93,7 +94,7 @@ final class Person
             $connection,
             $logger,
             $reputationNetworksList,
-            $methodsToCalculate,
+            $calculator,
             []
         );
     }
@@ -103,11 +104,11 @@ final class Person
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string $key
-     * @param string[][] $methodsToCalculate
+     * @param Calculator $calculator
      * @return Entity\Person
      * @throws PersonNotFoundException
      */
-    public function retrievePersonFromDbByKey($connection, $logger, $reputationNetworksList, $key, $methodsToCalculate)
+    public function retrievePersonFromDbByKey($connection, $logger, $reputationNetworksList, $key, $calculator)
     {
         $personStorage = new StorageForPerson($connection);
         $personWrapped = $personStorage->retrieveByKey($key);
@@ -117,7 +118,7 @@ final class Person
             $connection,
             $logger,
             $reputationNetworksList,
-            $methodsToCalculate,
+            $calculator,
             []
         );
     }
@@ -165,7 +166,7 @@ final class Person
      * @param StorageEngine $connection
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
-     * @param string[][] $methodsToCalculate
+     * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
      * @return Entity\Person
      * @throws PersonNotFoundException
@@ -175,7 +176,7 @@ final class Person
         $connection,
         $logger,
         $reputationNetworksList,
-        $methodsToCalculate,
+        $calculator,
         $initialStateOfCalculations
     ) {
         if (!empty($personWrapped)) {
@@ -194,7 +195,7 @@ final class Person
             );
             $personReputations = $reputationFactory->createFromReputationEvents(
                 $personReputationEvents,
-                $methodsToCalculate['person'],
+                $calculator,
                 $initialStateOfCalculations
             );
 

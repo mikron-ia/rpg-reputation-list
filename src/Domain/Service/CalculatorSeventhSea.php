@@ -131,10 +131,12 @@ final class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
      */
     function perform($values, $parameters)
     {
-        $basics = parent::perform($values, $parameters);
+        parent::perform($values, $parameters);
+        $basics = parent::getResults();
+
         $dice = $this->calculateDice($basics);
         $recognitionValue = $this->calculateRecognitionValue($basics);
-        $recognitionDice = $this->calculateRecognitionDice($basics);
+        $recognitionDice = $this->calculateRecognitionDice($basics + $recognitionValue);
         $influenceExtended = $this->calculateInfluenceExtended($basics); //NOTE: basics WILL NOT SUFFICE
 
         return array_merge($basics, $dice, $recognitionValue, $recognitionDice, $influenceExtended);

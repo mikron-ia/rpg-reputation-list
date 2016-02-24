@@ -97,7 +97,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
     {
         $repNetCivil = new ReputationNetwork('c', ['name' => 'CivicNet', 'description' => 'Corporations']);
         $repNetMilitary = new ReputationNetwork('m', ['name' => 'MilNet', 'description' => 'Mercenaries']);
-        $calculators = [];
+        $calculator = new \Mikron\ReputationList\Domain\Service\CalculatorGeneric();
         
         return [
             [
@@ -108,7 +108,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
                             new ReputationEvent(null, $repNetMilitary, 2, null),
                             new ReputationEvent(null, $repNetMilitary, 3, null),
                         ],
-                        $calculators,
+                        $calculator,
                         []
                     ),
                     new Reputation(
@@ -117,7 +117,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
                             new ReputationEvent(null, $repNetCivil, 1, null),
                             new ReputationEvent(null, $repNetCivil, 2, null),
                         ],
-                        $calculators,
+                        $calculator,
                         []
                     )
                 ]
@@ -130,7 +130,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
                             new ReputationEvent(null, $repNetMilitary, 2, null),
                             new ReputationEvent(null, $repNetMilitary, 3, null),
                         ],
-                        $calculators,
+                        $calculator,
                         []
                     )
                 ]

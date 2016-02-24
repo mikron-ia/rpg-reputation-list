@@ -74,26 +74,6 @@ class GroupTest extends PHPUnit_Framework_TestCase
      */
     public function memberCountIsCorrect($members)
     {
-        $this->assertFalse(true);
-    }
-
-    /**
-     * @test
-     * @dataProvider memberDataProvider
-     * @param $members
-     */
-    public function memberInfluenceCalculationIsCorrect($members)
-    {
-        $this->assertFalse(true);
-    }
-
-    /**
-     * @test
-     * @dataProvider memberDataProvider
-     * @param $members
-     */
-    public function memberInfluenceTotalIsCorrect($members)
-    {
         $group = new Group($this->identification, 'Test Name', 'Test Description', [], [], $members);
         $this->assertEquals(count($members), $group->getMemberCount());
     }
@@ -142,7 +122,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
     {
         $repNetCivil = new ReputationNetwork('c', ['name' => 'CivicNet', 'description' => 'Corporations']);
         $repNetMilitary = new ReputationNetwork('m', ['name' => 'MilNet', 'description' => 'Mercenaries']);
-        $calculators = [];
+        $calculator = new \Mikron\ReputationList\Domain\Service\CalculatorGeneric();
 
         return [
             [
@@ -153,7 +133,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
                             new ReputationEvent(null, $repNetMilitary, 2, null),
                             new ReputationEvent(null, $repNetMilitary, 3, null),
                         ],
-                        $calculators,
+                        $calculator,
                         []
                     ),
                     new Reputation(
@@ -162,7 +142,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
                             new ReputationEvent(null, $repNetCivil, 1, null),
                             new ReputationEvent(null, $repNetCivil, 2, null),
                         ],
-                        $calculators,
+                        $calculator,
                         []
                     )
                 ]
@@ -175,7 +155,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
                             new ReputationEvent(null, $repNetMilitary, 2, null),
                             new ReputationEvent(null, $repNetMilitary, 3, null),
                         ],
-                        $calculators,
+                        $calculator,
                         []
                     )
                 ]

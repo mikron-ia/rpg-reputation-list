@@ -11,7 +11,7 @@ use Mikron\ReputationList\Domain\Blueprint\Calculator;
  */
 class CalculatorGeneric implements Calculator
 {
-    private $results = [];
+    protected $results = [];
 
     /**
      * Calculates basic sums

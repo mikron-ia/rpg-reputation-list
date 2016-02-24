@@ -97,7 +97,6 @@ class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
      * @param $currentState
      * @return array
      * @throws MissingCalculationBaseException
-     * @todo: either force parameters with div / multi OR move influence calculation to group
      */
     public function calculateInfluenceExtended($currentState)
     {
@@ -140,6 +139,6 @@ class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
 
         $influenceExtended = $this->calculateInfluenceExtended($basics + $parameters);
 
-        return array_merge($basics, $dice, $recognitionValue, $recognitionDice, $influenceExtended);
+        $this->results = array_merge($basics, $maximums, $absolutes, $dice, $recognitionValue, $recognitionDice, $influenceExtended);
     }
 }

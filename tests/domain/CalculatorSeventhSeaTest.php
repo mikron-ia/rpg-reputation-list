@@ -14,20 +14,20 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
+     * @param CalculatorSeventhSea $calculator
      * @param int[] $values
      * @param int[] $expectations
      * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
      */
-    public function calculateDiceWorks($values, $expectations)
+    public function calculateDiceWorks($calculator, $values, $expectations)
     {
         $expectation = [
             'dice' => $expectations['dice']
         ];
 
-        $currentState = CalculatorGeneric::calculateBasic($values, [])
-            + CalculatorGeneric::calculateLowestAndHighest($values, []);
+        $currentState = $calculator->calculateBasic($values) + $calculator->calculateLowestAndHighest($values);
 
-        $result = CalculatorSeventhSea::calculateDice($values, $currentState);
+        $result = $calculator->calculateDice($currentState);
 
         $this->assertEquals($expectation, $result);
     }
@@ -36,19 +36,20 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
+     * @param CalculatorSeventhSea $calculator
      * @param int[] $values
      * @param int[] $expectations
      * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
      */
-    public function calculateRecognitionWorks($values, $expectations)
+    public function calculateRecognitionWorks($calculator, $values, $expectations)
     {
         $expectation = [
             'recognition' => $expectations['recognition']
         ];
 
-        $currentState = CalculatorGeneric::calculateBasic($values, [])
-            + CalculatorGeneric::calculateAbsolute($values, []);
-        $result = CalculatorSeventhSea::calculateRecognitionValue($values, $currentState);
+        $currentState = $calculator->calculateBasic($values) + $calculator->calculateAbsolute($values);
+
+        $result = $calculator->calculateRecognitionValue($currentState);
 
         $this->assertEquals($expectation, $result);
     }
@@ -57,21 +58,22 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
+     * @param CalculatorSeventhSea $calculator
      * @param int[] $values
      * @param int[] $expectations
      * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
      */
-    public function calculateRecognitionDiceWorks($values, $expectations)
+    public function calculateRecognitionDiceWorks($calculator, $values, $expectations)
     {
         $expectation = [
             'recognitionDice' => $expectations['recognitionDice']
         ];
 
-        $currentStateBase = CalculatorGeneric::calculateBasic($values, [])
-            + CalculatorGeneric::calculateAbsolute($values, []);
-        $currentState = CalculatorSeventhSea::calculateRecognitionValue($values, $currentStateBase);
+        $currentStateBase = $calculator->calculateBasic($values) + $calculator->calculateAbsolute($values);
 
-        $result = CalculatorSeventhSea::calculateRecognitionDice($values, $currentState);
+        $currentState = $calculator->calculateRecognitionValue($currentStateBase);
+
+        $result = $calculator->calculateRecognitionDice($currentState);
 
         $this->assertEquals($expectation, $result);
     }
@@ -80,64 +82,68 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
+     * @param CalculatorSeventhSea $calculator
      * @param int[] $values
      * @param int[] $expectations
      * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
      */
-    public function calculateDiceFailsWithoutExtremes($values, $expectations)
+    public function calculateDiceFailsWithoutExtremes($calculator, $values, $expectations)
     {
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException');
-        CalculatorSeventhSea::calculateDice($values, []);
+        $calculator->calculateDice([]);
     }
 
     /**
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
+     * @param CalculatorSeventhSea $calculator
      * @param int[] $values
      * @param int[] $expectations
      * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
      */
-    public function calculateRecognitionValueFailsWithoutExtremes($values, $expectations)
+    public function calculateRecognitionValueFailsWithoutExtremes($calculator, $values, $expectations)
     {
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException');
-        CalculatorSeventhSea::calculateRecognitionValue($values, []);
+        $calculator->calculateRecognitionValue([]);
     }
 
     /**
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
+     * @param CalculatorSeventhSea $calculator
      * @param int[] $values
      * @param int[] $expectations
      * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
      */
-    public function calculateRecognitionDiceFailsWithoutExtremes($values, $expectations)
+    public function calculateRecognitionDiceFailsWithoutExtremes($calculator, $values, $expectations)
     {
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException');
-        CalculatorSeventhSea::calculateRecognitionDice($values, []);
+        $calculator->calculateRecognitionDice([]);
     }
 
     /**
      * @test
      * @dataProvider valuesProviderForInfluenceCalculations
      *
+     * @param CalculatorSeventhSea $calculator
      * @param int $balance
      * @param int[] $parameters
      * @param int $expectedInfluence
      * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
      */
-    public function calculateInfluenceWorks($balance, $parameters, $expectedInfluence)
+    public function calculateInfluenceWorks($calculator, $balance, $parameters, $expectedInfluence)
     {
         $expectation = [
             'influence' => $expectedInfluence
         ];
 
-        $currentStateBase = CalculatorGeneric::calculateBasic([$balance], []);
+        $currentStateBase = $calculator->calculateBasic([$balance]);
 
         $currentState = $currentStateBase + $parameters;
 
-        $result = CalculatorSeventhSea::calculateInfluenceExtended([$balance], $currentState);
+        $result = $calculator->calculateInfluenceExtended($currentState);
 
         $this->assertEquals($expectation, $result);
     }
@@ -147,8 +153,9 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      */
     public function calculateInfluenceWorksReturnsEmptyWithoutParameters()
     {
-        $currentStateBase = CalculatorGeneric::calculateBasic([0], []);
-        $result = CalculatorSeventhSea::calculateInfluenceExtended([0], $currentStateBase);
+        $calculator = new CalculatorSeventhSea();
+        $currentStateBase = $calculator->calculateBasic([0]);
+        $result = $calculator->calculateInfluenceExtended($currentStateBase);
 
         $this->assertEquals([], $result);
     }
@@ -158,60 +165,74 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      */
     public function calculateInfluenceWorksFailsWithZeroDivider()
     {
-        $currentStateBase = CalculatorGeneric::calculateBasic([0], []);
+        $calculator = new CalculatorSeventhSea();
+        $currentStateBase = $calculator->calculateBasic([0]);
         $currentState = $currentStateBase + ['influenceMultiplier' => 1, 'influenceDivider' => 0];
         $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException');
-        CalculatorSeventhSea::calculateInfluenceExtended([0], $currentState);
+        $calculator->calculateInfluenceExtended($currentState);
     }
 
     public function valuesProviderForSimpleCalculations()
     {
+        $calculator = new CalculatorSeventhSea();
         return [
             [
+                $calculator,
                 [0],
                 ['dice' => 0, 'recognition' => 0, 'recognitionDice' => 0]
             ],
             [
+                $calculator,
                 [4],
                 ['dice' => 0, 'recognition' => 4, 'recognitionDice' => 0]
             ],
             [
+                $calculator,
                 [-4],
                 ['dice' => 0, 'recognition' => 4, 'recognitionDice' => 0]
             ],
             [
+                $calculator,
                 [5],
                 ['dice' => 1, 'recognition' => 5, 'recognitionDice' => 1]
             ],
             [
+                $calculator,
                 [-5],
                 ['dice' => -1, 'recognition' => 5, 'recognitionDice' => 1]
             ],
             [
+                $calculator,
                 [0, 0],
                 ['dice' => 0, 'recognition' => 0, 'recognitionDice' => 0]
             ],
             [
+                $calculator,
                 [-5, 5],
                 ['dice' => 0, 'recognition' => 10, 'recognitionDice' => 1]
             ],
             [
+                $calculator,
                 [5, -5],
                 ['dice' => 0, 'recognition' => 10, 'recognitionDice' => 1]
             ],
             [
+                $calculator,
                 [-10, 5],
                 ['dice' => 0, 'recognition' => 15, 'recognitionDice' => 2]
             ],
             [
+                $calculator,
                 [-10, 5],
                 ['dice' => 0, 'recognition' => 15, 'recognitionDice' => 2]
             ],
             [
+                $calculator,
                 [5, -10],
                 ['dice' => -1, 'recognition' => 15, 'recognitionDice' => 2]
             ],
             [
+                $calculator,
                 [10, -5],
                 ['dice' => 0, 'recognition' => 15, 'recognitionDice' => 2]
             ],
@@ -220,80 +241,96 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
 
     public function valuesProviderForInfluenceCalculations()
     {
+        $calculator = new CalculatorSeventhSea();
         return [
             [
+                $calculator,
                 0,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 8],
                 0
             ],
             [
+                $calculator,
                 80,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 8],
                 20
             ],
             [
+                $calculator,
                 -80,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 8],
                 -20
             ],
             [
+                $calculator,
                 80,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 9],
                 18
             ],
             [
+                $calculator,
                 -80,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 9],
                 -18
             ],
             /* Corner cases for positives */
             [
+                $calculator,
                 3,
                 ['influenceMultiplier' => 1, 'influenceDivider' => 8],
                 0
             ],
             [
+                $calculator,
                 4,
                 ['influenceMultiplier' => 1, 'influenceDivider' => 8],
                 1
             ],
             [
+                $calculator,
                 4,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 8],
                 1
             ],
             [
+                $calculator,
                 6,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 8],
                 2
             ],
             [
+                $calculator,
                 6,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 9],
                 1
             ],
             /* Corner cases for negatives */
             [
+                $calculator,
                 -3,
                 ['influenceMultiplier' => 1, 'influenceDivider' => 8],
                 0
             ],
             [
+                $calculator,
                 -4,
                 ['influenceMultiplier' => 1, 'influenceDivider' => 8],
                 -1
             ],
             [
+                $calculator,
                 -4,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 8],
                 -1
             ],
             [
+                $calculator,
                 -6,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 8],
                 -2
             ],
             [
+                $calculator,
                 -6,
                 ['influenceMultiplier' => 2, 'influenceDivider' => 9],
                 -1

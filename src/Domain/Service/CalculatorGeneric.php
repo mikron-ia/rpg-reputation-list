@@ -1,6 +1,7 @@
 <?php
 
 namespace Mikron\ReputationList\Domain\Service;
+use Mikron\ReputationList\Domain\Blueprint\Calculator;
 
 /**
  * Class CalculatorGeneric - basic calculations that are likely to be common
@@ -12,8 +13,10 @@ namespace Mikron\ReputationList\Domain\Service;
  *
  * @package Mikron\ReputationList\Domain\Service
  */
-class CalculatorGeneric
+class CalculatorGeneric implements Calculator
 {
+    private $results = [];
+
     /**
      * Calculates basic sums
      * @param int[] $values
@@ -95,15 +98,24 @@ class CalculatorGeneric
     /**
      * Performs the calculations
      *
-     * @param array $values
+     * @param int[] $values
+     * @param array $parameters
      * @return \int[]
      */
-    public function perform(array $values)
+    public function perform($values, $parameters)
     {
         $basics = $this->calculateBasic($values);
         $maximums = $this->calculateLowestAndHighest($values);
         $absolutes = $this->calculateAbsolute($values);
 
-        return array_merge($basics, $maximums, $absolutes);
+        $this->results = array_merge($basics, $maximums, $absolutes);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getResults()
+    {
+        return $this->results;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Domain\Service;
 
+use Mikron\ReputationList\Domain\Blueprint\Calculator;
 use Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException;
 
 /**
@@ -13,7 +14,7 @@ use Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException;
  *
  * @package Mikron\ReputationList\Domain\Service\Calculator
  */
-final class CalculatorSeventhSea extends CalculatorGeneric
+final class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
 {
     /**
      * Calculates dice according to balance and extremes. Requires calculateLowestAndHighest() to be called first
@@ -123,12 +124,14 @@ final class CalculatorSeventhSea extends CalculatorGeneric
     /**
      * Performs the calculations
      *
-     * @param array $values
+     * @param int[] $values
+     * @param array $parameters
      * @return \int[]
+     * @throws MissingCalculationBaseException
      */
-    function perform(array $values)
+    function perform($values, $parameters)
     {
-        $basics = parent::perform($values);
+        $basics = parent::perform($values, $parameters);
         $dice = $this->calculateDice($basics);
         $recognitionValue = $this->calculateRecognitionValue($basics);
         $recognitionDice = $this->calculateRecognitionDice($basics);

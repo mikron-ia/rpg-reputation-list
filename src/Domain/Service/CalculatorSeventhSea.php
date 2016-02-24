@@ -18,12 +18,11 @@ final class CalculatorSeventhSea extends CalculatorGeneric
     /**
      * Calculates dice according to balance and extremes. Requires calculateLowestAndHighest() to be called first
      * @todo Calculation of group rep that includes influence reputation - in this or in separate method
-     * @param $values
-     * @param $currentState
+     * @param int[] $currentState
      * @return int[]
      * @throws MissingCalculationBaseException
      */
-    public static function calculateDice($values, $currentState)
+    public function calculateDice($currentState)
     {
         if (!isset($currentState['negativeMin']) || !isset($currentState['positiveMax'])) {
             throw new MissingCalculationBaseException(
@@ -53,12 +52,11 @@ final class CalculatorSeventhSea extends CalculatorGeneric
     }
 
     /**
-     * @param int[] $values
      * @param int[] $currentState
      * @return int[]
      * @throws MissingCalculationBaseException
      */
-    public static function calculateRecognitionValue($values, $currentState)
+    public function calculateRecognitionValue($currentState)
     {
         if (!isset($currentState['absolute'])) {
             throw new MissingCalculationBaseException(
@@ -73,12 +71,11 @@ final class CalculatorSeventhSea extends CalculatorGeneric
     }
 
     /**
-     * @param int[] $values
      * @param int[] $currentState
      * @return int[]
      * @throws MissingCalculationBaseException
      */
-    public static function calculateRecognitionDice($values, $currentState)
+    public function calculateRecognitionDice($currentState)
     {
         if (!isset($currentState['recognition'])) {
             throw new MissingCalculationBaseException(
@@ -92,7 +89,13 @@ final class CalculatorSeventhSea extends CalculatorGeneric
         ];
     }
 
-    public static function calculateInfluenceExtended($values, $currentState)
+    /**
+     * @param $currentState
+     * @return array
+     * @throws MissingCalculationBaseException
+     * @todo: either force parameters with div / multi OR move influence calculation to group
+     */
+    public function calculateInfluenceExtended($currentState)
     {
         if (
             isset($currentState['balance']) &&
@@ -120,11 +123,17 @@ final class CalculatorSeventhSea extends CalculatorGeneric
     /**
      * Performs the calculations
      *
-     * @param array $initialData
+     * @param array $values
      * @return \int[]
      */
-    function perform(array $initialData)
+    function perform(array $values)
     {
+        $basics = parent::perform($values);
+        $dice = $this->calculateDice($basics);
+        $recognitionValue = $this->calculateRecognitionValue($basics);
+        $recognitionDice = $this->calculateRecognitionDice($basics);
+        $influenceExtended = $this->calculateInfluenceExtended($basics); //NOTE: basics WILL NOT SUFFICE
 
+        return array_merge($basics, $dice, $recognitionValue, $recognitionDice, $influenceExtended);
     }
 }

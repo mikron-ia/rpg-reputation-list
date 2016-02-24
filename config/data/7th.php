@@ -35,5 +35,6 @@ return [
             'seventhSea.calculateRecognitionDice',
             'seventhSea.calculateInfluenceExtended',
         ],
-    ]
+    ],
+    'calculator' => 'Mikron\ReputationList\Domain\Service\CalculatorSeventhSea',
 ];

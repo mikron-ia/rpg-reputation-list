@@ -12,14 +12,14 @@ namespace Mikron\ReputationList\Domain\Service;
  *
  * @package Mikron\ReputationList\Domain\Service
  */
-abstract class CalculatorGeneric
+class CalculatorGeneric
 {
     /**
      * Calculates basic sums
      * @param int[] $values
      * @return int[]
      */
-    public static function calculateBasic($values)
+    public function calculateBasic($values)
     {
         $negative = 0;
         $positive = 0;
@@ -50,7 +50,7 @@ abstract class CalculatorGeneric
      * @param int[] $values
      * @return int[]
      */
-    public static function calculateLowestAndHighest($values)
+    public function calculateLowestAndHighest($values)
     {
         $lowest = 0;
         $highest = 0;
@@ -79,7 +79,7 @@ abstract class CalculatorGeneric
      * @param int[] $values
      * @return int[]
      */
-    public static function calculateAbsolute($values)
+    public function calculateAbsolute($values)
     {
         $result = 0;
 

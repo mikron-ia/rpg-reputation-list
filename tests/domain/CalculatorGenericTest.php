@@ -8,6 +8,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProvider
      *
+     * @param CalculatorGeneric $calculator
      * @param int[] $values
      * @param int[] $currentState
      * @param int[] $basics
@@ -16,6 +17,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
      * @param int $abs
      */
     public function calculateLowestAndHighestCalculatesCorrectly(
+        $calculator,
         $values,
         $currentState,
         $basics,
@@ -27,7 +29,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
             'negativeMin' => $lowest,
             'positiveMax' => $highest
         ];
-        $result = CalculatorGeneric::calculateLowestAndHighest($values, $currentState);
+        $result = $calculator->calculateLowestAndHighest($values);
 
         $this->assertEquals($expectation, $result);
     }
@@ -36,6 +38,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProvider
      *
+     * @param CalculatorGeneric $calculator
      * @param int[] $values
      * @param int[] $currentState
      * @param int[] $basics
@@ -43,10 +46,10 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
      * @param int $highest
      * @param int $abs
      */
-    public function calculateBasicCalculatesCorrectly($values, $currentState, $basics, $lowest, $highest, $abs)
+    public function calculateBasicCalculatesCorrectly($calculator, $values, $currentState, $basics, $lowest, $highest, $abs)
     {
         $expectation = $basics;
-        $result = CalculatorGeneric::calculateBasic($values, $currentState);
+        $result = $calculator->calculateBasic($values);
 
         $this->assertEquals($expectation, $result);
     }
@@ -55,6 +58,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProvider
      *
+     * @param CalculatorGeneric $calculator
      * @param int[] $values
      * @param int[] $currentState
      * @param int[] $basics
@@ -64,20 +68,23 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
      * @internal param int $negative
      * @internal param int $positive
      */
-    public function calculateAbsoluteCalculatesCorrectly($values, $currentState, $basics, $lowest, $highest, $abs)
+    public function calculateAbsoluteCalculatesCorrectly($calculator, $values, $currentState, $basics, $lowest, $highest, $abs)
     {
         $expectation = [
             'absolute' => $abs
         ];
-        $result = CalculatorGeneric::calculateAbsolute($values, $currentState);
+        $result = $calculator->calculateAbsolute($values);
 
         $this->assertEquals($expectation, $result);
     }
 
     public function valuesProvider()
     {
+        $calculator = new CalculatorGeneric();
+
         return [
             [
+                $calculator,
                 [0],
                 ['balance' => 0, 'negative' => 0, 'positive' => 0],
                 ['balance' => 0, 'negative' => 0, 'positive' => 0],
@@ -86,6 +93,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
                 0
             ],
             [
+                $calculator,
                 [0, 0],
                 ['balance' => 0, 'negative' => 0, 'positive' => 0],
                 ['balance' => 0, 'negative' => 0, 'positive' => 0],
@@ -94,6 +102,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
                 0
             ],
             [
+                $calculator,
                 [-5, 5],
                 ['balance' => 0, 'negative' => 0, 'positive' => 0],
                 ['balance' => 0, 'negative' => -5, 'positive' => 5],
@@ -102,6 +111,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
                 10
             ],
             [
+                $calculator,
                 [5, -5],
                 ['balance' => 0, 'negative' => 0, 'positive' => 0],
                 ['balance' => 0, 'negative' => -5, 'positive' => 5],
@@ -110,6 +120,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
                 10
             ],
             [
+                $calculator,
                 [-10, 5],
                 ['balance' => 0, 'negative' => 0, 'positive' => 0],
                 ['balance' => -5, 'negative' => -10, 'positive' => 5],
@@ -118,6 +129,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
                 15
             ],
             [
+                $calculator,
                 [5, -10],
                 ['balance' => 0, 'negative' => 0, 'positive' => 0],
                 ['balance' => -5, 'negative' => -10, 'positive' => 5],
@@ -126,6 +138,7 @@ class CalculatorGenericTest extends PHPUnit_Framework_TestCase
                 15
             ],
             [
+                $calculator,
                 [-10, 5],
                 ['balance' => 0, 'negative' => 0, 'positive' => 0],
                 ['balance' => -5, 'negative' => -10, 'positive' => 5],

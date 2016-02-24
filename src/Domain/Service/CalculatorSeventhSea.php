@@ -108,10 +108,10 @@ class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
             );
         }
 
-        if (!isset($currentState['influenceWeight'])) {
+        if (!isset($currentState['influence.weight'])) {
             $weight = 1;
         } else {
-            $weight = $currentState['influenceWeight'];
+            $weight = $currentState['influence.weight'];
         }
 
         return [

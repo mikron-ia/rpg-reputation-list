@@ -130,16 +130,11 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @param CalculatorSeventhSea $calculator
      * @param int $balance
      * @param int[] $parameters
-     * @param int $expectedInfluence
+     * @param int[] $expectation
      * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
      */
-    public function calculateInfluenceWorks($calculator, $balance, $parameters, $expectedInfluence)
+    public function calculateInfluenceWorks($calculator, $balance, $parameters, $expectation)
     {
-        $expectation = [
-            'influence' => $expectedInfluence,
-            'weight' => 1
-        ];
-
         $currentStateBase = $calculator->calculateBasic([$balance]);
 
         $currentState = $currentStateBase + $parameters;
@@ -235,94 +230,44 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
             [
                 $calculator,
                 0,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 8],
-                0
+                ['influence.weight' => 2],
+                ['influence' => 0, 'weight' => 2]
+            ],
+            [
+                $calculator,
+                0,
+                [],
+                ['influence' => 0, 'weight' => 1]
             ],
             [
                 $calculator,
                 80,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 8],
-                20
+                ['influence.weight' => 1],
+                ['influence' => 80, 'weight' => 1]
             ],
             [
                 $calculator,
                 -80,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 8],
-                -20
+                ['influence.weight' => 1],
+                ['influence' => -80, 'weight' => 1]
             ],
             [
                 $calculator,
                 80,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 9],
-                18
+                ['influence.weight' => 2],
+                ['influence' => 160, 'weight' => 2]
+            ],
+            [
+                $calculator,
+                80,
+                ['influence.weight' => -2],
+                ['influence' => -160, 'weight' => -2]
             ],
             [
                 $calculator,
                 -80,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 9],
-                -18
-            ],
-            /* Corner cases for positives */
-            [
-                $calculator,
-                3,
-                ['influenceMultiplier' => 1, 'influenceDivider' => 8],
-                0
-            ],
-            [
-                $calculator,
-                4,
-                ['influenceMultiplier' => 1, 'influenceDivider' => 8],
-                1
-            ],
-            [
-                $calculator,
-                4,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 8],
-                1
-            ],
-            [
-                $calculator,
-                6,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 8],
-                2
-            ],
-            [
-                $calculator,
-                6,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 9],
-                1
-            ],
-            /* Corner cases for negatives */
-            [
-                $calculator,
-                -3,
-                ['influenceMultiplier' => 1, 'influenceDivider' => 8],
-                0
-            ],
-            [
-                $calculator,
-                -4,
-                ['influenceMultiplier' => 1, 'influenceDivider' => 8],
-                -1
-            ],
-            [
-                $calculator,
-                -4,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 8],
-                -1
-            ],
-            [
-                $calculator,
-                -6,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 8],
-                -2
-            ],
-            [
-                $calculator,
-                -6,
-                ['influenceMultiplier' => 2, 'influenceDivider' => 9],
-                -1
+                ['influence.weight' => -2],
+                ['influence' => 160, 'weight' => -2]
             ],
         ];
     }

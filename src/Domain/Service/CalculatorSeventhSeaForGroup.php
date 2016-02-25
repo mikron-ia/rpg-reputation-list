@@ -13,34 +13,58 @@ use Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException;
 final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements Calculator
 {
     /**
-     * @param $currentState
-     * @return array
-     * @throws MissingCalculationBaseException
-     * @todo: either force parameters with div / multi OR move influence calculation to group
+     * Calculates basic sums
+     * @param int[] $values
+     * @return int[]
      */
-    public function calculateInfluenceExtended($currentState)
+    public function calculateBasic($values)
     {
-        if (
-            isset($currentState['balance']) &&
-            isset($currentState['influenceDivider']) &&
-            isset($currentState['influenceMultiplier'])
-        ) {
-            if ($currentState['influenceDivider'] == 0) {
-                throw new MissingCalculationBaseException(
-                    "Erroneous value among values necessary to operate",
-                    "Influence divider is zero. Provide a valid one as parameter."
-                );
-            }
+        $negative = 0;
+        $positive = 0;
 
-            return [
-                'influence' => (int)round(
-                    ($currentState['balance'] * $currentState['influenceMultiplier']) / $currentState['influenceDivider'],
-                    0
-                )
-            ];
-        } else {
-            return [];
+        foreach ($values as $value) {
+            if ($value > 0) {
+                $positive += $value;
+            } else {
+                $negative += $value;
+            }
         }
+
+        return [
+            'uninfluenced' => $positive + $negative,
+            'negative' => $negative,
+            'positive' => $positive,
+        ];
+    }
+
+    /**
+     * @param int[] $influences
+     * @return int
+     */
+    public function calculateSumOfInfluences($influences)
+    {
+        $sumOfInfluences = 0;
+
+        foreach($influences as $influence) {
+            $sumOfInfluences += $influence;
+        }
+
+        return $influences;
+    }
+
+    /**
+     * Attaches influences to the end of the values array
+     *
+     * @param int[] $values
+     * @param int[] $influences
+     * @return int[]
+     */
+    public function adjustValuesWithInfluences($values, $influences)
+    {
+
+        $values[] = $influences;
+
+        return $values;
     }
 
     /**
@@ -53,14 +77,23 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
      */
     function perform($values, $parameters)
     {
-        parent::perform($values, $parameters);
-        $basics = parent::getResults();
+        $basics = $this->calculateBasic($values);
+        $maximums = $this->calculateLowestAndHighest($values);
 
-        $dice = $this->calculateDice($basics);
-        $recognitionValue = $this->calculateRecognitionValue($basics);
-        $recognitionDice = $this->calculateRecognitionDice($basics + $recognitionValue);
-        $influenceExtended = $this->calculateInfluenceExtended($basics); //NOTE: basics WILL NOT SUFFICE
+        if (isset($parameters['influence.memberInfluences'])) {
+            $influenceFromMembers = $this->calculateSumOfInfluences($parameters['influence.memberInfluences']);
+        } else {
+            $influenceFromMembers = [];
+        }
 
-        return array_merge($basics, $dice, $recognitionValue, $recognitionDice, $influenceExtended);
+        $valuesAdjusted = $this->adjustValuesWithInfluences($values, $influenceFromMembers);
+
+        $absolutes = $this->calculateAbsolute($valuesAdjusted);
+
+        $dice = $this->calculateDice($basics + $maximums);
+        $recognitionValue = $this->calculateRecognitionValue($absolutes);
+        $recognitionDice = $this->calculateRecognitionDice($recognitionValue);
+
+        $this->results = array_merge($basics, $maximums, $absolutes, $dice, $recognitionValue, $recognitionDice);
     }
 }

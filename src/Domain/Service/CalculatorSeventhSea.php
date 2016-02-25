@@ -14,7 +14,6 @@ class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
 {
     /**
      * Calculates dice according to balance and extremes. Requires calculateLowestAndHighest() to be called first
-     * @todo Calculation of group rep that includes influence reputation - in this or in separate method
      * @param int[] $currentState
      * @return int[]
      * @throws MissingCalculationBaseException
@@ -38,13 +37,13 @@ class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
         if ($currentState['balance'] < 5 && $currentState['balance'] > -5) {
             $dice = 0;
         } elseif ($currentState['balance'] > 0) {
-            if ($currentState['balance'] == $currentState['positiveMax']) {
+            if ($currentState['balance'] >= $currentState['positiveMax']) {
                 $dice = ceil($currentState['balance'] / 10);
             } else {
                 $dice = floor($currentState['balance'] / 10);
             }
         } else {
-            if ($currentState['balance'] == $currentState['negativeMin']) {
+            if ($currentState['balance'] <= $currentState['negativeMin']) {
                 $dice = floor($currentState['balance'] / 10);
             } else {
                 $dice = ceil($currentState['balance'] / 10);

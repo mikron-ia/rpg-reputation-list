@@ -5,7 +5,8 @@ namespace Mikron\ReputationList\Domain\ValueObject;
 use Mikron\ReputationList\Domain\Blueprint\Displayable;
 
 /**
- * Class ReputationInfluence
+ * Class representing influence extended on the reputation by another - be that group member's or another network
+ *
  * @package Mikron\ReputationList\Domain\ValueObject
  */
 final class ReputationInfluence implements Displayable
@@ -21,7 +22,6 @@ final class ReputationInfluence implements Displayable
     private $value;
 
     /**
-     * ReputationInfluence constructor.
      * @param ReputationNetwork $reputationNetwork
      * @param int $value
      */

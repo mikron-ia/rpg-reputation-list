@@ -25,7 +25,23 @@ $app->get(
         }
 
         if (class_exists($app['config']['calculator']['group'])) {
-            $calculator = new $app['config']['calculator']['group'];
+            $calculatorForGroup = new $app['config']['calculator']['group'];
+        } else {
+            throw new \Mikron\ReputationList\Domain\Exception\ConfigurationException(
+                "Missing calculator class",
+                "Missing calculator class. Please set correct class value in calculator.group configuration."
+            );
+        }
+
+        if(!isset($app['config']['calculator']['person'])) {
+            throw new \Mikron\ReputationList\Domain\Exception\ConfigurationException(
+                "Missing calculator configuration",
+                "Missing calculator configuration. Please set correct class value in calculator.person configuration."
+            );
+        }
+
+        if (class_exists($app['config']['calculator']['person'])) {
+            $calculatorForPerson = new $app['config']['calculator']['person'];
         } else {
             throw new \Mikron\ReputationList\Domain\Exception\ConfigurationException(
                 "Missing calculator class",
@@ -60,7 +76,8 @@ $app->get(
             $app['logger'],
             $app['networks'],
             $identificationKey,
-            $calculator
+            $calculatorForPerson,
+            $calculatorForGroup
         );
 
         /* Cook and return the JSON */

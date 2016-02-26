@@ -127,7 +127,7 @@ final class Person
      * @param StorageEngine $connection
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
-     * @param string[][] $methodsToCalculate
+     * @param Calculator $calculator
      * @param int[] $reputationInitialPattern
      * @param int $groupId
      * @return Person[]
@@ -138,7 +138,7 @@ final class Person
         $connection,
         $logger,
         $reputationNetworksList,
-        $methodsToCalculate,
+        $calculator,
         $reputationInitialPattern,
         $groupId
     ) {
@@ -153,7 +153,7 @@ final class Person
                 $connection,
                 $logger,
                 $reputationNetworksList,
-                $methodsToCalculate,
+                $calculator,
                 $reputationInitialPattern
             );
         }

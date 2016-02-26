@@ -3,6 +3,7 @@
 namespace Mikron\ReputationList\Domain\Service;
 
 use Mikron\ReputationList\Domain\Blueprint\Calculator;
+use Mikron\ReputationList\Domain\Entity\Reputation;
 use Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException;
 
 /**
@@ -38,18 +39,34 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
     }
 
     /**
-     * @param int[] $influences
+     * @param int[] $membersReputations
      * @return int
      */
-    public function calculateSumOfInfluences($influences)
+    public function calculateInfluencesFromMemberReputations($membersReputations)
     {
+        $influences = [];
+        $sumOfWeights = 0;
+
+        foreach ($membersReputations as $repCode => $memberReputations) {
+            /** @var Reputation[] $memberReputations */
+
+            if($repCode)
+            $values = $memberReputations->getValues([]);
+
+            $influence = isset($values['influence'])?$values['influence']:0;
+            $weight = isset($values['weight'])?$values['weight']:1;
+
+            $influences[] = $influence*$weight;
+            $sumOfWeights += $weight;
+        }
+
         $sumOfInfluences = 0;
 
         foreach($influences as $influence) {
-            $sumOfInfluences += $influence;
+            $sumOfInfluences += round($influence / $sumOfWeights, 0);
         }
 
-        return $influences;
+        return $sumOfInfluences;
     }
 
     /**
@@ -61,9 +78,7 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
      */
     public function adjustValuesWithInfluences($values, $influences)
     {
-
         $values[] = $influences;
-
         return $values;
     }
 
@@ -80,8 +95,8 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
         $basics = $this->calculateBasic($values);
         $maximums = $this->calculateLowestAndHighest($values);
 
-        if (isset($parameters['influence.memberInfluences'])) {
-            $influenceFromMembers = $this->calculateSumOfInfluences($parameters['influence.memberInfluences']);
+        if (isset($parameters['influence.memberReputations'])) {
+            $influenceFromMembers = $this->calculateInfluencesFromMemberReputations($parameters['influence.memberReputations']);
         } else {
             $influenceFromMembers = [];
         }

@@ -18,6 +18,6 @@ return [
     ],
     'calculator' => [
         'person' => 'Mikron\ReputationList\Domain\Service\CalculatorSeventhSea',
-        'group' => 'Mikron\ReputationList\Domain\Service\CalculatorSeventhSea'
+        'group' => 'Mikron\ReputationList\Domain\Service\CalculatorSeventhSeaForGroup'
     ]
 ];

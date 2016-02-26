@@ -50,8 +50,9 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
         foreach ($membersReputations as $repCode => $memberReputations) {
             /** @var Reputation[] $memberReputations */
 
-            if($repCode)
-            $values = $memberReputations->getValues([]);
+            var_dump($memberReputations); die;
+
+            //$values = $memberReputations->getValues([]);
 
             $influence = isset($values['influence'])?$values['influence']:0;
             $weight = isset($values['weight'])?$values['weight']:1;
@@ -67,6 +68,24 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
         }
 
         return $sumOfInfluences;
+    }
+
+    public function calculateBalanceFromNewValues($values)
+    {
+        $negative = 0;
+        $positive = 0;
+
+        foreach ($values as $value) {
+            if ($value > 0) {
+                $positive += $value;
+            } else {
+                $negative += $value;
+            }
+        }
+
+        return [
+            'balance' => $positive + $negative,
+        ];
     }
 
     /**
@@ -103,12 +122,14 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
 
         $valuesAdjusted = $this->adjustValuesWithInfluences($values, $influenceFromMembers);
 
+        $balance = $this->calculateBalanceFromNewValues($valuesAdjusted);
+
         $absolutes = $this->calculateAbsolute($valuesAdjusted);
 
-        $dice = $this->calculateDice($basics + $maximums);
+        $dice = $this->calculateDice($basics + $balance + $maximums);
         $recognitionValue = $this->calculateRecognitionValue($absolutes);
         $recognitionDice = $this->calculateRecognitionDice($recognitionValue);
 
-        $this->results = array_merge($basics, $maximums, $absolutes, $dice, $recognitionValue, $recognitionDice);
+        $this->results = array_merge($basics, $maximums, $balance, $absolutes, $dice, $recognitionValue, $recognitionDice);
     }
 }

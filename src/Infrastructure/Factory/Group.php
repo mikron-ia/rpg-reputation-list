@@ -112,9 +112,7 @@ class Group
                 $membersReputations[] = $member->getReputations();
             }
 
-            $reputationInitialPattern = [
-                'influence.membersReputations' => $membersReputations,
-            ];
+            $reputationInitialPattern = [];
 
             $groupReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb(
                 $connection,

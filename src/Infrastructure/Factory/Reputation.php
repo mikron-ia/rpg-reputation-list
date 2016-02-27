@@ -3,7 +3,9 @@
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
 use Mikron\ReputationList\Domain\Blueprint\Calculator;
+use Mikron\ReputationList\Domain\Entity\ReputationEvent;
 use Mikron\ReputationList\Domain\ValueObject\ReputationInfluence;
+use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 
 /**
  * Class Reputation
@@ -12,8 +14,8 @@ use Mikron\ReputationList\Domain\ValueObject\ReputationInfluence;
 final class Reputation
 {
     /**
-     * @param \Mikron\ReputationList\Domain\ValueObject\ReputationNetwork $reputationNetwork
-     * @param \Mikron\ReputationList\Domain\Entity\ReputationEvent[] $reputationEvents
+     * @param ReputationNetwork $reputationNetwork
+     * @param ReputationEvent[] $reputationEvents
      * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation

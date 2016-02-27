@@ -105,6 +105,7 @@ class Group
             $reputationEventsFactory = new ReputationEvent();
             $reputationFactory = new Reputation();
 
+            /* Extract member influences - somehow... */
             $membersReputations = [];
             foreach ($members as $member) {
                 /** @var Entity\Person $member */
@@ -121,8 +122,9 @@ class Group
                 $reputationNetworksList,
                 $groupDbId
             );
-            $groupReputations = $reputationFactory->createFromReputationEvents(
+            $groupReputations = $reputationFactory->createFromReputationEventsAndInfluences(
                 $groupReputationEvents,
+                [],
                 $calculatorForGroup,
                 $reputationInitialPattern
             );

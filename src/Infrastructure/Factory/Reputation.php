@@ -1,6 +1,7 @@
 <?php
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
+
 use Mikron\ReputationList\Domain\Blueprint\Calculator;
 use Mikron\ReputationList\Domain\ValueObject\ReputationInfluence;
 
@@ -17,8 +18,12 @@ final class Reputation
      * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation
      */
-    public function createFromParameters($reputationNetwork, $reputationEvents, $calculator, $initialStateOfCalculations)
-    {
+    public function createFromParameters(
+        $reputationNetwork,
+        $reputationEvents,
+        $calculator,
+        $initialStateOfCalculations
+    ) {
         return new \Mikron\ReputationList\Domain\Entity\Reputation(
             $reputationNetwork,
             $reputationEvents,
@@ -33,19 +38,32 @@ final class Reputation
      * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation[]
      */
-    public function createFromReputationEvents($reputationEventsWild, $calculator, $initialStateOfCalculations)
-    {
-        return $this->createFromReputationEventsAndInfluences($reputationEventsWild, [], $calculator, $initialStateOfCalculations);
+    public function createFromReputationEvents(
+        $reputationEventsWild,
+        $calculator,
+        $initialStateOfCalculations
+    ) {
+        return $this->createFromReputationEventsAndInfluences(
+            $reputationEventsWild,
+            [],
+            $calculator,
+            $initialStateOfCalculations
+        );
     }
 
     /**
      * @param ReputationEvent[] $reputationEventsWild
+     * @param ReputationInfluence[] $reputationInfluencesWild
      * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation[]
      */
-    public function createFromReputationEventsAndInfluences($reputationEventsWild, $reputationInfluences, $calculator, $initialStateOfCalculations)
-    {
+    public function createFromReputationEventsAndInfluences(
+        $reputationEventsWild,
+        $reputationInfluencesWild,
+        $calculator,
+        $initialStateOfCalculations
+    ) {
         $reputationEventsOrdered = [];
 
         foreach ($reputationEventsWild as $reputationEvent) {

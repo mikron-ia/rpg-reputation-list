@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 use Mikron\ReputationList\Domain\Blueprint\Calculator;
+use Mikron\ReputationList\Domain\ValueObject\ReputationInfluence;
 
 /**
  * Class Reputation
@@ -27,12 +28,23 @@ final class Reputation
     }
 
     /**
-     * @param $reputationEventsWild
+     * @param ReputationEvent[] $reputationEventsWild
      * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation[]
      */
     public function createFromReputationEvents($reputationEventsWild, $calculator, $initialStateOfCalculations)
+    {
+        return $this->createFromReputationEventsAndInfluences($reputationEventsWild, [], $calculator, $initialStateOfCalculations);
+    }
+
+    /**
+     * @param ReputationEvent[] $reputationEventsWild
+     * @param Calculator $calculator
+     * @param int[] $initialStateOfCalculations
+     * @return \Mikron\ReputationList\Domain\Entity\Reputation[]
+     */
+    public function createFromReputationEventsAndInfluences($reputationEventsWild, $reputationInfluences, $calculator, $initialStateOfCalculations)
     {
         $reputationEventsOrdered = [];
 

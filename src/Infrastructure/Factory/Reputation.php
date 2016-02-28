@@ -3,9 +3,9 @@
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
 use Mikron\ReputationList\Domain\Blueprint\Calculator;
-use Mikron\ReputationList\Domain\Entity\ReputationEvent;
-use Mikron\ReputationList\Domain\ValueObject\ReputationInfluence;
-use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
+use Mikron\ReputationList\Domain\Entity\ReputationEvent as ReputationEventEntity;
+use Mikron\ReputationList\Domain\ValueObject\ReputationInfluence as ReputationInfluenceEntity;
+use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork as ReputationNetworkEntity;
 
 /**
  * Class Reputation
@@ -14,7 +14,7 @@ use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 final class Reputation
 {
     /**
-     * @param ReputationNetwork $reputationNetwork
+     * @param ReputationNetworkEntity $reputationNetwork
      * @param ReputationEvent[] $reputationEvents
      * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
@@ -35,7 +35,7 @@ final class Reputation
     }
 
     /**
-     * @param ReputationEvent[] $reputationEventsWild
+     * @param ReputationEventEntity[] $reputationEventsWild
      * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation[]
@@ -54,8 +54,8 @@ final class Reputation
     }
 
     /**
-     * @param ReputationEvent[] $reputationEventsWild
-     * @param ReputationInfluence[] $reputationInfluencesWild
+     * @param ReputationEventEntity[] $reputationEventsWild
+     * @param ReputationInfluenceEntity[] $reputationInfluencesWild
      * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
      * @return \Mikron\ReputationList\Domain\Entity\Reputation[]

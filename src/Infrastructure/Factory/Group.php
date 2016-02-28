@@ -102,15 +102,20 @@ class Group
                 $groupDbId
             );
 
-            $reputationEventsFactory = new ReputationEvent();
-            $reputationFactory = new Reputation();
 
-            /* Extract member influences - somehow... */
+            /* Extract member influences */
             $membersReputations = [];
             foreach ($members as $member) {
                 /** @var Entity\Person $member */
                 $membersReputations[] = $member->getReputations();
             }
+
+            $reputationInfluencesFactory = new ReputationInfluence();
+            $groupReputationInfluences = $reputationInfluencesFactory->createFromMemberReputation($membersReputations);
+
+            /* Create data specifically for the group - events & reputations */
+            $reputationEventsFactory = new ReputationEvent();
+            $reputationFactory = new Reputation();
 
             $reputationInitialPattern = [];
 
@@ -122,7 +127,7 @@ class Group
             );
             $groupReputations = $reputationFactory->createFromReputationEventsAndInfluences(
                 $groupReputationEvents,
-                [],
+                $groupReputationInfluences,
                 $calculatorForGroup,
                 $reputationInitialPattern
             );

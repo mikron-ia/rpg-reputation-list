@@ -38,38 +38,6 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
         ];
     }
 
-    /**
-     * @param int[] $membersReputations
-     * @return int
-     */
-    public function calculateInfluencesFromMemberReputations($membersReputations)
-    {
-        $influences = [];
-        $sumOfWeights = 0;
-
-        foreach ($membersReputations as $repCode => $memberReputations) {
-            /** @var Reputation[] $memberReputations */
-
-            var_dump($memberReputations); die;
-
-            //$values = $memberReputations->getValues([]);
-
-            $influence = isset($values['influence'])?$values['influence']:0;
-            $weight = isset($values['weight'])?$values['weight']:1;
-
-            $influences[] = $influence*$weight;
-            $sumOfWeights += $weight;
-        }
-
-        $sumOfInfluences = 0;
-
-        foreach($influences as $influence) {
-            $sumOfInfluences += round($influence / $sumOfWeights, 0);
-        }
-
-        return $sumOfInfluences;
-    }
-
     public function calculateBalanceFromNewValues($values)
     {
         $negative = 0;
@@ -97,30 +65,24 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
      */
     public function adjustValuesWithInfluences($values, $influences)
     {
-        $values[] = $influences;
-        return $values;
+        return array_merge($values, $influences);
     }
 
     /**
      * Performs the calculations
      *
      * @param int[] $values
+     * @param \int[] $influences
      * @param array $parameters
      * @return \int[]
      * @throws MissingCalculationBaseException
      */
-    function perform($values, $parameters)
+    function perform($values, $influences, $parameters)
     {
         $basics = $this->calculateBasic($values);
         $maximums = $this->calculateLowestAndHighest($values);
 
-        if (isset($parameters['influence.memberReputations'])) {
-            $influenceFromMembers = $this->calculateInfluencesFromMemberReputations($parameters['influence.memberReputations']);
-        } else {
-            $influenceFromMembers = [];
-        }
-
-        $valuesAdjusted = $this->adjustValuesWithInfluences($values, $influenceFromMembers);
+        $valuesAdjusted = $this->adjustValuesWithInfluences($values, $influences);
 
         $balance = $this->calculateBalanceFromNewValues($valuesAdjusted);
 
@@ -130,6 +92,14 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
         $recognitionValue = $this->calculateRecognitionValue($absolutes);
         $recognitionDice = $this->calculateRecognitionDice($recognitionValue);
 
-        $this->results = array_merge($basics, $maximums, $balance, $absolutes, $dice, $recognitionValue, $recognitionDice);
+        $this->results = array_merge(
+            $basics,
+            $maximums,
+            $balance,
+            $absolutes,
+            $dice,
+            $recognitionValue,
+            $recognitionDice
+        );
     }
 }

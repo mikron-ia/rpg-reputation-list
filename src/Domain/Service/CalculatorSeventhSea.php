@@ -122,11 +122,12 @@ class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
      * Performs the calculations
      *
      * @param int[] $values
+     * @param \int[] $influences
      * @param array $parameters
      * @return \int[]
      * @throws MissingCalculationBaseException
      */
-    function perform($values, $parameters)
+    function perform($values, $influences, $parameters)
     {
         $basics = $this->calculateBasic($values);
         $maximums = $this->calculateLowestAndHighest($values);

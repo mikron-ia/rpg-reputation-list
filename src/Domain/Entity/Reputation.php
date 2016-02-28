@@ -5,6 +5,7 @@ namespace Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Blueprint\Calculator;
 use Mikron\ReputationList\Domain\Blueprint\Displayable;
 use Mikron\ReputationList\Domain\Exception\ExceptionWithSafeMessage;
+use Mikron\ReputationList\Domain\ValueObject\ReputationInfluence;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 use Mikron\ReputationList\Domain\ValueObject\ReputationValues;
 
@@ -27,6 +28,12 @@ final class Reputation implements Displayable
     private $reputationEvents;
 
     /**
+     * @var ReputationInfluence[] Influences on the reputation
+     * Specifically, this describes additions that add to reputation value, but are not events
+     */
+    private $reputationInfluences;
+
+    /**
      * @var ReputationValues Reputation value
      */
     private $value;
@@ -45,17 +52,20 @@ final class Reputation implements Displayable
      * Reputation constructor.
      * @param ReputationNetwork $reputationNetwork
      * @param ReputationEvent[] $reputationEvents
+     * @param ReputationInfluence[] $reputationInfluences
      * @param Calculator $calculator
      * @param \string[] $initialParametersToCalculate
      */
     public function __construct(
         ReputationNetwork $reputationNetwork,
         array $reputationEvents,
+        array $reputationInfluences,
         $calculator,
         array $initialParametersToCalculate
     ) {
         $this->reputationNetwork = $reputationNetwork;
         $this->reputationEvents = $reputationEvents;
+        $this->reputationInfluences = $reputationInfluences;
         $this->calculator = $calculator;
         $this->initialParametersToCalculate = $initialParametersToCalculate;
 
@@ -74,7 +84,13 @@ final class Reputation implements Displayable
             $values[] = $repEvent->getValue();
         }
 
-        $value = new ReputationValues($values, $this->calculator, $this->initialParametersToCalculate);
+        $influences = [];
+
+        foreach ($this->reputationInfluences as $reputationInfluence) {
+            $influences[] = $reputationInfluence->getValue();
+        }
+
+        $value = new ReputationValues($values, $influences, $this->calculator, $this->initialParametersToCalculate);
 
         return $value;
     }

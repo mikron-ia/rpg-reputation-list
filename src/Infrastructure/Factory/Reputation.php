@@ -3,6 +3,7 @@
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
 use Mikron\ReputationList\Domain\Blueprint\Calculator;
+use Mikron\ReputationList\Domain\Entity\Reputation as ReputationEntity;
 use Mikron\ReputationList\Domain\Entity\ReputationEvent as ReputationEventEntity;
 use Mikron\ReputationList\Domain\ValueObject\ReputationInfluence as ReputationInfluenceEntity;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork as ReputationNetworkEntity;
@@ -15,20 +16,23 @@ final class Reputation
 {
     /**
      * @param ReputationNetworkEntity $reputationNetwork
-     * @param ReputationEvent[] $reputationEvents
+     * @param ReputationEventEntity[] $reputationEvents
+     * @param ReputationInfluenceEntity[] $reputationInfluences
      * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
-     * @return \Mikron\ReputationList\Domain\Entity\Reputation
+     * @return ReputationEntity
      */
     public function createFromParameters(
         $reputationNetwork,
         $reputationEvents,
+        $reputationInfluences,
         $calculator,
         $initialStateOfCalculations
     ) {
-        return new \Mikron\ReputationList\Domain\Entity\Reputation(
+        return new ReputationEntity(
             $reputationNetwork,
             $reputationEvents,
+            $reputationInfluences,
             $calculator,
             $initialStateOfCalculations
         );
@@ -38,7 +42,7 @@ final class Reputation
      * @param ReputationEventEntity[] $reputationEventsWild
      * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
-     * @return \Mikron\ReputationList\Domain\Entity\Reputation[]
+     * @return ReputationEntity[]
      */
     public function createFromReputationEvents(
         $reputationEventsWild,
@@ -58,7 +62,7 @@ final class Reputation
      * @param ReputationInfluenceEntity[] $reputationInfluencesWild
      * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
-     * @return \Mikron\ReputationList\Domain\Entity\Reputation[]
+     * @return ReputationEntity[]
      */
     public function createFromReputationEventsAndInfluences(
         $reputationEventsWild,
@@ -78,20 +82,52 @@ final class Reputation
             $reputationEventsOrdered[$reputationEventRepCode][] = $reputationEvent;
         }
 
+        $reputationInfluencesOrdered = [];
+
+        foreach ($reputationInfluencesWild as $reputationInfluence) {
+            $reputationEventRepCode = $reputationInfluence->getReputationNetwork()->getCode();
+
+            if (!isset($reputationInfluencesOrdered[$reputationEventRepCode])) {
+                $reputationInfluencesOrdered[$reputationEventRepCode] = [];
+            }
+
+            $reputationInfluencesOrdered[$reputationEventRepCode][] = $reputationInfluence;
+        }
+
         $reputations = [];
 
-        $reputationFactory = new Reputation();
-
-        foreach ($reputationEventsOrdered as $reputationEventsCategory) {
+        foreach ($reputationEventsOrdered as $reputationCode => $reputationEventsCategory) {
             $reputationNetwork = $reputationEventsCategory[0]->getReputationNetwork();
 
-            $reputation = $reputationFactory->createFromParameters(
+            if(isset($reputationInfluencesOrdered[$reputationCode])) {
+                $reputationInfluencesForThisReputation = $reputationInfluencesOrdered[$reputationCode];
+                unset($reputationInfluencesOrdered[$reputationCode]);
+            } else {
+                $reputationInfluencesForThisReputation = [];
+            }
+
+            $reputation = $this->createFromParameters(
                 $reputationNetwork,
                 $reputationEventsCategory,
+                $reputationInfluencesForThisReputation,
                 $calculator,
                 $initialStateOfCalculations
             );
-            $reputations[$reputation->getReputationNetwork()->getCode()] = $reputation;
+            $reputations[$reputationCode] = $reputation;
+        }
+
+        /* This loop serves reputations that are influence-only - ie. do not have events */
+        foreach ($reputationInfluencesOrdered as $reputationCode => $reputationInfluenceCategory) {
+            $reputationNetwork = $reputationInfluenceCategory[0]->getReputationNetwork();
+
+            $reputation = $this->createFromParameters(
+                $reputationNetwork,
+                [],
+                $reputationInfluenceCategory,
+                $calculator,
+                $initialStateOfCalculations
+            );
+            $reputations[$reputationCode] = $reputation;
         }
 
         return $reputations;

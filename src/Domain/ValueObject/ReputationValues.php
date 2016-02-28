@@ -25,12 +25,12 @@ final class ReputationValues
     /**
      * ReputationValues constructor.
      * @param \int[] $values List of reputation values
+     * @param \int[] $influences List of reputation influences
      * @param Calculator $calculator
      * @param \int[] $initialState
-     * @throws ErroneousComponentException
      * @throws MissingComponentException
      */
-    public function __construct(array $values, $calculator, array $initialState = [])
+    public function __construct(array $values, $influences, $calculator, array $initialState = [])
     {
         $this->values = $values;
         $this->results = $initialState;
@@ -39,7 +39,7 @@ final class ReputationValues
             throw new MissingComponentException('No calculator provided');
         }
 
-        $calculator->perform($values, $initialState);
+        $calculator->perform($values, $influences, $initialState);
         $this->results = $calculator->getResults();
     }
 

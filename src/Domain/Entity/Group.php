@@ -36,8 +36,6 @@ class Group extends Person
     {
         parent::__construct($identification, $name, $description, $reputations, $reputationEvents);
         $this->members = $members;
-        // $this->influencesOfMembers = $this->makeMembersInfluences($this->members);
-        // $this->sumOfInfluencesOfMembers = $this->makeTotalMembersInfluence($this->influencesOfMembers);
     }
 
     /**

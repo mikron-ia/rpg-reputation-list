@@ -90,6 +90,7 @@ class Group
             $groupUnwrapped = array_pop($groupWrapped);
 
             $groupDbId = $groupUnwrapped['group_id'];
+            $basePersonDbId = $groupUnwrapped['base_id'];
 
             $personFactory = new Person();
 
@@ -124,7 +125,7 @@ class Group
                 $connection,
                 $logger,
                 $reputationNetworksList,
-                $groupDbId
+                $basePersonDbId
             );
             $groupReputations = $reputationFactory->createFromReputationEventsAndInfluences(
                 $groupReputationEvents,

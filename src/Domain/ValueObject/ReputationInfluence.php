@@ -23,12 +23,23 @@ final class ReputationInfluence implements Displayable
 
     /**
      * @param ReputationNetwork $reputationNetwork
-     * @param int $value
+     * @param int $valueExtended
+     * @param int $divisor
      */
-    public function __construct(ReputationNetwork $reputationNetwork, $value)
+    public function __construct(ReputationNetwork $reputationNetwork, $valueExtended, $divisor)
     {
         $this->reputationNetwork = $reputationNetwork;
-        $this->value = $value;
+        $this->value = $this->calculateValue($valueExtended, $divisor);
+    }
+
+    /**
+     * @param int $value
+     * @param int $divisor
+     * @return int
+     */
+    private function calculateValue($value, $divisor)
+    {
+        return (int)round($value / $divisor, 0);
     }
 
     /**

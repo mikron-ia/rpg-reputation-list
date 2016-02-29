@@ -16,12 +16,12 @@ final class ReputationInfluence
     /**
      * @param ReputationNetworkEntity $reputationNetwork
      * @param int $change
+     * @param int $divisor
      * @return ReputationInfluenceEntity
-     * @throws RecordNotFoundException
      */
-    public function createFromSingleArray(ReputationNetworkEntity $reputationNetwork, $change)
+    public function createFromSingleArray(ReputationNetworkEntity $reputationNetwork, $change, $divisor)
     {
-        return new ReputationInfluenceEntity($reputationNetwork, $change);
+        return new ReputationInfluenceEntity($reputationNetwork, $change, $divisor);
     }
 
     /**
@@ -40,11 +40,12 @@ final class ReputationInfluence
                 }
 
                 $memberReputations = $memberReputation->getValues([]);
-                $memberInfluenceExtended = isset($memberReputations['influence']) ? round($memberReputations['influence'] / $weightedMemberCount) : 0;
+                $memberInfluenceExtended = isset($memberReputations['influence']) ? $memberReputations['influence'] : 0;
 
                 $reputationInfluence = $this->createFromSingleArray(
                     $memberReputation->getReputationNetwork(),
-                    $memberInfluenceExtended
+                    $memberInfluenceExtended,
+                    $weightedMemberCount <> 0 ? $weightedMemberCount : 1
                 );
 
                 $reputationInfluences[$repCode][] = $reputationInfluence;

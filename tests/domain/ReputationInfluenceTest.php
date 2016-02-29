@@ -10,10 +10,11 @@ class ReputationInfluenceTest extends PHPUnit_Framework_TestCase
      * @dataProvider ReputationInfluenceWithNoEventData
      * @param $reputationNetwork
      * @param $value
+     * @param $divisor
      */
-    public function isNetworkCorrect($reputationNetwork, $value)
+    public function isNetworkCorrect($reputationNetwork, $value, $divisor)
     {
-        $repInfluence = new ReputationInfluence($reputationNetwork, $value);
+        $repInfluence = new ReputationInfluence($reputationNetwork, $value, $divisor);
         $this->assertEquals($reputationNetwork, $repInfluence->getReputationNetwork());
     }
 
@@ -22,10 +23,11 @@ class ReputationInfluenceTest extends PHPUnit_Framework_TestCase
      * @dataProvider ReputationInfluenceWithNoEventData
      * @param $reputationNetwork
      * @param $value
+     * @param $divisor
      */
-    public function isValueCorrect($reputationNetwork, $value)
+    public function isValueCorrect($reputationNetwork, $value, $divisor)
     {
-        $repInfluence = new ReputationInfluence($reputationNetwork, $value);
+        $repInfluence = new ReputationInfluence($reputationNetwork, $value, $divisor);
         $this->assertEquals($value, $repInfluence->getValue());
     }
 
@@ -34,10 +36,11 @@ class ReputationInfluenceTest extends PHPUnit_Framework_TestCase
      * @dataProvider ReputationInfluenceWithNoEventData
      * @param $reputationNetwork
      * @param $value
+     * @param $divisor
      */
-    public function simpleDataIsCorrect($reputationNetwork, $value)
+    public function simpleDataIsCorrect($reputationNetwork, $value, $divisor)
     {
-        $repInfluence = new ReputationInfluence($reputationNetwork, $value);
+        $repInfluence = new ReputationInfluence($reputationNetwork, $value, $divisor);
 
         $expectation = [
             "name" => $repInfluence->getName(),
@@ -52,10 +55,11 @@ class ReputationInfluenceTest extends PHPUnit_Framework_TestCase
      * @dataProvider ReputationInfluenceWithNoEventData
      * @param $reputationNetwork
      * @param $value
+     * @param $divisor
      */
-    public function completeDataIsCorrect($reputationNetwork, $value)
+    public function completeDataIsCorrect($reputationNetwork, $value, $divisor)
     {
-        $repInfluence = new ReputationInfluence($reputationNetwork, $value);
+        $repInfluence = new ReputationInfluence($reputationNetwork, $value, $divisor);
 
         $expectation = [
             "name" => $repInfluence->getName(),
@@ -66,11 +70,39 @@ class ReputationInfluenceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectation, $repInfluence->getCompleteData());
     }
 
+    /**
+     * @test
+     * @dataProvider valueCases
+     * @param $reputationNetwork
+     * @param int $value
+     * @param int $divisor
+     * @param int $expectation
+     */
+    public function isValueCalculatedCorrectly($reputationNetwork, $value, $divisor, $expectation)
+    {
+        $repInfluence = new ReputationInfluence($reputationNetwork, $value, $divisor);
+        $this->assertEquals($expectation, $repInfluence->getValue());
+    }
+
     public function ReputationInfluenceWithNoEventData()
     {
         $reputationNetwork = new ReputationNetwork("c", ["name" => "CivicNet", "description" => "Corporations"]);
         return [
-            [$reputationNetwork, 5],
+            [$reputationNetwork, 5, 1],
+        ];
+    }
+
+    public function valueCases()
+    {
+        $reputationNetwork = new ReputationNetwork("c", ["name" => "CivicNet", "description" => "Corporations"]);
+        return [
+            [$reputationNetwork, 5, 1, 5],
+            [$reputationNetwork, 1, 1, 1],
+            [$reputationNetwork, 10, 2, 5],
+            [$reputationNetwork, 10, 3, 3],
+            [$reputationNetwork, 11, 3, 4],
+            [$reputationNetwork, 25, 10, 3],
+            [$reputationNetwork, 5, 10, 1],
         ];
     }
 }

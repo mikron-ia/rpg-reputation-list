@@ -97,12 +97,18 @@ class ReputationInfluenceTest extends PHPUnit_Framework_TestCase
         $reputationNetwork = new ReputationNetwork("c", ["name" => "CivicNet", "description" => "Corporations"]);
         return [
             [$reputationNetwork, 5, 1, 5],
+            [$reputationNetwork, 0, 1, 0],
             [$reputationNetwork, 1, 1, 1],
             [$reputationNetwork, 10, 2, 5],
             [$reputationNetwork, 10, 3, 3],
             [$reputationNetwork, 11, 3, 4],
             [$reputationNetwork, 25, 10, 3],
+            [$reputationNetwork, 25, 11, 2],
+            [$reputationNetwork, 100, 11, 9],
             [$reputationNetwork, 5, 10, 1],
+            [$reputationNetwork, 5, 11, 0],
+            [$reputationNetwork, 6, 11, 1],
+            [$reputationNetwork, 17, 11, 2],
         ];
     }
 }

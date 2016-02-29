@@ -39,8 +39,8 @@ final class ReputationInfluence
                     $reputationInfluences[$repCode] = [];
                 }
 
-                $memberReputations = $memberReputation->getValues([]);
-                $memberInfluenceExtended = isset($memberReputations['influence']) ? $memberReputations['influence'] : 0;
+                $reputations = $memberReputation->getValues([]);
+                $memberInfluenceExtended = isset($reputations['influence']) ? $reputations['influence'] : 0;
 
                 $reputationInfluence = $this->createFromSingleArray(
                     $memberReputation->getReputationNetwork(),

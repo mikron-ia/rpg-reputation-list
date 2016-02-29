@@ -2,8 +2,10 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
+use Mikron\ReputationList\Domain\Entity\Reputation as ReputationEntity;
 use Mikron\ReputationList\Domain\ValueObject\ReputationInfluence as ReputationInfluenceEntity;
 use Mikron\ReputationList\Domain\Exception\RecordNotFoundException;
+use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork as ReputationNetworkEntity;
 
 /**
  * Class ReputationEvent
@@ -12,35 +14,41 @@ use Mikron\ReputationList\Domain\Exception\RecordNotFoundException;
 final class ReputationInfluence
 {
     /**
-     * @param $reputationNetworksList
-     * @param string $reputationNetworkCode
+     * @param ReputationNetworkEntity $reputationNetwork
      * @param int $change
      * @return ReputationInfluenceEntity
      * @throws RecordNotFoundException
      */
-    public function createFromSingleArray(
-        $reputationNetworksList,
-        $reputationNetworkCode,
-        $change
-    ) {
-        if (isset($reputationNetworksList[$reputationNetworkCode])) {
-            $reputationNetwork = $reputationNetworksList[$reputationNetworkCode];
-        } else {
-            throw new RecordNotFoundException(
-                "Reputation not found",
-                "Unrecognised reputation code: " . $reputationNetworkCode
-            );
-        }
-
+    public function createFromSingleArray(ReputationNetworkEntity $reputationNetwork, $change)
+    {
         return new ReputationInfluenceEntity($reputationNetwork, $change);
     }
 
     /**
-     * @param Reputation[][] $reputations
+     * @param ReputationEntity[][] $membersReputations
      * @return ReputationInfluenceEntity[]
      */
-    public function createFromMemberReputation($reputations)
+    public function createFromMemberReputation($membersReputations)
     {
-        return [];
+        $reputationInfluences = [];
+
+        foreach ($membersReputations as $memberReputations) {
+            foreach ($memberReputations as $repCode => $memberReputation) {
+                if (!isset($reputationInfluences[$repCode])) {
+                    $reputationInfluences[$repCode] = [];
+                }
+
+                $memberReputations = $memberReputation->getValues([]);
+                $memberInfluenceExtended = isset($memberReputations['influence']) ? $memberReputations['influence'] : 0;
+
+                $reputationInfluence = $this->createFromSingleArray(
+                    $memberReputation->getReputationNetwork(),
+                    $memberInfluenceExtended
+                );
+
+                $reputationInfluences[$repCode][] = $reputationInfluence;
+            }
+        }
+        return $reputationInfluences;
     }
 }

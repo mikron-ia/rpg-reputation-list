@@ -59,14 +59,14 @@ final class Reputation
 
     /**
      * @param ReputationEventEntity[] $reputationEventsWild
-     * @param ReputationInfluenceEntity[] $reputationInfluencesWild
+     * @param ReputationInfluenceEntity[] $reputationInfluences
      * @param Calculator $calculator
      * @param int[] $initialStateOfCalculations
      * @return ReputationEntity[]
      */
     public function createFromReputationEventsAndInfluences(
         $reputationEventsWild,
-        $reputationInfluencesWild,
+        $reputationInfluences,
         $calculator,
         $initialStateOfCalculations
     ) {
@@ -82,26 +82,14 @@ final class Reputation
             $reputationEventsOrdered[$reputationEventRepCode][] = $reputationEvent;
         }
 
-        $reputationInfluencesOrdered = [];
-
-        foreach ($reputationInfluencesWild as $reputationInfluence) {
-            $reputationEventRepCode = $reputationInfluence->getReputationNetwork()->getCode();
-
-            if (!isset($reputationInfluencesOrdered[$reputationEventRepCode])) {
-                $reputationInfluencesOrdered[$reputationEventRepCode] = [];
-            }
-
-            $reputationInfluencesOrdered[$reputationEventRepCode][] = $reputationInfluence;
-        }
-
         $reputations = [];
 
         foreach ($reputationEventsOrdered as $reputationCode => $reputationEventsCategory) {
             $reputationNetwork = $reputationEventsCategory[0]->getReputationNetwork();
 
-            if(isset($reputationInfluencesOrdered[$reputationCode])) {
-                $reputationInfluencesForThisReputation = $reputationInfluencesOrdered[$reputationCode];
-                unset($reputationInfluencesOrdered[$reputationCode]);
+            if(isset($reputationInfluences[$reputationCode])) {
+                $reputationInfluencesForThisReputation = $reputationInfluences[$reputationCode];
+                unset($reputationInfluences[$reputationCode]);
             } else {
                 $reputationInfluencesForThisReputation = [];
             }
@@ -117,7 +105,7 @@ final class Reputation
         }
 
         /* This loop serves reputations that are influence-only - ie. do not have events */
-        foreach ($reputationInfluencesOrdered as $reputationCode => $reputationInfluenceCategory) {
+        foreach ($reputationInfluences as $reputationCode => $reputationInfluenceCategory) {
             $reputationNetwork = $reputationInfluenceCategory[0]->getReputationNetwork();
 
             $reputation = $this->createFromParameters(

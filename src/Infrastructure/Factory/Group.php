@@ -102,16 +102,17 @@ class Group
                 $groupDbId
             );
 
-
-            /* Extract member influences */
+            /* Extract member influences and calculate them properly */
             $membersReputations = [];
             foreach ($members as $member) {
                 /** @var Entity\Person $member */
                 $membersReputations[] = $member->getReputations();
             }
 
+            $memberCount = count($members);
+
             $reputationInfluencesFactory = new ReputationInfluence();
-            $groupReputationInfluences = $reputationInfluencesFactory->createFromMemberReputation($membersReputations);
+            $groupReputationInfluences = $reputationInfluencesFactory->createFromMemberReputation($membersReputations, $memberCount);
 
             /* Create data specifically for the group - events & reputations */
             $reputationEventsFactory = new ReputationEvent();

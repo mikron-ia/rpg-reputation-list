@@ -26,9 +26,10 @@ final class ReputationInfluence
 
     /**
      * @param ReputationEntity[][] $membersReputations
+     * @param int $weightedMemberCount
      * @return ReputationInfluenceEntity[]
      */
-    public function createFromMemberReputation($membersReputations)
+    public function createFromMemberReputation($membersReputations, $weightedMemberCount)
     {
         $reputationInfluences = [];
 
@@ -39,7 +40,7 @@ final class ReputationInfluence
                 }
 
                 $memberReputations = $memberReputation->getValues([]);
-                $memberInfluenceExtended = isset($memberReputations['influence']) ? $memberReputations['influence'] : 0;
+                $memberInfluenceExtended = isset($memberReputations['influence']) ? round($memberReputations['influence'] / $weightedMemberCount) : 0;
 
                 $reputationInfluence = $this->createFromSingleArray(
                     $memberReputation->getReputationNetwork(),

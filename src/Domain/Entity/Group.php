@@ -6,7 +6,7 @@ namespace Mikron\ReputationList\Domain\Entity;
  * Class Group
  * @package Mikron\ReputationList\Domain\Entity
  */
-class Group extends Person
+final class Group extends Person
 {
     /**
      * @var Person[]
@@ -72,7 +72,7 @@ class Group extends Person
     public function getCompleteData()
     {
         $data = parent::getCompleteData();
-        $data['members'] = $this->getMemberCompleteData();
+        $data['membersReputations'] = $this->getMemberCompleteData();
 
         return $data;
     }

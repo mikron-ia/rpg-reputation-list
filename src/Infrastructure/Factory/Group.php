@@ -9,7 +9,7 @@ use Mikron\ReputationList\Domain\Exception\GroupNotFoundException;
 use Mikron\ReputationList\Infrastructure\Storage\StorageForGroup;
 use Psr\Log\LoggerInterface;
 
-class Group
+final class Group
 {
     /**
      * @param int $dbId

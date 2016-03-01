@@ -112,7 +112,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             'description' => $group->getDescription(),
             'reputations' => $group->getReputationCompleteData(),
             'reputationEvents' => $group->getReputationEvents(),
-            'members' => $group->getMemberCompleteData(),
+            'membersReputations' => $group->getMemberCompleteData(),
         ];
 
         $this->assertEquals($expected, $group->getCompleteData());

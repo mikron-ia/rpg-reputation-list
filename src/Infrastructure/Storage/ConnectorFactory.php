@@ -10,7 +10,7 @@ use Mikron\ReputationList\Domain\Exception\MissingComponentException;
  * Class ConnectorFactory
  * @package Mikron\ReputationList\Infrastructure\Storage
  */
-class ConnectorFactory
+final class ConnectorFactory
 {
     /**
      * @var StorageEngine

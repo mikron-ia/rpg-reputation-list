@@ -62,7 +62,8 @@ final class Reputation implements Displayable
         array $reputationInfluences,
         $calculator,
         array $initialParametersToCalculate
-    ) {
+    )
+    {
         $this->reputationNetwork = $reputationNetwork;
         $this->reputationEvents = $reputationEvents;
         $this->reputationInfluences = $reputationInfluences;

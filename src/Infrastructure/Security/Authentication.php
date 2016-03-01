@@ -9,7 +9,7 @@ use Mikron\ReputationList\Domain\Exception\AuthenticationException;
  * Class AuthenticationFactory
  * @package Mikron\ReputationList\Infrastructure\Security
  */
-class Authentication
+final class Authentication
 {
     /**
      * @var AuthenticationToken

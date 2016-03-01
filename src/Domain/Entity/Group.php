@@ -14,16 +14,6 @@ class Group extends Person
     private $members;
 
     /**
-     * @var int[][]
-     */
-    private $influencesOfMembers;
-
-    /**
-     * @var int[]
-     */
-    private $sumOfInfluencesOfMembers;
-
-    /**
      * Group constructor.
      * @param $identification
      * @param string $name
@@ -34,7 +24,7 @@ class Group extends Person
      */
     public function __construct($identification, $name, $description, $reputations, $reputationEvents, $members)
     {
-        parent::__construct($identification, $name, $description, $reputations, $reputationEvents);
+        parent::__construct($identification, $name, $description, $reputations, $reputationEvents, 0);
         $this->members = $members;
     }
 

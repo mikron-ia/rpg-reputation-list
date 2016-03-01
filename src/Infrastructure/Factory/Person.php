@@ -22,9 +22,10 @@ final class Person
      * @param string $description
      * @param Entity\Reputation[] $reputations
      * @param Entity\ReputationEvent[] $reputationEvents
+     * @param int $weight
      * @return Entity\Person
      */
-    public function createFromSingleArray($dbId, $key, $name, $description, array $reputations, array $reputationEvents)
+    public function createFromSingleArray($dbId, $key, $name, $description, array $reputations, array $reputationEvents, $weight)
     {
         $idFactory = new StorageIdentification();
         $identification = $idFactory->createFromData($dbId, $key);
@@ -34,7 +35,8 @@ final class Person
             $name,
             $description,
             $reputations,
-            $reputationEvents
+            $reputationEvents,
+            $weight
         );
     }
 
@@ -55,7 +57,8 @@ final class Person
                     $record['name'],
                     $record['description'],
                     [],
-                    []
+                    [],
+                    10
                 );
             }
         }
@@ -205,7 +208,8 @@ final class Person
                 $personUnwrapped['name'],
                 $personUnwrapped['description'],
                 $personReputations,
-                $personReputationEvents
+                $personReputationEvents,
+                $personUnwrapped['weight']
             );
 
             return $person;

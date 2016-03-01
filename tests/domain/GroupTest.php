@@ -177,16 +177,16 @@ class GroupTest extends PHPUnit_Framework_TestCase
             ],
             [
                 [
-                    new Person(null, "Test Person 0", "", [], []),
-                    new Person(null, "Test Person 1", "", [], [])
+                    new Person(null, "Test Person 0", "", [], [], 10),
+                    new Person(null, "Test Person 1", "", [], [], 10)
                 ],
             ],
             [
                 [
-                    new Person(null, "Test Person 0", "", [], []),
-                    new Person(null, "Test Person 1", "", [], []),
-                    new Person(null, "Test Person 2", "", [], []),
-                    new Person(null, "Test Person 3", "", [], []),
+                    new Person(null, "Test Person 0", "", [], [], 10),
+                    new Person(null, "Test Person 1", "", [], [], 10),
+                    new Person(null, "Test Person 2", "", [], [], 10),
+                    new Person(null, "Test Person 3", "", [], [], 10),
                 ],
             ],
         ];

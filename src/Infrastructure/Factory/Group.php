@@ -29,7 +29,8 @@ class Group
         array $reputations,
         array $reputationEvents,
         array $members
-    ) {
+    )
+    {
         $idFactory = new StorageIdentification();
         $identification = $idFactory->createFromData($dbId, $key);
 
@@ -60,7 +61,8 @@ class Group
         $key,
         $calculatorForPerson,
         $calculatorForGroup
-    ) {
+    )
+    {
         $groupStorage = new StorageForGroup($connection);
         $groupWrapped = $groupStorage->retrieveByKey($key);
 
@@ -85,7 +87,8 @@ class Group
         $reputationNetworksList,
         $calculatorForPerson,
         $calculatorForGroup
-    ) {
+    )
+    {
         if (!empty($groupWrapped)) {
             $groupUnwrapped = array_pop($groupWrapped);
 
@@ -105,15 +108,16 @@ class Group
 
             /* Extract member influences and calculate them properly */
             $membersReputations = [];
+            $memberWeights = 0;
+            $influenceMultiplier = 10;
             foreach ($members as $member) {
                 /** @var Entity\Person $member */
                 $membersReputations[] = $member->getReputations();
+                $memberWeights += $member->getWeight();
             }
 
-            $memberCount = count($members);
-
             $reputationInfluencesFactory = new ReputationInfluence();
-            $groupReputationInfluences = $reputationInfluencesFactory->createFromMemberReputation($membersReputations, $memberCount);
+            $groupReputationInfluences = $reputationInfluencesFactory->createFromMemberReputation($membersReputations, $influenceMultiplier, $memberWeights);
 
             /* Create data specifically for the group - events & reputations */
             $reputationEventsFactory = new ReputationEvent();

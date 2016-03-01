@@ -21,6 +21,7 @@ CREATE TABLE `person` (
   `key` varchar(80) NOT NULL,
   `name` varchar(80) NOT NULL,
   `description` text,
+  `weight` int(10) unsigned NOT NULL DEFAULT '10' COMMENT 'This is a temporary measure - importance of the character',
   PRIMARY KEY (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -1,5 +1,6 @@
 <?php
 
+use Mikron\ReputationList\Domain\Entity\Person as PersonEntity;
 use Mikron\ReputationList\Infrastructure\Factory\Person;
 
 class PersonFactoryTest extends PHPUnit_Framework_TestCase
@@ -32,9 +33,10 @@ class PersonFactoryTest extends PHPUnit_Framework_TestCase
             $name,
             $description,
             $reputations,
-            $reputationEvents
+            $reputationEvents,
+            10
         );
-        $this->assertInstanceOf("Mikron\\ReputationList\\Domain\\Entity\\Person", $person);
+        $this->assertInstanceOf(PersonEntity::class, $person);
     }
 
     /**
@@ -45,7 +47,7 @@ class PersonFactoryTest extends PHPUnit_Framework_TestCase
     public function massiveFactoryReturnsPersons($array)
     {
         $people = $this->personFactory->createFromCompleteArray($array);
-        $this->assertContainsOnlyInstancesOf("Mikron\\ReputationList\\Domain\\Entity\\Person", $people);
+        $this->assertContainsOnlyInstancesOf(PersonEntity::class, $people);
     }
 
     public function provideCorrectRow()

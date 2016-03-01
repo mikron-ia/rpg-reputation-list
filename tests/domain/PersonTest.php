@@ -20,7 +20,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function identificationIsCorrect()
     {
-        $person = new Person($this->identification, 'Test Name', 'Test Description', [], []);
+        $person = new Person($this->identification, 'Test Name', 'Test Description', [], [], 10);
         $this->assertEquals($this->identification, $person->getIdentification());
     }
 
@@ -29,7 +29,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function nameIsCorrect()
     {
-        $person = new Person($this->identification, 'Test Name', 'Test Description', [], []);
+        $person = new Person($this->identification, 'Test Name', 'Test Description', [], [], 10);
         $this->assertEquals('Test Name', $person->getName());
     }
 
@@ -40,7 +40,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function reputationsAreCorrectType($reputations)
     {
-        $person = new Person($this->identification, 'Test Name', 'Test Description', $reputations, []);
+        $person = new Person($this->identification, 'Test Name', 'Test Description', $reputations, [], 10);
         $this->assertContainsOnlyInstancesOf('Mikron\ReputationList\Domain\Entity\Reputation',
             $person->getReputations());
     }
@@ -50,7 +50,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function descriptionIsCorrect()
     {
-        $person = new Person($this->identification, 'Test Name', 'Test Description', [], []);
+        $person = new Person($this->identification, 'Test Name', 'Test Description', [], [], 10);
         $this->assertEquals('Test Description', $person->getDescription());
     }
 
@@ -60,7 +60,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function simpleDataIsCorrect()
     {
-        $person = new Person($this->identification, 'Test Name', 'Test Description', [], []);
+        $person = new Person($this->identification, 'Test Name', 'Test Description', [], [], 10);
 
         $expected = [
             'name' => $person->getName(),
@@ -80,7 +80,7 @@ class PersonTest extends PHPUnit_Framework_TestCase
      */
     public function completeDataIsCorrect($reputations)
     {
-        $person = new Person($this->identification, 'Test Name', 'Test Description', $reputations, []);
+        $person = new Person($this->identification, 'Test Name', 'Test Description', $reputations, [], 10);
 
         $expected = [
             'name' => $person->getName(),

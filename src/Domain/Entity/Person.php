@@ -39,6 +39,11 @@ class Person implements Displayable
     private $reputationEvents;
 
     /**
+     * @var int Weight of the character for the party - this is a workaround measure
+     */
+    private $weight;
+
+    /**
      * Person constructor
      *
      * @param $identification
@@ -46,14 +51,16 @@ class Person implements Displayable
      * @param $description
      * @param Reputation[] $reputations
      * @param array $reputationEvents
+     * @param int $weight
      */
-    public function __construct($identification, $name, $description, array $reputations, array $reputationEvents)
+    public function __construct($identification, $name, $description, array $reputations, array $reputationEvents, $weight)
     {
         $this->identification = $identification;
         $this->name = $name;
         $this->description = $description;
         $this->reputations = $reputations;
         $this->reputationEvents = $reputationEvents;
+        $this->weight = $weight;
     }
 
     /**
@@ -128,6 +135,14 @@ class Person implements Displayable
         }
 
         return $reputationEventsCompleteData;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWeight()
+    {
+        return $this->weight;
     }
 
     /**

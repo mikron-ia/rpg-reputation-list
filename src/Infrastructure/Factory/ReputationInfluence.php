@@ -4,7 +4,6 @@ namespace Mikron\ReputationList\Infrastructure\Factory;
 
 use Mikron\ReputationList\Domain\Entity\Reputation as ReputationEntity;
 use Mikron\ReputationList\Domain\ValueObject\ReputationInfluence as ReputationInfluenceEntity;
-use Mikron\ReputationList\Domain\Exception\RecordNotFoundException;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork as ReputationNetworkEntity;
 
 /**
@@ -26,10 +25,11 @@ final class ReputationInfluence
 
     /**
      * @param ReputationEntity[][] $membersReputations
+     * @param int $influenceMultiplier
      * @param int $weightedMemberCount
      * @return ReputationInfluenceEntity[]
      */
-    public function createFromMemberReputation($membersReputations, $weightedMemberCount)
+    public function createFromMemberReputation($membersReputations, $influenceMultiplier, $weightedMemberCount)
     {
         $reputationInfluences = [];
 
@@ -40,7 +40,7 @@ final class ReputationInfluence
                 }
 
                 $reputations = $memberReputation->getValues([]);
-                $memberInfluenceExtended = isset($reputations['influence']) ? $reputations['influence'] : 0;
+                $memberInfluenceExtended = isset($reputations['influence']) ? $reputations['influence'] * $influenceMultiplier : 0;
 
                 $reputationInfluence = $this->createFromSingleArray(
                     $memberReputation->getReputationNetwork(),

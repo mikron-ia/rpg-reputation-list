@@ -110,17 +110,35 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider valuesProviderForSimpleCalculations
-     *
-     * @param CalculatorSeventhSea $calculator
-     * @param int[] $values
-     * @param int[] $expectations
      * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
      */
-    public function calculateRecognitionDiceFailsWithoutExtremes($calculator, $values, $expectations)
+    public function calculateRecognitionDiceFailsWithoutBalance()
     {
+        $calculator = new CalculatorSeventhSea();
         $this->setExpectedException(\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException::class);
         $calculator->calculateRecognitionDice([]);
+    }
+
+    /**
+     * @test
+     * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
+     */
+    public function calculateRecognitionDiceFailsWithoutExtremes()
+    {
+        $calculator = new CalculatorSeventhSea();
+        $this->setExpectedException(\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException::class);
+        $calculator->calculateRecognitionDice(['balance' => 0]);
+    }
+
+    /**
+     * @test
+     * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
+     */
+    public function calculateInfluenceFailsWithoutBalance()
+    {
+        $calculator = new CalculatorSeventhSea();
+        $this->setExpectedException(\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException::class);
+        $calculator->calculateInfluenceExtended([]);
     }
 
     /**

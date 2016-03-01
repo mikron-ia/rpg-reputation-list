@@ -67,9 +67,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
     public function reputationEventsAreOfCorrectClass($repNet, $repEvents)
     {
         $reputation = new Reputation($repNet, $repEvents, [], new CalculatorGeneric(), []);
-        $className = 'Mikron\\ReputationList\\Domain\\Entity\\ReputationEvent';
-
-        $this->assertContainsOnlyInstancesOf($className, $reputation->getReputationEvents());
+        $this->assertContainsOnlyInstancesOf(ReputationEvent::class, $reputation->getReputationEvents());
     }
 
     public function correctReputationNetworkProvider()

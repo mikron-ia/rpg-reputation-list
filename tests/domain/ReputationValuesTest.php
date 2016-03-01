@@ -1,6 +1,6 @@
 <?php
 
-use Mikron\ReputationList\Domain\Service\CalculatorGeneric;
+use Mikron\ReputationList\Domain\Exception\MissingComponentException;
 
 class ReputationValuesTest extends PHPUnit_Framework_TestCase
 {
@@ -9,7 +9,7 @@ class ReputationValuesTest extends PHPUnit_Framework_TestCase
      */
     public function calculateComplexFailsIfNoCalculatorProvided()
     {
-        $this->setExpectedException('\Mikron\ReputationList\Domain\Exception\MissingComponentException');
+        $this->setExpectedException(MissingComponentException::class);
         new \Mikron\ReputationList\Domain\ValueObject\ReputationValues([], [], null, []);
     }
 }

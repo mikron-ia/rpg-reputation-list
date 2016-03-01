@@ -35,18 +35,25 @@ final class ReputationEvent implements Displayable
     private $event;
 
     /**
+     * @var string Degree in which person participated in the event
+     */
+    private $participation;
+
+    /**
      * ReputationEvent constructor.
      * @param StorageIdentification|null $identification
      * @param ReputationNetwork $reputationNetwork
      * @param int $value
      * @param Event $event
+     * @param string $participation
      */
-    public function __construct($identification, ReputationNetwork $reputationNetwork, $value, $event)
+    public function __construct($identification, ReputationNetwork $reputationNetwork, $value, $event, $participation)
     {
         $this->identification = $identification;
         $this->reputationNetwork = $reputationNetwork;
         $this->value = $value;
         $this->event = !empty($event) ? $event : null;
+        $this->participation = $participation;
     }
 
     /**
@@ -106,6 +113,14 @@ final class ReputationEvent implements Displayable
     }
 
     /**
+     * @return string
+     */
+    public function getParticipation()
+    {
+        return $this->participation;
+    }
+
+    /**
      * @return array Simple representation of the object content, fit for basic display
      */
     public function getSimpleData()
@@ -126,6 +141,7 @@ final class ReputationEvent implements Displayable
             'code' => $this->reputationNetwork->getCode(),
             'value' => $this->getValue(),
             'event' => isset($this->event) ? $this->event->getCompleteData() : null,
+            'participation' => $this->getParticipation(),
         ];
     }
 }

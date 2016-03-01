@@ -82,14 +82,14 @@ class ReputationTest extends PHPUnit_Framework_TestCase
             [
                 $reputationNetwork,
                 [
-                    new ReputationEvent(new StorageIdentification(1, null), $reputationNetwork, 5, null)
+                    new ReputationEvent(new StorageIdentification(1, null), $reputationNetwork, 5, null, 'action')
                 ]
             ],
             [
                 $reputationNetwork,
                 [
-                    new ReputationEvent(new StorageIdentification(1, null), $reputationNetwork, 5, null),
-                    new ReputationEvent(new StorageIdentification(2, null), $reputationNetwork, 2, null)
+                    new ReputationEvent(new StorageIdentification(1, null), $reputationNetwork, 5, null, 'action'),
+                    new ReputationEvent(new StorageIdentification(2, null), $reputationNetwork, 2, null, 'action')
                 ]
             ],
         ];

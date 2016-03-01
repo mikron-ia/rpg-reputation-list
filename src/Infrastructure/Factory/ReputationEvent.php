@@ -23,6 +23,7 @@ final class ReputationEvent
      * @param string $reputationNetworkCode
      * @param int $change
      * @param Event $event
+     * @param string $participation
      * @return ReputationEventEntity
      * @throws RecordNotFoundException
      */
@@ -31,8 +32,10 @@ final class ReputationEvent
         $dbId,
         $reputationNetworkCode,
         $change,
-        $event
-    ) {
+        $event,
+        $participation
+    )
+    {
         if (isset($reputationNetworksList[$reputationNetworkCode])) {
             $reputationNetwork = $reputationNetworksList[$reputationNetworkCode];
         } else {
@@ -45,7 +48,7 @@ final class ReputationEvent
         $idFactory = new StorageIdentificationFactory();
         $identification = $idFactory->createFromData($dbId, null);
 
-        return new ReputationEventEntity($identification, $reputationNetwork, $change, $event);
+        return new ReputationEventEntity($identification, $reputationNetwork, $change, $event, $participation);
     }
 
     /**
@@ -78,7 +81,8 @@ final class ReputationEvent
                         $repEventUnwrapped['reputation_event_id'],
                         $repEventUnwrapped['rep_network_code'],
                         $repEventUnwrapped['change'],
-                        $event
+                        $event,
+                        $repEventUnwrapped['participation']
                     );
                 } catch (RecordNotFoundException $e) {
                     $logger->error(

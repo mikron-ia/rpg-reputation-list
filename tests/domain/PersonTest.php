@@ -105,8 +105,8 @@ class PersonTest extends PHPUnit_Framework_TestCase
                     new Reputation(
                         $repNetMilitary,
                         [
-                            new ReputationEvent(null, $repNetMilitary, 2, null),
-                            new ReputationEvent(null, $repNetMilitary, 3, null),
+                            new ReputationEvent(null, $repNetMilitary, 2, null, 'action'),
+                            new ReputationEvent(null, $repNetMilitary, 3, null, 'action'),
                         ],
                         [],
                         $calculator,
@@ -115,8 +115,8 @@ class PersonTest extends PHPUnit_Framework_TestCase
                     new Reputation(
                         $repNetCivil,
                         [
-                            new ReputationEvent(null, $repNetCivil, 1, null),
-                            new ReputationEvent(null, $repNetCivil, 2, null),
+                            new ReputationEvent(null, $repNetCivil, 1, null, 'action'),
+                            new ReputationEvent(null, $repNetCivil, 2, null, 'action'),
                         ],
                         [],
                         $calculator,
@@ -129,8 +129,8 @@ class PersonTest extends PHPUnit_Framework_TestCase
                     new Reputation(
                         $repNetMilitary,
                         [
-                            new ReputationEvent(null, $repNetMilitary, 2, null),
-                            new ReputationEvent(null, $repNetMilitary, 3, null),
+                            new ReputationEvent(null, $repNetMilitary, 2, null, 'action'),
+                            new ReputationEvent(null, $repNetMilitary, 3, null, 'action'),
                         ],
                         [],
                         $calculator,

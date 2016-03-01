@@ -2,6 +2,7 @@
 
 namespace Mikron\ReputationList\Infrastructure\Factory;
 
+use Mikron\ReputationList\Domain\Blueprint\Calculator;
 use Mikron\ReputationList\Domain\Blueprint\StorageEngine;
 use Mikron\ReputationList\Domain\Entity;
 use Mikron\ReputationList\Domain\Exception\GroupNotFoundException;
@@ -47,16 +48,24 @@ class Group
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
      * @param string $key
-     * @param string[][] $methodsToCalculate
+     * @param Calculator $calculatorForPerson
+     * @param Calculator $calculatorForGroup
      * @return Entity\Group
      * @throws GroupNotFoundException
      */
-    public function retrieveGroupFromDbByKey($connection, $logger, $reputationNetworksList, $key, $methodsToCalculate)
-    {
+    public function retrieveGroupFromDbByKey(
+        $connection,
+        $logger,
+        $reputationNetworksList,
+        $key,
+        $calculatorForPerson,
+        $calculatorForGroup
+    ) {
         $groupStorage = new StorageForGroup($connection);
         $groupWrapped = $groupStorage->retrieveByKey($key);
 
-        return $this->unwrapGroup($groupWrapped, $connection, $logger, $reputationNetworksList, $methodsToCalculate);
+        return $this->unwrapGroup($groupWrapped, $connection, $logger, $reputationNetworksList, $calculatorForPerson,
+            $calculatorForGroup);
     }
 
     /**
@@ -64,45 +73,64 @@ class Group
      * @param StorageEngine $connection
      * @param LoggerInterface $logger
      * @param ReputationNetwork[] $reputationNetworksList
-     * @param string[][] $methodsToCalculate
+     * @param Calculator $calculatorForPerson
+     * @param Calculator $calculatorForGroup
      * @return Entity\Group
      * @throws GroupNotFoundException
      */
-    public function unwrapGroup($groupWrapped, $connection, $logger, $reputationNetworksList, $methodsToCalculate)
-    {
+    public function unwrapGroup(
+        $groupWrapped,
+        $connection,
+        $logger,
+        $reputationNetworksList,
+        $calculatorForPerson,
+        $calculatorForGroup
+    ) {
         if (!empty($groupWrapped)) {
             $groupUnwrapped = array_pop($groupWrapped);
 
             $groupDbId = $groupUnwrapped['group_id'];
+            $basePersonDbId = $groupUnwrapped['base_id'];
 
             $personFactory = new Person();
-
-            $reputationInitialPattern = [
-                'influenceDivider' => $personFactory->countPeopleByGroup($connection, $groupDbId),
-                'influenceMultiplier' => 2,
-            ];
 
             $members = $personFactory->retrievePersonForGroupFromDb(
                 $connection,
                 $logger,
                 $reputationNetworksList,
-                $methodsToCalculate,
-                $reputationInitialPattern,
+                $calculatorForPerson,
+                [],
                 $groupDbId
             );
 
+            /* Extract member influences and calculate them properly */
+            $membersReputations = [];
+            foreach ($members as $member) {
+                /** @var Entity\Person $member */
+                $membersReputations[] = $member->getReputations();
+            }
+
+            $memberCount = count($members);
+
+            $reputationInfluencesFactory = new ReputationInfluence();
+            $groupReputationInfluences = $reputationInfluencesFactory->createFromMemberReputation($membersReputations, $memberCount);
+
+            /* Create data specifically for the group - events & reputations */
             $reputationEventsFactory = new ReputationEvent();
             $reputationFactory = new Reputation();
+
+            $reputationInitialPattern = [];
 
             $groupReputationEvents = $reputationEventsFactory->retrieveReputationEventsForPersonFromDb(
                 $connection,
                 $logger,
                 $reputationNetworksList,
-                $groupDbId
+                $basePersonDbId
             );
-            $groupReputations = $reputationFactory->createFromReputationEvents(
+            $groupReputations = $reputationFactory->createFromReputationEventsAndInfluences(
                 $groupReputationEvents,
-                $methodsToCalculate['group'],
+                $groupReputationInfluences,
+                $calculatorForGroup,
                 $reputationInitialPattern
             );
 

@@ -2,6 +2,7 @@
 
 use Mikron\ReputationList\Domain\Entity\Reputation;
 use Mikron\ReputationList\Domain\Entity\ReputationEvent;
+use Mikron\ReputationList\Domain\Service\CalculatorGeneric;
 use Mikron\ReputationList\Domain\ValueObject\ReputationNetwork;
 use Mikron\ReputationList\Domain\ValueObject\StorageIdentification;
 
@@ -15,7 +16,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
      */
     public function reputationNetworkIsCorrect($repNet, $repEvents)
     {
-        $reputation = new Reputation($repNet, $repEvents, [], []);
+        $reputation = new Reputation($repNet, $repEvents, [], new CalculatorGeneric(), []);
         $this->assertEquals($repNet, $reputation->getReputationNetwork());
     }
 
@@ -27,7 +28,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
      */
     public function simpleDataIsCorrect($repNet, $repEvents)
     {
-        $reputation = new Reputation($repNet, $repEvents, ['generic.calculateBasic'], []);
+        $reputation = new Reputation($repNet, $repEvents, [], new CalculatorGeneric(), []);
 
         $expectation = [
             'name' => $reputation->getName(),
@@ -45,7 +46,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
      */
     public function completeDataIsCorrect($repNet, $repEvents)
     {
-        $reputation = new Reputation($repNet, $repEvents, [], []);
+        $reputation = new Reputation($repNet, $repEvents, [], new CalculatorGeneric(), []);
 
         $expectation = [
             'name' => $reputation->getName(),
@@ -65,7 +66,7 @@ class ReputationTest extends PHPUnit_Framework_TestCase
      */
     public function reputationEventsAreOfCorrectClass($repNet, $repEvents)
     {
-        $reputation = new Reputation($repNet, $repEvents, [], []);
+        $reputation = new Reputation($repNet, $repEvents, [], new CalculatorGeneric(), []);
         $className = 'Mikron\\ReputationList\\Domain\\Entity\\ReputationEvent';
 
         $this->assertContainsOnlyInstancesOf($className, $reputation->getReputationEvents());

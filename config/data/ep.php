@@ -68,14 +68,8 @@ return [
             ],
         ]
     ],
-    'calculation' => [
-        'person' => [
-            'generic.calculateBasic',
-            'generic.calculateAbsolute',
-        ],
-        'group' => [
-            'generic.calculateBasic',
-            'generic.calculateAbsolute',
-        ],
+    'calculator' => [
+        'person' => 'Mikron\ReputationList\Domain\Service\CalculatorGeneric',
+        'group' => 'Mikron\ReputationList\Domain\Service\CalculatorGeneric',
     ]
 ];

@@ -2,25 +2,23 @@
 
 namespace Mikron\ReputationList\Domain\Service;
 
+use Mikron\ReputationList\Domain\Blueprint\Calculator;
+
 /**
  * Class CalculatorGeneric - basic calculations that are likely to be common
  *
- * Contains:
- * generic.calculateBasic - gives sum of positive values, negative values and total balance
- * generic.calculateLowestAndHighest - gives local extremes (minimums and maximums)
- * generic.calculateAbsolute - gives sum of absolute values
- *
  * @package Mikron\ReputationList\Domain\Service
  */
-final class CalculatorGeneric
+class CalculatorGeneric implements Calculator
 {
+    protected $results = [];
+
     /**
      * Calculates basic sums
-     * @param $values
-     * @param $currentState
-     * @return \int[]
+     * @param int[] $values
+     * @return int[]
      */
-    public static function calculateBasic($values, $currentState)
+    public function calculateBasic($values)
     {
         $negative = 0;
         $positive = 0;
@@ -48,11 +46,10 @@ final class CalculatorGeneric
      * 2, 1, -2 will generate  0 / 1 / 3
      * -2, 1, 2 will generate -2 / 1 / 1
      *
-     * @param $values
-     * @param $currentState
-     * @return array
+     * @param int[] $values
+     * @return int[]
      */
-    public static function calculateLowestAndHighest($values, $currentState)
+    public function calculateLowestAndHighest($values)
     {
         $lowest = 0;
         $highest = 0;
@@ -78,20 +75,44 @@ final class CalculatorGeneric
     }
 
     /**
-     * @param $values
-     * @param $currentState
-     * @return int|number
+     * @param int[] $values
+     * @return int[]
      */
-    public static function calculateAbsolute($values, $currentState)
+    public function calculateAbsolute($values)
     {
         $result = 0;
 
-        foreach($values as $value) {
+        foreach ($values as $value) {
             $result += abs($value);
         }
 
         return [
             'absolute' => $result
         ];
+    }
+
+    /**
+     * Performs the calculations
+     *
+     * @param int[] $values
+     * @param int[] $influences
+     * @param array $parameters
+     * @return \int[]
+     */
+    public function perform($values, $influences, $parameters)
+    {
+        $basics = $this->calculateBasic($values);
+        $maximums = $this->calculateLowestAndHighest($values);
+        $absolutes = $this->calculateAbsolute($values);
+
+        $this->results = array_merge($basics, $maximums, $absolutes);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getResults()
+    {
+        return $this->results;
     }
 }

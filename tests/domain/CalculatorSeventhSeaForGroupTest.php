@@ -1,23 +1,23 @@
 <?php
 
-use Mikron\ReputationList\Domain\Service\CalculatorGeneric;
-use Mikron\ReputationList\Domain\Service\CalculatorSeventhSea;
+use Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException;
+use Mikron\ReputationList\Domain\Service\CalculatorSeventhSeaForGroup;
 
 /**
- * Class CalculatorSeventhSeaTest
+ * Class CalculatorSeventhSeaForGroupForGroupTest
  *
  * This tests assume CalculatorGeneric operates correctly
  */
-class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
+class CalculatorSeventhSeaForGroupTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
-     * @param CalculatorSeventhSea $calculator
+     * @param CalculatorSeventhSeaForGroup $calculator
      * @param int[] $values
      * @param int[] $expectations
-     * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
+     * @throws MissingCalculationBaseException
      */
     public function calculateDiceWorks($calculator, $values, $expectations)
     {
@@ -25,7 +25,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
             'dice' => $expectations['dice']
         ];
 
-        $currentState = $calculator->calculateBasic($values) + $calculator->calculateLowestAndHighest($values);
+        $currentState = $calculator->calculateBasic($values) + $calculator->calculateLowestAndHighest($values) + $calculator->calculateBalanceFromNewValues($values);
 
         $result = $calculator->calculateDice($currentState);
 
@@ -36,10 +36,10 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
-     * @param CalculatorSeventhSea $calculator
+     * @param CalculatorSeventhSeaForGroup $calculator
      * @param int[] $values
      * @param int[] $expectations
-     * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
+     * @throws MissingCalculationBaseException
      */
     public function calculateRecognitionWorks($calculator, $values, $expectations)
     {
@@ -58,10 +58,10 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
-     * @param CalculatorSeventhSea $calculator
+     * @param CalculatorSeventhSeaForGroup $calculator
      * @param int[] $values
      * @param int[] $expectations
-     * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
+     * @throws MissingCalculationBaseException
      */
     public function calculateRecognitionDiceWorks($calculator, $values, $expectations)
     {
@@ -82,14 +82,14 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
-     * @param CalculatorSeventhSea $calculator
+     * @param CalculatorSeventhSeaForGroup $calculator
      * @param int[] $values
      * @param int[] $expectations
-     * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
+     * @throws MissingCalculationBaseException
      */
     public function calculateDiceFailsWithoutExtremes($calculator, $values, $expectations)
     {
-        $this->setExpectedException(\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException::class);
+        $this->setExpectedException(MissingCalculationBaseException::class);
         $calculator->calculateDice([]);
     }
 
@@ -97,14 +97,14 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
-     * @param CalculatorSeventhSea $calculator
+     * @param CalculatorSeventhSeaForGroup $calculator
      * @param int[] $values
      * @param int[] $expectations
-     * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
+     * @throws MissingCalculationBaseException
      */
     public function calculateRecognitionValueFailsWithoutExtremes($calculator, $values, $expectations)
     {
-        $this->setExpectedException(\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException::class);
+        $this->setExpectedException(MissingCalculationBaseException::class);
         $calculator->calculateRecognitionValue([]);
     }
 
@@ -112,53 +112,48 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider valuesProviderForSimpleCalculations
      *
-     * @param CalculatorSeventhSea $calculator
+     * @param CalculatorSeventhSeaForGroup $calculator
      * @param int[] $values
      * @param int[] $expectations
-     * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
+     * @throws MissingCalculationBaseException
      */
     public function calculateRecognitionDiceFailsWithoutExtremes($calculator, $values, $expectations)
     {
-        $this->setExpectedException(\Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException::class);
+        $this->setExpectedException(MissingCalculationBaseException::class);
         $calculator->calculateRecognitionDice([]);
     }
 
     /**
      * @test
-     * @dataProvider valuesProviderForInfluenceCalculations
-     *
-     * @param CalculatorSeventhSea $calculator
-     * @param int $balance
-     * @param int[] $parameters
-     * @param int[] $expectation
-     * @throws \Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException
      */
-    public function calculateInfluenceWorks($calculator, $balance, $parameters, $expectation)
+    public function valuesAreAdjustedProperly()
     {
-        $currentStateBase = $calculator->calculateBasic([$balance]);
+        $calculator = new CalculatorSeventhSeaForGroup();
 
-        $currentState = $currentStateBase + $parameters;
+        $values = [1, 3, 5];
+        $influences = [2, 3, 0];
+        $expectation = [1, 3, 5, 2, 3, 0];
 
-        $result = $calculator->calculateInfluenceExtended($currentState);
-
-        $this->assertEquals($expectation, $result);
+        $this->assertEquals($expectation, $calculator->adjustValuesWithInfluences($values, $influences));
     }
+
 
     /**
      * @test
+     * @dataProvider balanceValuesProvider
+     * @param int[] $values
+     * @param int[] $expectation
      */
-    public function calculateInfluenceReturnsDefaultWeightWithoutParameters()
+    public function balanceIsCalculatedProperly($values, $expectation)
     {
-        $calculator = new CalculatorSeventhSea();
-        $currentStateBase = $calculator->calculateBasic([0]);
-        $result = $calculator->calculateInfluenceExtended($currentStateBase);
+        $calculator = new CalculatorSeventhSeaForGroup();
+        $this->assertEquals($expectation, $calculator->calculateBalanceFromNewValues($values));
 
-        $this->assertEquals(1, $result['weight']);
     }
 
     public function valuesProviderForSimpleCalculations()
     {
-        $calculator = new CalculatorSeventhSea();
+        $calculator = new CalculatorSeventhSeaForGroup();
         return [
             [
                 $calculator,
@@ -225,7 +220,7 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
 
     public function valuesProviderForInfluenceCalculations()
     {
-        $calculator = new CalculatorSeventhSea();
+        $calculator = new CalculatorSeventhSeaForGroup();
         return [
             [
                 $calculator,
@@ -269,6 +264,19 @@ class CalculatorSeventhSeaTest extends \PHPUnit_Framework_TestCase
                 ['influence.weight' => -2],
                 ['influence' => 160, 'weight' => -2]
             ],
+        ];
+    }
+
+    public function balanceValuesProvider()
+    {
+        return [
+            [[0], ['balance' => 0]],
+            [[0, 0], ['balance' => 0]],
+            [[-5, 5], ['balance' => 0]],
+            [[5, -5], ['balance' => 0]],
+            [[-10, 5], ['balance' => -5]],
+            [[5, -10], ['balance' => -5]],
+            [[-10, 5], ['balance' => -5]]
         ];
     }
 }

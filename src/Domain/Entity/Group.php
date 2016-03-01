@@ -36,8 +36,6 @@ class Group extends Person
     {
         parent::__construct($identification, $name, $description, $reputations, $reputationEvents);
         $this->members = $members;
-        $this->influencesOfMembers = $this->makeMembersInfluences($this->members);
-        $this->sumOfInfluencesOfMembers = $this->makeTotalMembersInfluence($this->influencesOfMembers);
     }
 
     /**
@@ -74,7 +72,7 @@ class Group extends Person
      * @param Person[] $members
      * @return \int[][]
      */
-    public function makeMembersInfluences($members)
+    private function makeMembersInfluences($members)
     {
         $groupInfluences = [];
 
@@ -99,7 +97,7 @@ class Group extends Person
      * @param int[][] $groupInfluences
      * @return \int[]
      */
-    public function makeTotalMembersInfluence(array $groupInfluences)
+    private function makeTotalMembersInfluence(array $groupInfluences)
     {
         $sumOfAllInfluences = [];
 

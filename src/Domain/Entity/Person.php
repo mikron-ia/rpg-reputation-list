@@ -32,6 +32,7 @@ class Person implements Displayable
      * @var Reputation[] Reputations of the person
      */
     private $reputations;
+
     /**
      * @var ReputationEvent[]
      */

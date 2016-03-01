@@ -2,29 +2,31 @@
 
 namespace Mikron\ReputationList\Domain\Service;
 
+use Mikron\ReputationList\Domain\Blueprint\Calculator;
 use Mikron\ReputationList\Domain\Exception\MissingCalculationBaseException;
 
 /**
  * Class CalculatorSeventhSea
  *
- * seventhSea.calculateDice - calculates reputation dice based on balance and local extremes
- * seventhSea.calculateRecognitionValue - calculates recognition value (fame of the person)
- * seventhSea.calculateRecognitionDice - calculates recognition dice (used in tests of recognition)
- *
  * @package Mikron\ReputationList\Domain\Service\Calculator
  */
-final class CalculatorSeventhSea
+class CalculatorSeventhSea extends CalculatorGeneric implements Calculator
 {
     /**
      * Calculates dice according to balance and extremes. Requires calculateLowestAndHighest() to be called first
-     * @todo Calculation of group rep that includes influence reputation - in this or in separate method
-     * @param $values
-     * @param $currentState
+     * @param int[] $currentState
      * @return int[]
      * @throws MissingCalculationBaseException
      */
-    public static function calculateDice($values, $currentState)
+    public function calculateDice($currentState)
     {
+        if (!isset($currentState['balance'])) {
+            throw new MissingCalculationBaseException(
+                "Missing values necessary to operate",
+                "Missing balance. Call calculateBasic() first."
+            );
+        }
+
         if (!isset($currentState['negativeMin']) || !isset($currentState['positiveMax'])) {
             throw new MissingCalculationBaseException(
                 "Missing values necessary to operate",
@@ -35,13 +37,13 @@ final class CalculatorSeventhSea
         if ($currentState['balance'] < 5 && $currentState['balance'] > -5) {
             $dice = 0;
         } elseif ($currentState['balance'] > 0) {
-            if ($currentState['balance'] == $currentState['positiveMax']) {
+            if ($currentState['balance'] >= $currentState['positiveMax']) {
                 $dice = ceil($currentState['balance'] / 10);
             } else {
                 $dice = floor($currentState['balance'] / 10);
             }
         } else {
-            if ($currentState['balance'] == $currentState['negativeMin']) {
+            if ($currentState['balance'] <= $currentState['negativeMin']) {
                 $dice = floor($currentState['balance'] / 10);
             } else {
                 $dice = ceil($currentState['balance'] / 10);
@@ -53,12 +55,11 @@ final class CalculatorSeventhSea
     }
 
     /**
-     * @param int[] $values
      * @param int[] $currentState
      * @return int[]
      * @throws MissingCalculationBaseException
      */
-    public static function calculateRecognitionValue($values, $currentState)
+    public function calculateRecognitionValue($currentState)
     {
         if (!isset($currentState['absolute'])) {
             throw new MissingCalculationBaseException(
@@ -73,12 +74,11 @@ final class CalculatorSeventhSea
     }
 
     /**
-     * @param int[] $values
      * @param int[] $currentState
      * @return int[]
      * @throws MissingCalculationBaseException
      */
-    public static function calculateRecognitionDice($values, $currentState)
+    public function calculateRecognitionDice($currentState)
     {
         if (!isset($currentState['recognition'])) {
             throw new MissingCalculationBaseException(
@@ -92,28 +92,53 @@ final class CalculatorSeventhSea
         ];
     }
 
-    public static function calculateInfluenceExtended($values, $currentState)
+    /**
+     * @param $currentState
+     * @return array
+     * @throws MissingCalculationBaseException
+     */
+    public function calculateInfluenceExtended($currentState)
     {
-        if (
-            isset($currentState['balance']) &&
-            isset($currentState['influenceDivider']) &&
-            isset($currentState['influenceMultiplier'])
-        ) {
-            if ($currentState['influenceDivider'] == 0) {
-                throw new MissingCalculationBaseException(
-                    "Erroneous value among values necessary to operate",
-                    "Influence divider is zero. Provide a valid one as parameter."
-                );
-            }
-
-            return [
-                'influence' => (int)round(
-                    ($currentState['balance'] * $currentState['influenceMultiplier']) / $currentState['influenceDivider'],
-                    0
-                )
-            ];
-        } else {
-            return [];
+        if (!isset($currentState['balance'])) {
+            throw new MissingCalculationBaseException(
+                "Missing values necessary to operate",
+                "Missing balance. Call calculateBasic() first."
+            );
         }
+
+        if (!isset($currentState['influence.weight'])) {
+            $weight = 1;
+        } else {
+            $weight = $currentState['influence.weight'];
+        }
+
+        return [
+            'influence' => (int)round($currentState['balance'] * $weight, 0),
+            'weight' => $weight
+        ];
+    }
+
+    /**
+     * Performs the calculations
+     *
+     * @param int[] $values
+     * @param \int[] $influences
+     * @param array $parameters
+     * @return \int[]
+     * @throws MissingCalculationBaseException
+     */
+    function perform($values, $influences, $parameters)
+    {
+        $basics = $this->calculateBasic($values);
+        $maximums = $this->calculateLowestAndHighest($values);
+        $absolutes = $this->calculateAbsolute($values);
+
+        $dice = $this->calculateDice($basics + $maximums);
+        $recognitionValue = $this->calculateRecognitionValue($absolutes);
+        $recognitionDice = $this->calculateRecognitionDice($recognitionValue);
+
+        $influenceExtended = $this->calculateInfluenceExtended($basics + $parameters);
+
+        $this->results = array_merge($basics, $maximums, $absolutes, $dice, $recognitionValue, $recognitionDice, $influenceExtended);
     }
 }

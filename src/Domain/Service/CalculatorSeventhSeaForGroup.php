@@ -38,8 +38,15 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
         ];
     }
 
-    public function calculateBalanceFromNewValues($values)
+    public function calculateBalanceFromNewValues($values, $currentState)
     {
+        if (!isset($currentState['uninfluenced'])) {
+            throw new MissingCalculationBaseException(
+                "Missing values necessary to operate",
+                "Missing uninfluenced value. Call calculateBasic() first."
+            );
+        }
+
         $negative = 0;
         $positive = 0;
 
@@ -51,8 +58,11 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
             }
         }
 
+        $balance = $positive + $negative;
+
         return [
-            'balance' => $positive + $negative,
+            'balance' => $balance,
+            'influence' => $balance - $currentState['uninfluenced'],
         ];
     }
 
@@ -84,7 +94,7 @@ final class CalculatorSeventhSeaForGroup extends CalculatorSeventhSea implements
 
         $valuesAdjusted = $this->adjustValuesWithInfluences($values, $influences);
 
-        $balance = $this->calculateBalanceFromNewValues($valuesAdjusted);
+        $balance = $this->calculateBalanceFromNewValues($valuesAdjusted, $basics);
 
         $absolutes = $this->calculateAbsolute($valuesAdjusted);
 

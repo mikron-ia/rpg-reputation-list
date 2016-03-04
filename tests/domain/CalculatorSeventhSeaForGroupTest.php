@@ -25,7 +25,9 @@ class CalculatorSeventhSeaForGroupTest extends \PHPUnit_Framework_TestCase
             'dice' => $expectations['dice']
         ];
 
-        $currentState = $calculator->calculateBasic($values) + $calculator->calculateLowestAndHighest($values) + $calculator->calculateBalanceFromNewValues($values);
+        $basics = $calculator->calculateBasic($values);
+        $currentState = $basics + $calculator->calculateLowestAndHighest($values) + $calculator->calculateBalanceFromNewValues($values,
+                $basics);
 
         $result = $calculator->calculateDice($currentState);
 
@@ -147,8 +149,10 @@ class CalculatorSeventhSeaForGroupTest extends \PHPUnit_Framework_TestCase
     public function balanceIsCalculatedProperly($values, $expectation)
     {
         $calculator = new CalculatorSeventhSeaForGroup();
-        $this->assertEquals($expectation, $calculator->calculateBalanceFromNewValues($values));
-
+        $this->assertEquals(
+            $expectation,
+            $calculator->calculateBalanceFromNewValues($values, $calculator->calculateBasic($values))
+        );
     }
 
     public function valuesProviderForSimpleCalculations()
@@ -270,13 +274,13 @@ class CalculatorSeventhSeaForGroupTest extends \PHPUnit_Framework_TestCase
     public function balanceValuesProvider()
     {
         return [
-            [[0], ['balance' => 0]],
-            [[0, 0], ['balance' => 0]],
-            [[-5, 5], ['balance' => 0]],
-            [[5, -5], ['balance' => 0]],
-            [[-10, 5], ['balance' => -5]],
-            [[5, -10], ['balance' => -5]],
-            [[-10, 5], ['balance' => -5]]
+            [[0], ['balance' => 0, 'influence' => 0]],
+            [[0, 0], ['balance' => 0, 'influence' => 0]],
+            [[-5, 5], ['balance' => 0, 'influence' => 0]],
+            [[5, -5], ['balance' => 0, 'influence' => 0]],
+            [[-10, 5], ['balance' => -5, 'influence' => 0]],
+            [[5, -10], ['balance' => -5, 'influence' => 0]],
+            [[-10, 5], ['balance' => -5, 'influence' => 0]]
         ];
     }
 }

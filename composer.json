@@ -23,6 +23,6 @@
     "codeclimate/php-test-reporter": "dev-master"
   },
   "scripts": {
-    "test": "php vendor/phpunit/phpunit/phpunit --testdox --configuration ./tests/phpunit.xml --coverage-clover build/log/clover.xml"
+    "test": "php vendor/phpunit/phpunit/phpunit --testdox --configuration ./tests/phpunit.xml --coverage-clover build/logs/clover.xml"
   }
 }
